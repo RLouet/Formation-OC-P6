@@ -53,12 +53,12 @@ class User implements UserInterface
     private $enabled = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $tricks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $messages;
 
