@@ -1,0 +1,66 @@
+/* --- Home --- */
+#homeHero {
+    height: 100vh;
+    background-color: #5eb5e0;
+    background-image: url("../imgs/snowtricks-home-hero.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#homeHero .top-ref{
+    height: 0;
+}
+
+#homeHero .brand {
+    margin-top: 1rem;
+    padding-bottom: 5rem;
+    text-align: center;
+}
+
+#homeHero .brand a {
+    color: black;
+}
+
+#homeHero .brand a:hover {
+    text-decoration: none;
+}
+
+#homeHero h2{
+    text-align: center;
+    margin: 30vh 20% 0 20%;
+    padding: 0.5rem;
+    background-color: rgba(94, 181, 224, 0.60);
+    border-radius: 0.5rem;
+}
+
+.hero-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 2rem;
+    text-align: right;
+}
+
+.hero-bottom .down-arrow {
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.84);
+}
+
+@media (max-width: 575px) {
+    #homeHero h2{
+        margin: 3rem 5% 0 5%;
+    }
+
+    #homeHero {
+        height: calc(100vh - 4rem);
+    }
+
+    .hero-bottom {
+        bottom: 4rem;
+    }
+
+    footer {
+        margin-bottom: 4rem;
+    }
+}

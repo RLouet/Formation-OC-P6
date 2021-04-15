@@ -1,0 +1,51 @@
+/* --- General --- */
+
+/* --- Navbar --- */
+@media (min-width: 576px) {
+    .fixed-bottom.fixed-top-sm {
+        top: 0;
+        bottom: unset;
+    }
+}
+
+@media (max-width: 575px) {
+    #frontNavbar ul {
+        width: 100%;
+        justify-content: space-around;
+    }
+    #frontNavbar .navbar-nav .nav-link {
+        padding: .1rem
+    }
+    #frontNavbar .navbar-nav .nav-link .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+#frontNavbar .fas {
+    font-size: 2.5rem;
+    color: rgba(255,255,255,.5);
+}
+
+#frontNavbar .icon {
+    background: rgba(255,255,255,.5);
+}
+
+#frontNavbar .active .fas {
+    color: white;
+}
+
+/* --- Icons --- */
+.icon {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background: black;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+}
+
+.icon.trick-icon {
+    -webkit-mask-image: url("../imgs/icons/tricks.svg");
+    mask-image: url("../imgs/icons/tricks.svg");
+}
