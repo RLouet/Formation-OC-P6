@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Frontend CSS -->
+    <link rel="stylesheet" href="{{ asset("css/style-front.css") }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block header %}
+    {% include 'front/_front-header.html.twig' %}
+{% endblock %}
