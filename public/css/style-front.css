@@ -14,17 +14,18 @@
     height: 0;
 }
 
-#homeHero .brand {
-    margin-top: 1rem;
-    padding-bottom: 5rem;
+#homeHero .brand h1 {
+    margin-top: 2.5rem;
+    padding-bottom: 6rem;
     text-align: center;
+    font-size: 4rem;
 }
 
-#homeHero .brand a {
+#homeHero .brand {
     color: black;
 }
 
-#homeHero .brand a:hover {
+#homeHero .brand:hover {
     text-decoration: none;
 }
 
@@ -64,9 +65,31 @@
     color: rgba(0, 0, 0, 0.84);
 }
 
+.trick-item .card-img-top {
+    height: 15rem;
+    object-fit: cover;
+    -o-object-fit: cover;
+}
+
+.trick-item .card {
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
+}
+
+.trick-item .card-footer em {
+    font-size: 1.5rem;
+}
+
+.trick-item .card-footer .edit-btn {
+    color: #1f35e0;
+}
+
+.trick-item .card-footer .delete-btn {
+    color: #d60400;
+}
+
 @media (max-width: 575px) {
     /* --- Home Hero --- */
-
     #homeHero h2{
         margin: 3rem 5% 0 5%;
     }
@@ -77,11 +100,6 @@
 
     .hero-bottom {
         bottom: 4rem;
-    }
-
-    /* --- Footer --- */
-    footer {
-        margin-bottom: 4rem;
     }
 }
 

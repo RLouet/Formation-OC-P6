@@ -5,6 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <title>{% block title %}SnowTricks{% endblock %}</title>
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
@@ -16,7 +20,6 @@
 
             <!-- Fontawesome -->
             <link href="{{ asset("/assets/fontawesome/css/all.css") }}" rel="stylesheet">
-
         {% endblock %}
 
         {% block javascripts %}

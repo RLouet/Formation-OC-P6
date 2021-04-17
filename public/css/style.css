@@ -3,7 +3,24 @@ html {
     scroll-behavior: smooth;
 }
 
+/* --- Footer --- */
+footer {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-top: 1px solid #5eb5e0;
+}
+footer p {
+    margin: 0;
+}
+
 /* --- Navbar --- */
+.navbar-brand {
+    height: 3.5rem;
+}
+.logo{
+    font-family: 'Kaushan Script', cursive;
+}
+
 @media (min-width: 576px) {
     .fixed-bottom.fixed-top-sm {
         top: 0;
@@ -36,6 +53,10 @@ html {
     background: rgba(255,255,255,.5);
 }
 
+#frontNavbar .active .icon {
+    background: white;
+}
+
 #frontNavbar .active .fas {
     color: white;
 }
@@ -53,4 +74,12 @@ html {
 .icon.trick-icon {
     -webkit-mask-image: url("../imgs/icons/tricks.svg");
     mask-image: url("../imgs/icons/tricks.svg");
+}
+
+
+@media (max-width: 575px) {
+    /* --- Footer --- */
+    footer {
+        margin-bottom: 4rem;
+    }
 }
