@@ -3,6 +3,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* --- Icons --- */
+.icon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background: black;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+.icon.trick-icon {
+  -webkit-mask-image: url("../imgs/icons/tricks.svg");
+  mask-image: url("../imgs/icons/tricks.svg");
+}
+
 /* --- Footer --- */
 footer {
   margin-top: 1rem;
@@ -52,7 +67,7 @@ footer p {
 }
 
 #frontNavbar .icon {
-  background: rgba(255, 255, 255, .5);
+  background: rgba(255, 255, 255, 0.5);
 }
 
 #frontNavbar .active .icon {
@@ -61,21 +76,6 @@ footer p {
 
 #frontNavbar .active .fas {
   color: white;
-}
-
-/* --- Icons --- */
-.icon {
-  display: inline-block;
-  width: 2rem;
-  height: 2rem;
-  background: black;
-  -webkit-mask-size: cover;
-  mask-size: cover;
-}
-
-.icon.trick-icon {
-  -webkit-mask-image: url("../imgs/icons/tricks.svg");
-  mask-image: url("../imgs/icons/tricks.svg");
 }
 
 @media (max-width: 575px) {
