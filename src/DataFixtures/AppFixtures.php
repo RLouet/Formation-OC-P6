@@ -126,6 +126,26 @@ class AppFixtures extends Fixture
                 "categories" => [0,5],
                 "images" => ["sample26.jpg","sample27.jpg","sample28.jpg"],
                 "videos" => ["LWUfrwCofuA"]
+            ],
+            "180 One foot Indy" => [
+                "categories" => [0,1,5],
+                "images" => ["sample29.jpg"],
+                "videos" => []
+            ],
+            "Nose Grab" => [
+                "categories" => [0],
+                "images" => [],
+                "videos" => []
+            ],
+            "Board Slide" => [
+                "categories" => [4,6],
+                "images" => ["sample30.jpg"],
+                "videos" => []
+            ],
+            "180" => [
+                "categories" => [1],
+                "images" => [],
+                "videos" => []
             ]
         ];
 

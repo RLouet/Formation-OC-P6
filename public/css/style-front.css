@@ -1,4 +1,6 @@
 /* --- Home --- */
+
+/* --- Hero --- */
 #homeHero {
     height: 100vh;
     background-color: #5eb5e0;
@@ -8,7 +10,7 @@
     background-position: center;
 }
 
-#homeHero .top-ref{
+#homeHero .top-ref {
     height: 0;
 }
 
@@ -26,11 +28,11 @@
     text-decoration: none;
 }
 
-#homeHero h2{
+#homeHero h2 {
     text-align: center;
     margin: 30vh 20% 0 20%;
     padding: 0.5rem;
-    background-color: rgba(94, 181, 224, 0.60);
+    background-color: rgba(94, 181, 224, 0.6);
     border-radius: 0.5rem;
 }
 
@@ -40,6 +42,7 @@
     right: 0;
     margin: 2rem;
     text-align: right;
+    z-index: 999;
 }
 
 .hero-bottom .down-arrow {
@@ -47,7 +50,23 @@
     color: rgba(0, 0, 0, 0.84);
 }
 
+/* --- Tricks list --- */
+.trick-up {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0 2rem;
+    z-index: 999;
+}
+
+.trick-up .up-arrow {
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.84);
+}
+
 @media (max-width: 575px) {
+    /* --- Home Hero --- */
+
     #homeHero h2{
         margin: 3rem 5% 0 5%;
     }
@@ -60,7 +79,19 @@
         bottom: 4rem;
     }
 
+    /* --- Footer --- */
     footer {
         margin-bottom: 4rem;
+    }
+}
+
+@media (min-width: 576px) {
+    /* --- Tricks list --- */
+    #tricksList {
+        padding-top: 4.5rem;
+        position: relative;
+        top: -4.5rem;
+        margin-bottom: -4.5rem;
+        z-index: 1;
     }
 }

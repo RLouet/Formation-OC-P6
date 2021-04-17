@@ -1,4 +1,7 @@
 /* --- General --- */
+html {
+    scroll-behavior: smooth;
+}
 
 /* --- Navbar --- */
 @media (min-width: 576px) {
@@ -13,9 +16,11 @@
         width: 100%;
         justify-content: space-around;
     }
+
     #frontNavbar .navbar-nav .nav-link {
-        padding: .1rem
+        padding: 0.1rem;
     }
+
     #frontNavbar .navbar-nav .nav-link .icon {
         width: 2.5rem;
         height: 2.5rem;
@@ -24,7 +29,7 @@
 
 #frontNavbar .fas {
     font-size: 2.5rem;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #frontNavbar .icon {

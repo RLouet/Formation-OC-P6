@@ -66,7 +66,7 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Image::class)
      */
     private $hero;
 
