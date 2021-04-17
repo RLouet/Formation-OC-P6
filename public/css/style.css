@@ -1,85 +1,86 @@
 /* --- General --- */
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 /* --- Footer --- */
 footer {
-    margin-top: 1rem;
-    padding: 1rem;
-    border-top: 1px solid #5eb5e0;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #5eb5e0;
 }
+
 footer p {
-    margin: 0;
+  margin: 0;
 }
 
 /* --- Navbar --- */
 .navbar-brand {
-    height: 3.5rem;
+  height: 3.5rem;
 }
-.logo{
-    font-family: 'Kaushan Script', cursive;
+
+.logo {
+  font-family: 'Kaushan Script', cursive;
 }
 
 @media (min-width: 576px) {
-    .fixed-bottom.fixed-top-sm {
-        top: 0;
-        bottom: unset;
-    }
+  .fixed-bottom.fixed-top-sm {
+    top: 0;
+    bottom: unset;
+  }
 }
 
 @media (max-width: 575px) {
-    #frontNavbar ul {
-        width: 100%;
-        justify-content: space-around;
-    }
+  #frontNavbar ul {
+    width: 100%;
+    justify-content: space-around;
+  }
 
-    #frontNavbar .navbar-nav .nav-link {
-        padding: 0.1rem;
-    }
+  #frontNavbar .navbar-nav .nav-link {
+    padding: 0.1rem;
+  }
 
-    #frontNavbar .navbar-nav .nav-link .icon {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
+  #frontNavbar .navbar-nav .nav-link .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 }
 
 #frontNavbar .fas {
-    font-size: 2.5rem;
-    color: rgba(255, 255, 255, 0.5);
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 #frontNavbar .icon {
-    background: rgba(255,255,255,.5);
+  background: rgba(255, 255, 255, .5);
 }
 
 #frontNavbar .active .icon {
-    background: white;
+  background: white;
 }
 
 #frontNavbar .active .fas {
-    color: white;
+  color: white;
 }
 
 /* --- Icons --- */
 .icon {
-    display: inline-block;
-    width: 2rem;
-    height: 2rem;
-    background: black;
-    -webkit-mask-size: cover;
-    mask-size: cover;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background: black;
+  -webkit-mask-size: cover;
+  mask-size: cover;
 }
 
 .icon.trick-icon {
-    -webkit-mask-image: url("../imgs/icons/tricks.svg");
-    mask-image: url("../imgs/icons/tricks.svg");
+  -webkit-mask-image: url("../imgs/icons/tricks.svg");
+  mask-image: url("../imgs/icons/tricks.svg");
 }
 
-
 @media (max-width: 575px) {
-    /* --- Footer --- */
-    footer {
-        margin-bottom: 4rem;
-    }
+  /* --- Footer --- */
+  footer {
+    margin-bottom: 4rem;
+  }
 }
