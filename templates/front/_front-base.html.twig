@@ -7,5 +7,8 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'front/_front-header.html.twig' %}
+    <header style="position: relative" id="top">
+        {% include 'front/_front-nav.html.twig' %}
+        {%  block headerHero %}{% endblock %}
+    </header>
 {% endblock %}

@@ -27,9 +27,9 @@
         {% endblock %}
     </head>
 
-    <body>
+    <body data-spy="scroll" data-target="#frontNavbar">
         {% block header %}{% endblock %}
-        {% block body %}{% endblock %}
+        {% block content %}{% endblock %}
         {% block footer %}
             {% include 'footer.html.twig' %}
         {% endblock %}

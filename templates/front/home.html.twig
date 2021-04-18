@@ -1,28 +1,23 @@
 {% extends 'front/_front-base.html.twig' %}
 
-{% block body %}
-    <section class="container-fluid tricks-list" id="tricksList">
-        {#
-        <div class="row justify-content-around pt-sm-2 pt-xl-3">
-            {% for trick in tricks %}
-                <div class="col-12 col-md-4 col-xl-2 pt-3 pt-md-4 px-2 px-xl-0 mx-xl-1 trick-item">
-                    <div class="item-container">
-                        <img src="uploads/tricks/{{ trick.images|first.name }}" style="width: 100%">
-                        <div class="item-content">
-                            <h3>{{ trick.name }}</h3>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        #}
+{%  block headerHero %}
+    <div id="homeHero">
+        <div class="top-ref">&nbsp;</div>
+        <a class="brand" href="{{ path('home') }}#"><h1 class="d-sm-none logo">SnowTricks</h1></a>
+        <h2>La référence communautaire des Tricks de SnowBoard</h2>
+        <div class="hero-bottom"><a class="down-arrow" href="#tricksList" title="Tricks"><i class="fas fa-arrow-down"></i></a></div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section class="container-fluid tricks-list pb-3" id="tricksList">
 
         <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-around pt-2 pt-xl-3">
             {% for trick in tricks %}
-                <div class="col mb-3 mb-md-4 trick-item">
+                <article class="col mb-3 mb-md-4 trick-item">
                     <div class="card h-100">
                         <div class="item-header">
-                            <a href="#" title="Voir le trick">
+                            <a href="{{ path('home-tricks-single', {'id' : trick.id}) }}" title="Voir le trick">
                                 <img src="{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}" class="card-img-top">
                             </a>
                         </div>
@@ -41,7 +36,7 @@
 
                         </div>
                     </div>
-                </div>
+                </article>
             {% endfor %}
         </div>
 
@@ -51,5 +46,6 @@
                 <div class="trick-up"><a class="up-arrow" href="#tricksList" title="Premiers Tricks"><i class="fas fa-arrow-up"></i></a></div>
             </div>
         </div>
+
     </section>
 {% endblock %}
