@@ -97,6 +97,7 @@
         </article>
     </div>
 
+    {% if trick.images|length > 0 %}
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -116,15 +117,16 @@
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascriptsBottom %}
     {{ parent() }}
     <script>
-        const TrickImgPath = '{{ asset("uploads/tricks/") }}';
+        const TrickImgPath = "{{ asset('uploads/tricks/') }}";
         let trickImages = [];
         {% for image in trick.images %}
-        trickImages.push('{{ image.name }}');
+        trickImages.push("{{ image.name }}");
         {% endfor %}
     </script>
     <script src="{{ asset('js/trick-view.js') }}"></script>
