@@ -20,10 +20,10 @@
                     </div>
                 </div>
             </header>
-            <section class="row my-3 justify-content-center trick-medias">
+            <section class="row my-3 justify-content-center trick-medias" id="trickMedias">
                 <div class="col-12 text-center d-md-none">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#mediasList" aria-expanded="false" aria-controls="mediasList">
-                        Voir les médias
+                    <button class="btn btn-primary view-medias" type="button" data-toggle="collapse" data-target="#mediasList" aria-expanded="false" aria-controls="mediasList">
+                        <em class="fas fa-arrow-down "></em> Voir les médias <em class="fas fa-arrow-down"></em>
                     </button>
                 </div>
                 <div class="collapse col-12 mt-2 d-md-block" id="mediasList">
@@ -31,6 +31,7 @@
                         {% for image in trick.images %}
                             <div class="col-md-2 px-1 image">
                                 <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
+                                <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
                             </div>
                         {% endfor %}
                         {% for video in trick.videos %}
@@ -42,8 +43,8 @@
                         {% endfor %}
                     </div>
                     <div class="col-12 text-center mt-2 d-md-none">
-                        <button class="btn btn-warning hide-medias" type="button" data-toggle="collapse" data-target="#mediasList" aria-expanded="false" aria-controls="mediasList">
-                            Masquer les médias
+                        <button class="btn btn-secondary hide-medias" type="button" data-toggle="collapse" data-target="#mediasList" aria-expanded="false" aria-controls="mediasList">
+                            <em class="fas fa-arrow-up "></em> Masquer les médias <em class="fas fa-arrow-up"></em>
                         </button>
                     </div>
                 </div>
@@ -79,13 +80,52 @@
                     </form>
                 </div>
                 {% for message in trick.messages %}
-                    <div class="col-12 col-xl-7 mt-3">
-                        <div class="border rounded px-2">
-                            <p>{{ message.content }}</p>
+                    <div class="row px-1 justify-content-center message-item">
+                        <div class="col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author">
+                            {# <img src="{{ asset('/') }}{% if message.author.avatar %}uploads/avatars/{{ message.author.avatar }}{% else %}imgs/avatar.png{% endif %}" class="rounded-circle" alt="..."> #}
+                            <img src="/imgs/avatar.png" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="...">
+                            <small class="text-break">{{ message.author.username }}</small>
+                        </div>
+                        <div class="col-10 col-md-11 col-xl-6 mt-3 message-content">
+                            <div class="border rounded px-2">
+                                <p>{{ message.content|nl2br() }}</p>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
             </section>
         </article>
     </div>
+
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalTitle">Trick : {{ trick.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img class="img-fluid" src="{{ asset('uploads/tricks/') }}{{ trick.images|first.name }}" alt="Image du Trick">
+                    {% if trick.images|length > 1 %}
+                    <button type="button" class="nav next" title="Image suivante" data-index="0"><em class="fas fa-chevron-right"></em></button>
+                    <button type="button" class="nav prev" title="Image précédente" data-index="0"><em class="fas fa-chevron-left"></em></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascriptsBottom %}
+    {{ parent() }}
+    <script>
+        const TrickImgPath = '{{ asset("uploads/tricks/") }}';
+        let trickImages = [];
+        {% for image in trick.images %}
+        trickImages.push('{{ image.name }}');
+        {% endfor %}
+    </script>
+    <script src="{{ asset('js/trick-view.js') }}"></script>
 {% endblock %}

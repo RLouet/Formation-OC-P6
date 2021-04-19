@@ -153,6 +153,51 @@ article.trick-single .trick-categories .badge {
   font-size: 1rem;
 }
 
+article.trick-single .trick-medias .image button {
+  border: none;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  width: 96%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  font-size: 2.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+article.trick-single .trick-medias .image button:hover {
+  opacity: 1;
+}
+
+#imageModal .modal-body {
+  padding: 0;
+}
+
+#imageModal .modal-body .nav {
+  border: none;
+  padding: 1rem;
+  position: absolute;
+  top: calc(50% - 2rem);
+  font-size: 2rem;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#imageModal .modal-body .nav:hover {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+#imageModal .modal-body .next {
+  right: 0;
+}
+
+#imageModal .modal-body .nav.prev {
+  left: 0;
+}
+
 @media (max-width: 575px) {
   /* --- Home Hero --- */
   #homeHero h2 {
