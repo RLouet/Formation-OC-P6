@@ -1,0 +1,25 @@
+<nav class="navbar fixed-bottom fixed-top-sm navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ path('home') }}#"><h1 class="d-none d-sm-block logo">SnowTricks</h1></a>
+    <div class="collapse navbar-collapse" id="frontNavbar">
+        <ul class="nav navbar-nav ml-sm-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#top">
+                    <span class="d-none d-sm-inline">Accueil<span class="sr-only">(current)</span></span>
+                    <em class="fas fa-home d-sm-none"></em>
+                </a>
+            </li>
+            <li class="nav-item{% if app.request.attributes.get('_route') matches '/^home-tricks-/' %} active{% endif %}">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#tricksList" title="Tricks">
+                    <span class="d-none d-sm-inline">Tricks</span>
+                    <em class="icon trick-icon d-sm-none"></em>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="d-none d-sm-inline">Connexion</span>
+                    <em class="fas fa-sign-in-alt d-sm-none"></em>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

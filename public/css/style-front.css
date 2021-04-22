@@ -21,11 +21,27 @@
   font-size: 4rem;
 }
 
+.trick-single .brand-container {
+  position: absolute;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.trick-single .brand-container .brand {
+  color: white;
+}
+
+.trick-single .brand-container .brand h1 {
+  font-size: 2rem;
+}
+
 #homeHero .brand {
   color: black;
 }
 
-#homeHero .brand:hover {
+#homeHero .brand:hover,
+.trick-single .brand {
   text-decoration: none;
 }
 
@@ -76,16 +92,110 @@
   box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
 }
 
-.trick-item .card-footer em {
+.trick-item .card-footer em,
+.management-btns em {
   font-size: 1.5rem;
 }
 
-.trick-item .card-footer .edit-btn {
+.trick-item .card-footer .edit-btn,
+.management-btns .edit-btn {
   color: #1f35e0;
 }
 
-.trick-item .card-footer .delete-btn {
+.trick-item .card-footer .delete-btn,
+.management-btns .delete-btn {
   color: #d60400;
+}
+
+/* --- Trick Single --- */
+article.trick-single {
+  min-height: 79vh;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
+}
+
+article.trick-single header .trick-hero {
+  min-height: 30vh;
+  border-radius: 0.25rem 0.25rem 0 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding-bottom: -10rem;
+}
+
+article.trick-single header .trick-hero h2 {
+  font-size: 3rem;
+  padding: 3rem 1rem;
+  margin: 0;
+  text-align: center;
+  z-index: 999;
+}
+
+article.trick-single header .trick-hero .overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(94, 181, 224, 0.6);
+}
+
+article.trick-single header .trick-hero .management-btns {
+  margin: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.75);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+article.trick-single .trick-categories .badge {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+article.trick-single .trick-medias .image button {
+  border: none;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  width: 96%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  font-size: 2.5rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+article.trick-single .trick-medias .image button:hover {
+  opacity: 1;
+}
+
+#imageModal .modal-body {
+  padding: 0;
+}
+
+#imageModal .modal-body .nav {
+  border: none;
+  padding: 1rem;
+  position: absolute;
+  top: calc(50% - 2rem);
+  font-size: 2rem;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#imageModal .modal-body .nav:hover {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+#imageModal .modal-body .next {
+  right: 0;
+}
+
+#imageModal .modal-body .nav.prev {
+  left: 0;
 }
 
 @media (max-width: 575px) {
@@ -111,5 +221,16 @@
     top: -4.5rem;
     margin-bottom: -4.5rem;
     z-index: 1;
+  }
+
+  #contentContainer {
+    background-color: #5eb5e0;
+    background-image: url("../imgs/snowtricks-home-hero.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding-top: 7rem;
+    padding-bottom: 1rem;
   }
 }
