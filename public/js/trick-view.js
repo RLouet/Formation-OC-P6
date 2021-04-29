@@ -1,6 +1,7 @@
 /*global TrickImgPath, trickImages*/
 
 $(document).ready(function() {
+
     $("#mediasList").on("show.bs.collapse", function () {
         location.hash = "#trickMedias";
     });
