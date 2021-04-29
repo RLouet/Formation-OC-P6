@@ -26,11 +26,12 @@ class RequestSubscriber implements EventSubscriberInterface
             !$event->isMasterRequest()
             || $request->isXmlHttpRequest()
             || 'app_login' === $request->attributes->get('_route')
+            || 'app_logout' === $request->attributes->get('_route')
         ) {
             return;
         }
 
-        $this->saveTargetPath($this->session, 'main', $request->getUri());
+        $this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo());
     }
 
     public static function getSubscribedEvents(): array

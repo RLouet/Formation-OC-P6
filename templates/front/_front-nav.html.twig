@@ -3,7 +3,7 @@
     <div class="collapse navbar-collapse" id="frontNavbar">
         <ul class="nav navbar-nav ml-sm-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#top">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#">
                     <span class="d-none d-sm-inline">Accueil<span class="sr-only">(current)</span></span>
                     <em class="fas fa-home d-sm-none"></em>
                 </a>

@@ -31,6 +31,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
     private $originUrl;
+    private $targetUrl;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -42,13 +43,23 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function supports(Request $request)
     {
-        $this->originUrl = $request->getSession()->get('_security.main.target_path');
-        return (
-            (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
-            || ('home'  === $request->attributes->get('_route'))
-            || ('home-tricks-single'  === $request->attributes->get('_route'))
+        if (
+            (
+                (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
+                || ('home'  === $request->attributes->get('_route'))
+                || ('home-tricks-single'  === $request->attributes->get('_route'))
             )
-            && $request->isMethod('POST');
+            && $request->isMethod('POST')) {
+
+            if ($request->get('target')) {
+                $this->targetUrl = $request->get('target');
+            }
+            return true;
+        }
+
+        $this->targetUrl = $request->attributes->get("_route");
+        $this->originUrl = $request->getSession()->get('_security.main.target_path');
+        return false;
     }
 
     public function getCredentials(Request $request)
@@ -98,21 +109,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        dd($request);
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            dd($targetPath);
-            return new RedirectResponse($targetPath . "#red");
-            //return new RedirectResponse($this->urlGenerator->generate('home'));
+        if ($request->get('target')) {
+            return new RedirectResponse($this->urlGenerator->generate($request->get('target')));
         }
 
-        //return new RedirectResponse($this->urlGenerator->generate('home') . "#");
-        return new RedirectResponse($targetPath . "#");
-        //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new RedirectResponse($request->getUri());
     }
 
     protected function getLoginUrl()
     {
-        return $this->originUrl . "#login" ;
-        //return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        $target = empty($this->targetUrl)?"":"?target=" . $this->targetUrl;
+        return $this->originUrl . $target ."#login";
     }
 }

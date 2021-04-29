@@ -1,16 +1,42 @@
 $(document).ready(function() {
+    const $LOGIN_MODAL = $("#loginModal");
+
+    if (location.hash !== "#login") {
+        removeHashGet("?target=");
+    }
     if (location.hash === "#login") {
-        $("#loginModal").modal("show");
+        removeHashGet("#");
+        $LOGIN_MODAL.modal("show");
     }
     if (location.hash === "") {
+        removeHashGet("#");
+    }
+    window.onhashchange = function(){
+        if (location.hash === "") {
+            removeHashGet("#");
+        }
+    };
+
+    $LOGIN_MODAL.on('hide.bs.modal', function(e){
+        removeHashGet("?target=");
+        if (location.hash === "login") {
+            removeHashGet("#");
+        }
+    });
+
+    function removeHashGet(value) {
         const uri = window.location.toString();
+        if (uri.indexOf(value) > 0) {
+            const CLEAN_URI = uri.substring(
+                0,
+                uri.indexOf(value)
+            );
 
-        if (uri.indexOf("#") > 0) {
-            const clean_uri = uri.substring(0,
-                uri.indexOf("#"));
-
-            window.history.replaceState({},
-                document.title, clean_uri);
+            window.history.replaceState(
+                {},
+                document.title,
+                CLEAN_URI
+            );
         }
     }
 });
