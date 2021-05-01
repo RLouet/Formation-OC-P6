@@ -20,12 +20,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     private ?string $lastUsername;
-    private ?string $lastAuthenticationError;
+    private ?string $lastAuthError;
 
     public function __construct(AuthenticationUtils $authenticationUtils)
     {
         // get the login error if there is one
-        $this->lastAuthenticationError = $authenticationUtils->getLastAuthenticationError();
+        $this->lastAuthError = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $this->lastUsername = $authenticationUtils->getLastUsername();
     }
@@ -130,7 +130,7 @@ class SecurityController extends AbstractController
                 return $this->render('security/registration.html.twig', [
                     'form' => $form->createView(),
                     'last_username' => $this->lastUsername,
-                    'error' => $this->lastAuthenticationError
+                    'error' => $this->lastAuthError
                 ]);
 
             }
@@ -144,7 +144,7 @@ class SecurityController extends AbstractController
         return $this->render('security/registration.html.twig', [
             'form' => $form->createView(),
             'last_username' => $this->lastUsername,
-            'error' => $this->lastAuthenticationError
+            'error' => $this->lastAuthError
         ]);
     }
 

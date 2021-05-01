@@ -1,5 +1,5 @@
 #contentContainer {
-min-height: calc(100vh - 3.6rem);
+  min-height: calc(100vh - 3.6rem);
 }
 
 /* --- Home --- */
