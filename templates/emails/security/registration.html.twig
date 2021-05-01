@@ -4,7 +4,7 @@
     <h2 class="text-center">Bienvenue sur <span class="snowTricks-logo"><a href="{{ url('home') }}" title="SnowTricks">SnowTricks</a></span> !</h2>
     <p>Nous avons bien enregistré ton inscription, mais tu dois encore cliquer sur le lien suivant pour la valider et activer ton compte :</p>
     <div class="text-center pb-1">
-        <a class="btn" href="{{ token }}" title="Confirmer mon inscription">Confirmer mon inscription</a>
+        <a class="btn" href="{{ url('security_registration_confirmation', {value:token}) }}" title="Confirmer mon inscription">Confirmer mon inscription</a>
     </div>
     <p>A tout de suite sur <a href="{{ url('home') }}" title="SnowTricks">SnowTricks</a> !</p>
     <p>Bon ride !</p>

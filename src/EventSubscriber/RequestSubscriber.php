@@ -27,6 +27,7 @@ class RequestSubscriber implements EventSubscriberInterface
             || $request->isXmlHttpRequest()
             || 'security_login' === $request->attributes->get('_route')
             || 'security_logout' === $request->attributes->get('_route')
+            || preg_match('/^security_/', $request->attributes->get('_route'))
         ) {
             return;
         }

@@ -35,15 +35,18 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request): Response
     {
+        $target = $request->getSession()->get('_security.main.target_path');
+        $target = $target?$target:$this->generateUrl('home');
+
         if ($this->getUser()) {
             $this->addFlash(
                 'primary',
                 "Tu es déjà connecté."
             );
-            return $this->redirect($request->getSession()->get('_security.main.target_path'));
+            return $this->redirect($target);
         }
 
-        return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
+        return $this->redirect($target . '#login');
     }
 
     /**
@@ -82,7 +85,7 @@ class SecurityController extends AbstractController
                 if ($userExists) {
                     if ($userExists->getEnabled()) {
                         $this->addFlash(
-                            'notice',
+                            'primary',
                             "Cette adresse Email est déjà active. Tu peux te connecter"
                         );
                         return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
@@ -149,11 +152,46 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/registration/confirmation", name="security_registration_confirmation")
+     * @Route("/registration/confirmation/{value}", name="security_registration_confirmation")
      */
-    public function registrationConfirmation(): Response
+    public function registrationConfirmation(Token $token, EntityManagerInterface $manager): Response
     {
-        return $this->render('security/registration-confirmation.html.twig');
+        $user = $token->getUser();
+
+        if ($token->isValid()) {
+            if (! $user->getEnabled()) {
+                $user->setEnabled(true);
+            }
+            $manager->remove($token);
+            $manager->flush();
+
+            $this->addFlash(
+                'primary',
+                "Ton inscription est confirmée ! Tu peux te connecter."
+            );
+
+            return $this->redirectToRoute('security_login');
+        }
+
+        if (!$user->getEnabled()) {
+            $manager->remove($token);
+            $manager->remove($user);
+            $manager->flush();
+            $this->addFlash(
+                'danger',
+                "Désolé, ton lien a expiré ! Merci de t'enregistrer à nouveau."
+            );
+
+            return $this->redirectToRoute('security_registration');
+        }
+
+        $manager->remove($token);
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            "Ton compte est déjà activé ! Tu peux te connecter."
+        );
+        return $this->redirectToRoute('app_login');
     }
 
     /**
