@@ -1,0 +1,18 @@
+{% apply inline_css(source('@styles/emails.css')) %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+    </style>
+
+    <div id="main">
+        <div id="header">
+            <h1 class="snowTricks-logo"><a href="{{ url('home') }}" title="SnowTricks">SnowTricks</a></h1>
+        </div>
+        <div id="EmailContent">
+            {% block emailContent %}
+            {% endblock %}
+        </div>
+        <div id="footer">
+            <a href="{{ url('home') }}" title="SnowTricks">{{ url('home')|regex_replace('/^https?:\\/\\//', '') }}</a>
+        </div>
+    </div>
+{% endapply %}

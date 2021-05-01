@@ -1,0 +1,80 @@
+body, #main {
+  width: 100% !important;
+  height: 100%;
+  margin: 0;
+  -webkit-text-size-adjust: none;
+  background-color: #F2F4F6;
+  color: #51545E;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.snowTricks-logo {
+  font-family: 'Kaushan Script', cursive;
+}
+
+#header {
+  background-color: #343a40;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+#header .snowTricks-logo {
+  margin: 0;
+}
+
+#header .snowTricks-logo a{
+  color: white;
+  font-size: 3rem;
+  text-decoration: none;
+}
+
+#EmailContent {
+  background: white;
+  padding: 0.5rem;
+  max-width: 600px;
+  margin: 1rem auto 3rem auto;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
+  border-radius: .25rem;
+}
+
+#EmailContent .snowTricks-logo a {
+  color: rgb(70, 137, 180);
+  text-decoration: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.btn {
+  font-size: 1rem;
+  line-height: 2.1;
+  color: white;
+  background: rgb(94, 181, 224);
+  font-weight: bold;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  text-decoration: none;
+  margin: 0.5rem
+}
+
+.pb-1 {
+  padding-bottom: 1rem;
+}
+
+#footer {
+  padding: 0.5rem 0;
+  text-align: center;
+  border-top: 1px solid #343a40;
+  background: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#footer a {
+  font-size: 1rem;
+  line-height: 1.5;
+}

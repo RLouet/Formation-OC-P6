@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             $this->addFlash(
                 'primary',
-                "Vous êtes déjà connecté."
+                "Tu es déjà connecté."
             );
             return $this->redirect($request->getSession()->get('_security.main.target_path'));
         }
@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
                     if ($userExists->getEnabled()) {
                         $this->addFlash(
                             'notice',
-                            "Cette adresse Email est déjà active. Vous pouvez vous connecter"
+                            "Cette adresse Email est déjà active. Tu peux te connecter"
                         );
                         return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
                     }
@@ -117,7 +117,7 @@ class SecurityController extends AbstractController
 
                     $this->addFlash(
                         'success',
-                        "Un Email de validation vient de vous être envoyé."
+                        "Un Email de validation vient de t'être envoyé."
                     );
                     return $this->redirectToRoute('home');
                 }
