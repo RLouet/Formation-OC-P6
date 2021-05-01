@@ -6,6 +6,10 @@
                 <source>Invalid credentials.</source>
                 <target>Vos identifiants sont incorrects !</target>
             </trans-unit>
+            <trans-unit id="Email could not be found.">
+                <source>Email could not be found.</source>
+                <target>Vos identifiants sont incorrects !</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

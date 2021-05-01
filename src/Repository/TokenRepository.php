@@ -19,6 +19,21 @@ class TokenRepository extends ServiceEntityRepository
         parent::__construct($registry, Token::class);
     }
 
+    /**
+     * @param $days
+     * @return Token[] Returns an array of Token objects
+     * @throws \Exception
+     */
+    public function findExpired()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere(':now > t.expiresAt')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Token[] Returns an array of Token objects
     //  */

@@ -1,0 +1,65 @@
+{% extends 'front/_front-base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+    <div id="contentContainer">
+        <div class="container h-100">
+            <div class="row">
+                <div class="col-12 h-100">
+
+                    {% if app.user %}
+                        <div class="mb-3">
+                            Vous êtes déjà connecté en tant que {{ app.user.username }}, <a href="{{ path('security_logout') }}">Déconnexion</a>
+                        </div>
+                    {% endif %}
+
+                    {{ form_start(form) }}
+                    <div class="col-12 text-center form-field-error">
+                        {{ form_errors(form) }}
+                    </div>
+                    <div class="form-row align-content-center mb-1">
+                        <div class="col-sm-12 col-md-6 mx-auto">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email) }}
+                            <div class="col-12 text-center form-field-error">
+                                {{ form_errors(form.email) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 mx-auto">
+                            {{ form_label(form.username) }}
+                            {{ form_widget(form.username) }}
+                            <div class="col-12 text-center form-field-error">
+                                {{ form_errors(form.username) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row pt-2 mb-3">
+                        <div class="col-12 text-center form-field-error">
+                            {{ form_errors(form.password) }}
+                        </div>
+                        <div class="col-md-6 mx-auto">
+                            {{ form_label(form.password.first) }}
+                            {{ form_widget(form.password.first) }}
+                            <div class="col-12 text-center form-field-error">
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mx-auto">
+                            {{ form_label(form.password.second) }}
+                            {{ form_widget(form.password.second) }}
+                            <div class="col-12 text-center form-field-error">
+                                {{ form_errors(form.password.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-primary" type="submit">Register</button>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
