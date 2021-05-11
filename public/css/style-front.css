@@ -46,7 +46,6 @@
   color: white;
 }
 
-#homeHero .brand:hover,
 .trick-single .brand,
 .form-page .brand-container .brand {
   text-decoration: none;
@@ -54,6 +53,10 @@
 
 #homeHero .brand {
   color: black;
+}
+
+#homeHero .brand:hover {
+  text-decoration: none;
 }
 
 #homeHero h2 {
