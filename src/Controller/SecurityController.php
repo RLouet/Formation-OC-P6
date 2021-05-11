@@ -11,6 +11,7 @@ use App\Service\Security\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,19 +78,36 @@ class SecurityController extends AbstractController
             }
             $manager->flush();
 
-            $userExists = $userRepository->findOneBy([
+            $mailExists = $userRepository->findOneBy([
                 'email' => $user->getEmail()
             ]);
 
+            $usernameExists = $userRepository->findOneBy([
+                'username' => $user->getUsername()
+            ]);
+
+            $deleteUser = false;
+            if ($mailExists || $usernameExists) {
+                $deleteUser = true;
+                if ($mailExists && $mailExists->getEnabled()) {
+                    $this->addFlash(
+                        'warning',
+                        "Cette adresse Email est déjà active. Tu peux te connecter"
+                    );
+                    return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
+                }
+
+                if ($usernameExists) {
+                    $form->get('username')->addError(new FormError("Ce nom d'utilisateur est déjà pris !"));
+                    $deleteUser = false;
+                }
+            }
+
             if ($form->isValid()) {
-                if ($userExists) {
-                    if ($userExists->getEnabled()) {
-                        $this->addFlash(
-                            'primary',
-                            "Cette adresse Email est déjà active. Tu peux te connecter"
-                        );
-                        return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
-                    }
+
+                if ($deleteUser) {
+                    $userExists = $mailExists?$mailExists:$usernameExists;
+
                     $oldToken = $tokenRepository->findOneBy([
                         'user' => $userExists
                     ]);
@@ -188,7 +206,7 @@ class SecurityController extends AbstractController
         $manager->remove($token);
         $manager->flush();
         $this->addFlash(
-            'notice',
+            'primary',
             "Ton compte est déjà activé ! Tu peux te connecter."
         );
         return $this->redirectToRoute('app_login');
@@ -197,9 +215,45 @@ class SecurityController extends AbstractController
     /**
      * @Route("/password/forgot", name="security_password_forgot")
      */
-    public function passwordForgot(): Response
+    public function passwordForgot(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, TokenService $tokenService): Response
     {
-        return $this->render('security/password-forgot.html.twig');
+        $submittedToken = $request->request->get('token');
+        $submittedEmail = $request->request->get('email');
+
+        if ($submittedEmail) {
+            if ($this->isCsrfTokenValid('forgot-password', $submittedToken)) {
+                $user = $userRepository->findOneBy(['email' => $submittedEmail]);
+                if ($user) {
+                    $token = null;
+                    $tokenExists = true;
+                    while ($tokenExists !== null) {
+                        $token = new Token($user);
+                        $tokenExists = $tokenRepository->findOneBy([
+                            'value' => $token->getValue()
+                        ]);
+                    }
+
+                    if ($tokenService->sendRegistrationToken($user, $token)) {
+                        $manager->persist($token);
+                        $manager->flush();
+                    }
+                }
+                $this->addFlash(
+                    'primary',
+                    "Un lien de réinitialisation vient de t'être envoyé par Email."
+                );
+                $this->redirectToRoute('home');
+            }
+            $this->addFlash(
+                'danger',
+                "Une erreur s'est produite. Merci de recommencer."
+            );
+        }
+
+        return $this->render('security/forgot-password.html.twig', [
+            'last_username' => $this->lastUsername,
+            'error' => $this->lastAuthError
+        ]);
     }
 
     /**
