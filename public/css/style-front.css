@@ -18,6 +18,11 @@
   height: 0;
 }
 
+.trick-single .brand-container .brand h1,
+.form-page .brand-container .brand h1 {
+  font-size: 2rem;
+}
+
 #homeHero .brand h1 {
   margin-top: 1rem;
   padding-bottom: 2rem;
@@ -41,19 +46,14 @@
   color: white;
 }
 
-.trick-single .brand-container .brand h1,
-.form-page .brand-container .brand h1 {
-  font-size: 2rem;
-}
-
-#homeHero .brand {
-  color: black;
-}
-
 #homeHero .brand:hover,
 .trick-single .brand,
 .form-page .brand-container .brand {
   text-decoration: none;
+}
+
+#homeHero .brand {
+  color: black;
 }
 
 #homeHero h2 {
@@ -216,22 +216,18 @@ article.trick-single .trick-medias .image button:hover {
 }
 
 @media (max-width: 575px) {
-
   #contentContainer {
     min-height: calc(100vh - 8rem);
   }
   /* --- Home Hero --- */
   #homeHero h2 {
     margin: 3rem 5% 0 5%;
+    font-size: 1.5rem;
   }
 
   #homeHero {
     height: calc(100vh - 4rem);
   }
-
-  #homeHero h2 {
-    font-size: 1.5rem;
-   }
 
   .hero-bottom {
     margin: 1rem;

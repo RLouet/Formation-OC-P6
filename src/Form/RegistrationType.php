@@ -29,7 +29,7 @@ class RegistrationType extends AbstractType
                 'invalid_message' => "Les mots de passe doivent être identiques.",
                 'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmez le mot de passe'],
+                'second_options' => ['label' => 'Confirme ton mot de passe'],
             ])
         ;
     }
