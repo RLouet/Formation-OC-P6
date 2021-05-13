@@ -1,9 +1,9 @@
-<nav class="navbar fixed-bottom fixed-top-sm navbar-expand navbar-dark bg-dark">
+<nav class="navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand" href="{{ path('home') }}#"><h1 class="d-none d-sm-block logo">SnowTricks</h1></a>
     <div class="collapse navbar-collapse" id="frontNavbar">
         <ul class="nav navbar-nav ml-sm-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#top">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#">
                     <span class="d-none d-sm-inline">Accueil<span class="sr-only">(current)</span></span>
                     <em class="fas fa-home d-sm-none"></em>
                 </a>
@@ -15,10 +15,17 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                {% if app.user %}
+                <a class="nav-link" href="{{ path('security_logout') }}" title="Déconnexion">
+                    <span class="d-none d-sm-inline">Déconnexion</span>
+                    <em class="fas fa-sign-out-alt d-sm-none"></em>
+                </a>
+                {% else %}
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal" title="Connexion / Inscription">
                     <span class="d-none d-sm-inline">Connexion</span>
                     <em class="fas fa-sign-in-alt d-sm-none"></em>
                 </a>
+                {% endif %}
             </li>
         </ul>
     </div>

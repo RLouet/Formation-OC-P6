@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -19,48 +20,57 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\Email(
+     *     message = "TEST '{{value}}'"
+     * )
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=128, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $subscriptionDate;
+    private \DateTime $subscriptionDate;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $enabled = false;
+    private bool $enabled = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $tricks;
+    private Collection $tricks;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $messages;
+    private Collection $messages;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Token::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private ?Token $token;
 
     public function __construct()
     {
@@ -176,6 +186,18 @@ class User implements UserInterface
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getToken(): ?Token
+    {
+        return $this->token;
+    }
+
+    public function setToken(Token $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

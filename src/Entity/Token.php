@@ -28,10 +28,20 @@ class Token
     private $expiresAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="token", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    public function __construct(User $user, int $lifetime = 3)
+    {
+
+        $date = new \DateTime();
+        $date->add(new \DateInterval('PT' . $lifetime . 'H'));
+        $this->expiresAt = $date;
+        $this->setUser($user);
+        $this->value = md5(uniqid(rand(), true));
+    }
 
     public function getId(): ?int
     {
@@ -70,7 +80,13 @@ class Token
     public function setUser(User $user): self
     {
         $this->user = $user;
+        $user->setToken($this);
 
         return $this;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->expiresAt >= new \DateTime();
     }
 }

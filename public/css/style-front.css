@@ -1,3 +1,7 @@
+#contentContainer {
+  min-height: calc(100vh - 3.6rem);
+}
+
 /* --- Home --- */
 
 /* --- Hero --- */
@@ -14,34 +18,44 @@
   height: 0;
 }
 
-#homeHero .brand h1 {
-  margin-top: 2.5rem;
-  padding-bottom: 6rem;
-  text-align: center;
-  font-size: 4rem;
+.trick-single .brand-container .brand h1,
+.form-page .brand-container .brand h1 {
+  font-size: 2rem;
 }
 
-.trick-single .brand-container {
-  position: absolute;
+#homeHero .brand h1 {
+  margin-top: 1rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.trick-single .brand-container,
+.form-page .brand-container {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
 
-.trick-single .brand-container .brand {
-  color: white;
+.trick-single .brand-container {
+  position: absolute;
 }
 
-.trick-single .brand-container .brand h1 {
-  font-size: 2rem;
+.trick-single .brand,
+.form-page .brand-container .brand {
+  text-decoration: none;
+}
+
+.trick-single .brand-container .brand,
+.form-page .brand-container .brand {
+  color: white;
 }
 
 #homeHero .brand {
   color: black;
 }
 
-#homeHero .brand:hover,
-.trick-single .brand {
+#homeHero .brand:hover {
   text-decoration: none;
 }
 
@@ -57,7 +71,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  margin: 2rem;
+  margin: 1rem;
   text-align: right;
   z-index: 999;
 }
@@ -70,9 +84,9 @@
 /* --- Tricks list --- */
 .trick-up {
   position: absolute;
-  bottom: 0;
+  bottom: -1rem;
   right: 0;
-  margin: 0 2rem;
+  margin: 0 1rem;
   z-index: 999;
 }
 
@@ -87,23 +101,29 @@
   -o-object-fit: cover;
 }
 
-.trick-item .card {
+.trick-item .card,
+.form-page .form-container {
   border-color: rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
 }
 
-.trick-item .card-footer em,
-.management-btns em {
+.form-page .form-container {
+  background: white;
+  padding: 1rem;
+}
+
+.management-btns em,
+.trick-item .card-footer em {
   font-size: 1.5rem;
 }
 
-.trick-item .card-footer .edit-btn,
-.management-btns .edit-btn {
+.management-btns .edit-btn,
+.trick-item .card-footer .edit-btn {
   color: #1f35e0;
 }
 
-.trick-item .card-footer .delete-btn,
-.management-btns .delete-btn {
+.management-btns .delete-btn,
+.trick-item .card-footer .delete-btn {
   color: #d60400;
 }
 
@@ -199,9 +219,14 @@ article.trick-single .trick-medias .image button:hover {
 }
 
 @media (max-width: 575px) {
+  #contentContainer {
+    min-height: calc(100vh - 8rem);
+  }
+
   /* --- Home Hero --- */
   #homeHero h2 {
     margin: 3rem 5% 0 5%;
+    font-size: 1.5rem;
   }
 
   #homeHero {
@@ -209,7 +234,7 @@ article.trick-single .trick-medias .image button:hover {
   }
 
   .hero-bottom {
-    bottom: 4rem;
+    margin: 1rem;
   }
 }
 
