@@ -190,7 +190,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getTokent(): ?Token
+    public function getToken(): ?Token
     {
         return $this->token;
     }

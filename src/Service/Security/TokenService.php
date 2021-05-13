@@ -19,16 +19,34 @@ class TokenService
         $this->mailer = $mailer;
     }
 
-    public function sendRegistrationToken(User $user, Token $token): bool
+    public function sendRegistrationToken(Token $token): bool
     {
         $message = (new TemplatedEmail())
-            ->to($user->getEmail())
-            ->subject('SnowTricks - Confirmez votre inscritpion')
+            ->to($token->getUser()->getEmail())
+            ->subject('SnowTricks - Confirme ton inscritpion')
             ->htmlTemplate('emails/security/registration.html.twig')
             ->context([
                 'token' => $token->getValue()
             ]);
 
+        return $this->send($message);
+    }
+
+    public function sendForgotPasswordToken(Token $token): bool
+    {
+        $message = (new TemplatedEmail())
+            ->to($token->getUser()->getEmail())
+            ->subject('SnowTricks - Réinitialise ton mot de passe')
+            ->htmlTemplate('emails/security/forgot-password.html.twig')
+            ->context([
+                'token' => $token->getValue()
+            ]);
+
+        return $this->send($message);
+    }
+
+    private function send(TemplatedEmail $message)
+    {
         try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {

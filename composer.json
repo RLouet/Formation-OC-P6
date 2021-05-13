@@ -97,5 +97,7 @@
             "allow-contrib": false,
             "require": "5.2.*"
         }
-    }
+    },
+    "name": "rlouet/snowtricks",
+    "description": ""
 }
