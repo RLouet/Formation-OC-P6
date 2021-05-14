@@ -51,7 +51,7 @@ $(document).ready(function() {
                     "    </div>\n" +
                     "</div>"
                 ;
-                break
+                break;
         }
         return item;
     };
