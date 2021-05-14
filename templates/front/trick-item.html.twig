@@ -2,7 +2,7 @@
     <div class="card h-100">
         <div class="item-header">
             <a href="{{ path('home-tricks-single', {'id' : trick.id}) }}" title="Voir le trick">
-                <img src="{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}" class="card-img-top">
+                <img src="{{ trick.heroUrl }}" class="card-img-top">
             </a>
         </div>
         <div class="card-body">
