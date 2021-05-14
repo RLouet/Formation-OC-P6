@@ -85,8 +85,7 @@ $(document).ready(function() {
                 $button.html("Voir plus");
             },
             error(e) {
-                alert("error");
-                //showFlashMessage("danger", "Une erreur s'est produite.");
+                showFlashMessage("danger", "Une erreur s'est produite.");
                 $button.removeClass("disabled");
                 $button.html("Voir plus");
             }
