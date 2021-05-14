@@ -72,7 +72,14 @@ $(document).ready(function() {
                     $button.remove();
                 }
                 for (const itemData of data.itemsData) {
-                    $target.append(generatePaginationItem[entity](itemData));
+                    switch (entity) {
+                        case "trick":
+                            $target.append(generatePaginationItem["trick"](itemData));
+                            break;
+                        case "message":
+                            $target.append(generatePaginationItem["message"](itemData));
+                            break;
+                    }
                 }
                 $button.removeClass("disabled");
                 $button.html("Voir plus");
