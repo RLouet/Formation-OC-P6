@@ -1,3 +1,5 @@
+/*global showFlashMessage*/
+
 $(document).ready(function() {
     function nl2br (str) {
         if (typeof str === "undefined" || str === null) {
