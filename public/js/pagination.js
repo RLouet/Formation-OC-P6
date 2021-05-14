@@ -1,14 +1,14 @@
 $(document).ready(function() {
     function nl2br (str) {
-        if (typeof str === 'undefined' || str === null) {
-            return '';
+        if (typeof str === "undefined" || str === null) {
+            return "";
         }
-        const breakTag = '<br />';
-        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+        const breakTag = "<br />";
+        return (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
     }
 
     const generatePaginationItem = {
-        trick: function(data) {
+        trick(data) {
             return "<article class=\"col mb-3 mb-md-4 trick-item\">\n" +
                 "    <div class=\"card h-100\">\n" +
                 "        <div class=\"item-header\">\n" +
@@ -33,7 +33,7 @@ $(document).ready(function() {
                 "    </div>\n" +
                 "</article>";
         },
-        message: function(data) {
+        message(data) {
             const date = new Date(data.date);
             return "<div class=\"row px-1 justify-content-center message-item\">\n" +
                 "    <div class=\"col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author\">\n" +
@@ -48,7 +48,7 @@ $(document).ready(function() {
                 "    </div>\n" +
                 "</div>";
         },
-    }
+    };
     $(".pagination-btn").on("click", function(e){
         const $button = $(this);
         const entity = $button.data("entity");
