@@ -3,16 +3,18 @@ $(document).ready(function() {
         const $button = $(this);
         const entity = $button.data("entity");
         const $target = $($button.data("target"));
+        const parentId = $button.data('parent-id');
 
         $button.addClass("disabled");
         $button.html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Chargement...");
 
-        let offset = $("." + entity.toLowerCase() + "-item", $target).length;
+        let offset = $("." + entity + "-item", $target).length;
         $.ajax({
             url: window.location.origin + "/ajax/load" + entity + "s",
             method: "POST",
             data: {
                 offset,
+                parentId
             },
             dataType: "json",
             success(data) {

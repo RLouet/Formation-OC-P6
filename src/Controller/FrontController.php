@@ -23,12 +23,10 @@ class FrontController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        //$tricks = $trickRepository->findAll();
-        $tricks = $trickRepository->findBy([
-        ],
-        [
-            'id' => 'ASC'
-        ], $this->getParameter('app.pagination_length')
+        $tricks = $trickRepository->findBy(
+            [],
+            ['id' => 'ASC'],
+            $this->getParameter('app.tricks_pagination_length')
         );
         $paginateTricks = count($tricks) < $trickRepository->count([]);
         return $this->render('front/home.html.twig', [
@@ -50,7 +48,9 @@ class FrontController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $paginateComments =  $this->getParameter('app.comments_pagination_length') < $trick->getMessages()->count();
         return $this->render('front/trick-view.html.twig', [
+            'paginate_comments' => $paginateComments,
             "trick" => $trick,
             'last_username' => $lastUsername,
             'error' => $error

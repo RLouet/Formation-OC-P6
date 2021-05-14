@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -146,9 +147,14 @@ class Trick
     /**
      * @return Collection|Message[]
      */
-    public function getMessages(): Collection
+    public function getMessages($maxResults = null, $firstResult = null): Collection
     {
-        return $this->messages;
+        $criteria = Criteria::create()
+            ->orderBy(['date' => Criteria::DESC])
+            ->setMaxResults($maxResults)
+            ->setFirstResult($firstResult)
+        ;
+        return $this->messages->matching($criteria);
     }
 
     public function addMessage(Message $message): self

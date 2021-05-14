@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Repository\MessageRepository;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,7 @@ class AjaxController extends AbstractController
         $tricks = $trickRepository->findBy(
             [],
             ['id' => 'ASC'],
-            $this->getParameter('app.pagination_length'),
+            $this->getParameter('app.tricks_pagination_length'),
             $request->get('offset')
         );
 
@@ -36,6 +37,34 @@ class AjaxController extends AbstractController
         }
 
         $response['end'] = count($response['itemsHtml']) + $request->get('offset') >= $trickRepository->count([]);
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/ajax/loadmessages",
+     *     name="ajax-load-messages",
+     *     methods={"POST"},
+     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
+     */
+    public function loadMessages(Request $request, MessageRepository $messageRepository): JsonResponse
+    {
+        $response['itemsHtml'] = [];
+
+        $messages = $messageRepository->findBy(
+            ['trick' => $request->get('parentId')],
+            ['date' => 'DESC'],
+            $this->getParameter('app.comments_pagination_length'),
+            $request->get('offset')
+        );
+
+        foreach ($messages as $message) {
+            $response['itemsHtml'][] = $this->renderView('front/message-item.html.twig', [
+                "message" => $message
+            ]);
+        }
+
+        $response['end'] = count($response['itemsHtml']) + $request->get('offset') >= $messageRepository->count(['trick' => $request->get('parentId')]);
 
         return new JsonResponse($response);
     }

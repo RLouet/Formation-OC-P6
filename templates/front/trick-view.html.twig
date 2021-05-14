@@ -79,20 +79,15 @@
                         <button class="btn btn-primary mt-2" type="submit">Envoyer votre commentaire</button>
                     </form>
                 </div>
-                {% for message in trick.messages %}
-                    <div class="row px-1 justify-content-center message-item">
-                        <div class="col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author">
-                            {# <img src="{{ asset('/') }}{% if message.author.avatar %}uploads/avatars/{{ message.author.avatar }}{% else %}imgs/avatar.png{% endif %}" class="rounded-circle" alt="..."> #}
-                            <img src="/imgs/avatar.png" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="...">
-                            <small class="text-break">{{ message.author.username }}</small>
-                        </div>
-                        <div class="col-10 col-md-11 col-xl-6 mt-3 message-content">
-                            <div class="border rounded px-2">
-                                <p>{{ message.content|nl2br() }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                <div class="col-12 px-0" id="MessageItemsContainer">
+                    {% for message in trick.messages(app.request.server.get('COMMENTS_PAGINATION_LENGTH')) %}
+                        {% include 'front/message-item.html.twig' %}
+                    {% endfor %}
+                </div>
+
+                {% if paginate_comments %}
+                    <button class="btn btn-primary pagination-btn mt-2" data-target="#MessageItemsContainer" data-entity="message" data-parent-id="{{ trick.id }}">Voir plus</button>
+                {% endif %}
             </section>
         </article>
     </div>
@@ -130,4 +125,5 @@
         {% endfor %}
     </script>
     <script src="{{ asset('js/trick-view.js') }}"></script>
+    <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}
