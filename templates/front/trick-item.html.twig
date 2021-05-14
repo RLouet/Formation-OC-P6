@@ -1,0 +1,23 @@
+<article class="col mb-3 mb-md-4 trick-item">
+    <div class="card h-100">
+        <div class="item-header">
+            <a href="{{ path('home-tricks-single', {'id' : trick.id}) }}" title="Voir le trick">
+                <img src="{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}" class="card-img-top">
+            </a>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title mb-0">{{ trick.name }}</h3>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-6 text-center edit">
+                    <a href="#" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
+                </div>
+                <div class="col-6 text-center delete">
+                    <a href="#" title="Supprimer les Trick" class="delete-btn"><em class="far fa-trash-alt"></em></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</article>
