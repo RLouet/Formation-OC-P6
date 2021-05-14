@@ -54,7 +54,8 @@ $(document).ready(function() {
                 break;
         }
         return item;
-    };
+    }
+
     $(".pagination-btn").on("click", function(e){
         const $button = $(this);
         const entity = $button.data("entity");
@@ -90,6 +91,5 @@ $(document).ready(function() {
                 $button.html("Voir plus");
             }
         });
-
     });
 });
