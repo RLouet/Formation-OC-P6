@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -19,19 +21,23 @@ class Message
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"paginate_message"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"paginate_message"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"paginate_message"})
+     * @MaxDepth (1)
      */
-    private $author;
+    private ?User $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="messages")

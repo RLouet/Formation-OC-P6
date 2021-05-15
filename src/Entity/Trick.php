@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -16,11 +18,13 @@ class Trick
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"paginate_trick"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"paginate_trick"})
      */
     private $name;
 
@@ -51,7 +55,7 @@ class Trick
     private $messages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")$this->getImages()
      */
     private $categories;
 
@@ -146,9 +150,14 @@ class Trick
     /**
      * @return Collection|Message[]
      */
-    public function getMessages(): Collection
+    public function getMessages($maxResults = null, $firstResult = null): Collection
     {
-        return $this->messages;
+        $criteria = Criteria::create()
+            ->orderBy(['date' => Criteria::DESC])
+            ->setMaxResults($maxResults)
+            ->setFirstResult($firstResult)
+        ;
+        return $this->messages->matching($criteria);
     }
 
     public function addMessage(Message $message): self
@@ -270,5 +279,20 @@ class Trick
         $this->hero = $hero;
 
         return $this;
+    }
+
+
+    /**
+     * @Groups({"paginate_trick"})
+     */
+    public function getHeroUrl(): string
+    {
+        if (!$this->getImages()->isEmpty()) {
+            return "uploads/tricks/" . $this->getImages()->first()->getName();
+        }
+        if ($this->getHero()) {
+            return "uploads/tricks/" . $this->getHero()->getName();
+        }
+        return "imgs/no-image.png";
     }
 }

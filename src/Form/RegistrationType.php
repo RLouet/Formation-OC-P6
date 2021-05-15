@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegistrationType extends AbstractType
 {
+    /** {@inheritdoc} */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
