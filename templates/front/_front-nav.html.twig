@@ -3,7 +3,7 @@
     <div class="collapse navbar-collapse" id="frontNavbar">
         <ul class="nav navbar-nav ml-sm-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#top">
                     <span class="d-none d-sm-inline">Accueil<span class="sr-only">(current)</span></span>
                     <em class="fas fa-home d-sm-none"></em>
                 </a>
@@ -14,19 +14,26 @@
                     <em class="icon trick-icon d-sm-none"></em>
                 </a>
             </li>
-            <li class="nav-item">
-                {% if app.user %}
-                <a class="nav-link" href="{{ path('security_logout') }}" title="Déconnexion">
-                    <span class="d-none d-sm-inline">Déconnexion</span>
-                    <em class="fas fa-sign-out-alt d-sm-none"></em>
+            {% if app.user %}
+            <li class="nav-item dropdown user-tools">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" title="Tes outils">
+                    <img src="/imgs/avatar.png" class="rounded-circle border border-info" alt="Avatar">
                 </a>
-                {% else %}
+                <div class="dropdown-menu bg-dark" aria-labelledby="navbarUserDropdown">
+                    <a class="dropdown-item" href="{{ path('profile') }}">Profile</a>
+                    {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>{% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal" title="Connexion / Inscription">
                     <span class="d-none d-sm-inline">Connexion</span>
                     <em class="fas fa-sign-in-alt d-sm-none"></em>
                 </a>
-                {% endif %}
             </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

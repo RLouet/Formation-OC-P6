@@ -27,8 +27,14 @@ $(document).ready(function() {
     if (location.hash === "") {
         removeHashGet("#");
     }
+    if (location.hash === "#top") {
+        removeHashGet("#");
+    }
     window.onhashchange = function(){
         if (location.hash === "") {
+            removeHashGet("#");
+        }
+        if (location.hash === "#top") {
             removeHashGet("#");
         }
     };

@@ -58,6 +58,29 @@ footer p {
   color: white;
 }
 
+#frontNavbar .navbar-nav .user-tools .nav-link img {
+  height: 3rem;
+  position: relative;
+  top: -0.1rem;
+  margin: -1.5rem 0 -1.5rem 0;
+}
+
+#frontNavbar .navbar-nav .user-tools .dropdown-menu {
+  top: 140%;
+  left: auto;
+  right: 0;
+}
+
+.bg-dark .dropdown-item {
+  color: #ffffff;
+}
+
+.bg-dark .dropdown-item:focus, .bg-dark .dropdown-item:hover {
+   color: rgb(94, 181, 224);
+   text-decoration: none;
+   background-color: rgba(0, 0, 0, 0.5);
+ }
+
 /* --- Flash Messages -- */
 #flash-messages-container {
   background-color: rgba(0, 0, 0, 0.3);
@@ -100,6 +123,28 @@ footer p {
   #frontNavbar .navbar-nav .nav-link .icon {
     width: 2.5rem;
     height: 2.5rem;
+  }
+
+  #frontNavbar .navbar-nav .user-tools .nav-link img {
+    height: 2.85rem;
+    top:0;
+    margin:  0;
+  }
+
+  #frontNavbar .navbar-nav .user-tools .dropdown-toggle::after {
+     border-bottom: .3em solid;
+     border-top: 0;
+   }
+
+  #frontNavbar .navbar-nav .user-tools .dropdown-menu {
+    top: auto;
+    left: auto;
+    right: 0;
+    bottom: 130%;
+  }
+
+  #frontNavbar .navbar-nav .user-tools .dropdown-menu .dropdown-item {
+    font-size: 2rem;
   }
 
   /* --- Footer --- */
