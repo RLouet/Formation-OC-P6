@@ -10,12 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Token
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use EntityIdManagementTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,11 +36,6 @@ class Token
         $this->expiresAt = $date;
         $this->setUser($user);
         $this->value = md5(uniqid(rand(), true));
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getValue(): ?string

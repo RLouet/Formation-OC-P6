@@ -10,12 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Image
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use EntityIdManagementTrait;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -27,11 +22,6 @@ class Image
      * @ORM\JoinColumn(nullable=false)
      */
     private $trick;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {
