@@ -14,13 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Trick
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"paginate_trick"})
-     */
-    private $id;
+    use EntityIdManagementTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -80,11 +74,6 @@ class Trick
         $this->categories = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->videos = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

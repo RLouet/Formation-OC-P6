@@ -12,12 +12,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  */
 class Message
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use EntityIdManagementTrait;
 
     /**
      * @ORM\Column(type="datetime")
@@ -44,11 +39,6 @@ class Message
      * @ORM\JoinColumn(nullable=false)
      */
     private $trick;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {

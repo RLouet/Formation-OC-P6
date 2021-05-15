@@ -12,12 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use EntityIdManagementTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,11 +27,6 @@ class Category
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
