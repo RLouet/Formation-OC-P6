@@ -144,8 +144,9 @@ footer p {
     bottom: 130%;
   }
 
-  #frontNavbar .navbar-nav .user-tools .dropdown-menu .dropdown-item {
-    font-size: 2rem;
+  #frontNavbar .navbar-nav .user-tools .dropdown-menu .dropdown-item,
+  #frontNavbar .navbar-nav .user-tools .dropdown-menu .profile-info {
+    font-size: 1.5rem;
   }
 
   /* --- Footer --- */

@@ -47,7 +47,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $subscriptionDate;
+    private \DateTimeInterface $subscriptionDate;
 
     /**
      * @ORM\Column(type="boolean")
@@ -68,6 +68,11 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity=Token::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private ?Token $token;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $avatar;
 
     public function __construct()
     {
@@ -250,6 +255,26 @@ class User implements UserInterface
                 $message->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function getAvatarUrl(): string
+    {
+        if ($this->avatar) {
+            return $this->avatar;
+        }
+        return "/imgs/avatar.png";
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

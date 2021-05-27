@@ -17,11 +17,13 @@
             {% if app.user %}
             <li class="nav-item dropdown user-tools">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" title="Tes outils">
-                    <img src="/imgs/avatar.png" class="rounded-circle border border-info" alt="Avatar">
+                    <img src="{{ app.user.avatarUrl }}" class="rounded-circle border border-info" alt="Avatar">
                 </a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarUserDropdown">
-                    <a class="dropdown-item" href="{{ path('profile') }}">Profile</a>
-                    {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>{% endif %}
+                    <div class="text-center profile-info"><span class="text-warning">{{ app.user.username }}</span></div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('profile-edit') }}">Profile</a>
+                    {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin-users') }}">Administration</a>{% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
                 </div>
