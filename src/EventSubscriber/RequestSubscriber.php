@@ -22,13 +22,23 @@ class RequestSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
+
+        //dd("test");
+
+        $test = $request->getBaseUrl() . $request->getPathInfo();
+        if ($test == "https://localhost:8000/profile") {
+            dd($request, $event);
+        }
+        //dd($request);
         if (
             !$event->isMasterRequest()
             || $request->isXmlHttpRequest()
-            || 'security_login' === $request->attributes->get('_route')
-            || 'security_logout' === $request->attributes->get('_route')
             || preg_match('/^security_/', $request->attributes->get('_route'))
+            || preg_match('/^profile_/', $request->attributes->get('_route'))
+            || preg_match('/^admin_/', $request->attributes->get('_route'))
+            || preg_match('/^_profiler/', $request->attributes->get('_route'))
         ) {
+            //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo() . "2");
             return;
         }
 

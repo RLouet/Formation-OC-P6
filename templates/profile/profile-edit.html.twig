@@ -1,46 +1,84 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% form_theme form _self %}
+{#
+
+{% block _profile_avatar_widget %}
+    <div class="custom-avatar-file">
+    {%- set type = type|default('file') -%}
+    {%- set input_lang = 'en' -%}
+    {% if app is defined and app.request is defined %}{%- set input_lang = app.request.locale -%}{%- endif -%}
+    {%- set attr = {lang: input_lang} | merge(attr) -%}
+    {{- block('form_widget_simple') -}}
+    {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label')|trim }) -%}
+    <label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+        {%- if attr.placeholder is defined and attr.placeholder is not none -%}
+            {{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+        {%- endif -%}
+    </label>
+    </div>
+{% endblock %}
+
+#}
+
 {% block title %}Profile{% endblock %}
 
 {% block content %}
     <div id="contentContainer">
-        <div class="container h-100 form-page">
+        <div class="container d-flex flex-column form-page">
             <header class="row d-sm-none">
                 <div class=" col-12 text-center brand-container">
-                    <a class="brand" href="{{ path('home') }}#"><h1 class="logo">SnowTricks</h1></a>
+                    <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
                 </div>
             </header>
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6 h-100 rounded form-container">
+            <div class="row justify-content-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 rounded form-container align-self-center">
                     <h2 class="text-center">Ton profil</h2>
 
                     {{ form_start(form) }}
                     <div class="col-12 text-center form-field-error">
                         {{ form_errors(form) }}
                     </div>
-                    <div class="form-group">
-                        {{ form_label(form.avatar) }}
-                        {{ form_widget(form.avatar) }}
+                    <div class="form-row justify-content-center">
+                        <div class="col-6 col-md-4 col-xl-3 text-center px-4">
+                            <label for="profile_avatar" class="mb-0">
+                                <img src="/imgs/avatar.png" alt="Avatar" id="avatarInputPreview" class="img-fluid rounded-circle border border-info d-block m-auto">
+                            </label>
+                            <label for="profile_avatar" class="btn btn-primary btn-sm mb-0">Modifier</label>
+                            {{ form_label(form.avatar) }}
+                            <div class="d-none">{{ form_widget(form.avatar) }}</div>
+                        </div>
+                        <div class="col-md-8 col-xl-9">
+                            <div class="form-group">
+                                {{ form_label(form.email) }}
+                                {{ form_widget(form.email) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.username) }}
+                                {{ form_widget(form.username) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        {{ form_label(form.email) }}
-                        {{ form_widget(form.email) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.username) }}
-                        {{ form_widget(form.username) }}
+                    <div class="text-center mt-2">
+                        <button class="btn btn-primary mt-1" type="button" data-toggle="collapse" data-target="#ChangePasswordContainer" aria-expanded="false" aria-controls="ChangePasswordContainer">
+                            Changer de mot de passe
+                        </button>
                     </div>
 
-                    <div class="form-group">
-                        <div class="col-12 text-center form-field-error">
-                            {{ form_errors(form.plainPassword) }}
+                    <div class="collapse mb-1" id="ChangePasswordContainer">
+                        <div class="card card-body py-2">
+                            <div class="form-group">
+                                <div class="col-12 text-center form-field-error">
+                                    {{ form_errors(form.plainPassword) }}
+                                </div>
+                                {{ form_label(form.plainPassword.first) }}
+                                {{ form_widget(form.plainPassword.first) }}
+                                {{ form_label(form.plainPassword.second) }}
+                                {{ form_widget(form.plainPassword.second) }}
+                            </div>
                         </div>
-                        {{ form_label(form.plainPassword.first) }}
-                        {{ form_widget(form.plainPassword.first) }}
-                        {{ form_label(form.plainPassword.second) }}
-                        {{ form_widget(form.plainPassword.second) }}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group my-4">
                         {{ form_label(form.originPassword) }}
                         {{ form_widget(form.originPassword) }}
                     </div>

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProfileType extends AbstractType
 {
@@ -22,9 +23,23 @@ class ProfileType extends AbstractType
         $builder
             ->add('avatar', FileType::class, [
                 'mapped' => false,
-                'label' => "Avatar"
+                'required' => false,
+                'label' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'maxSizeMessage' => 'Ton image est trop lourde ({{ size }} {{ suffix }}). La taille maximum autorisée est {{ limit }} {{ suffix }}.',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/gif',
+                            'image/jpeg'
+                        ],
+                        'mimeTypesMessage' => 'Ton avatar doît être une image jpeg, png ou gif.'
+                    ])
+                ]
             ])
             ->add('email', EmailType::class, [
+                'disabled' => true,
                 'label' => "Email"
             ])
             ->add('username', TextType::class, [

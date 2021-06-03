@@ -5,7 +5,7 @@
         <article class="container rounded trick-single pb-3">
             <header class="row">
                 <div class="d-sm-none col-12 text-center brand-container">
-                    <a class="brand" href="{{ path('home') }}#"><h1 class="logo">SnowTricks</h1></a>
+                    <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
                 </div>
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>

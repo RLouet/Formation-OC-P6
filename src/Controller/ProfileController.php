@@ -13,16 +13,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profile", name="profile-edit")
+     * @Route("/profile", name="profile_edit")
      */
-    public function profile(Request $request): Response
+    public function profileEdit(Request $request): Response
     {
         $user = $this->getUser();
+
+        if (!$user) {
+            //return $this->redirectToRoute('front_home');
+        }
 
         //(gd_info());
 
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+            }
+        }
+
         return $this->render('profile/profile-edit.html.twig', [
             'form' => $form->createView(),
         ]);

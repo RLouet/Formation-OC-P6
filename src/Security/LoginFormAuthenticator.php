@@ -43,11 +43,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function supports(Request $request)
     {
+        $this->originUrl = $request->getSession()->get('_security.main.target_path');
         if (
             (
                 (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
-                || ('home'  === $request->attributes->get('_route'))
-                || ('home-tricks-single'  === $request->attributes->get('_route'))
+                || preg_match('/^front_/', $request->attributes->get('_route'))
+
             )
             && $request->isMethod('POST')) {
 
@@ -56,9 +57,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             }
             return true;
         }
+        if (preg_match('/^security_/', $request->attributes->get('_route')) && $request->isMethod('POST')) {
+            $this->targetUrl = "home";
+            if ($request->get('target')) {
+                $this->targetUrl = $request->get('target');
+            }
+            return true;
+        }
 
         $this->targetUrl = $request->attributes->get("_route");
-        $this->originUrl = $request->getSession()->get('_security.main.target_path');
         return false;
     }
 
@@ -118,7 +125,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     protected function getLoginUrl()
     {
+        $target = empty($this->targetUrl)?[]:["target" => $this->targetUrl];
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE, $target);
+
         $target = empty($this->targetUrl)?"":"?target=" . $this->targetUrl;
+        //$this->originUrl?:$this->originUrl = $this->urlGenerator->generate("front_home");
+        //$this->originUrl = $this->urlGenerator->generate("front_home");
+        //dd($this->originUrl, $this->originUrl . $target ."#login");
+        //$target = "";
         return $this->originUrl . $target ."#login";
     }
 }

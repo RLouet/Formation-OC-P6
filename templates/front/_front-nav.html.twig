@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ path('home') }}#"><h1 class="d-none d-sm-block logo">SnowTricks</h1></a>
+    <a class="navbar-brand" href="{{ path('front_home') }}#"><h1 class="d-none d-sm-block logo">SnowTricks</h1></a>
     <div class="collapse navbar-collapse" id="frontNavbar">
         <ul class="nav navbar-nav ml-sm-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#top">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'front_home' %}{{ path('front_home') }}{% endif %}#top">
                     <span class="d-none d-sm-inline">Accueil<span class="sr-only">(current)</span></span>
                     <em class="fas fa-home d-sm-none"></em>
                 </a>
             </li>
-            <li class="nav-item{% if app.request.attributes.get('_route') matches '/^home-tricks-/' %} active{% endif %}">
-                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'home' %}{{ path('home') }}{% endif %}#tricksList" title="Tricks">
+            <li class="nav-item{% if app.request.attributes.get('_route') matches '/^front_tricks-/' %} active{% endif %}">
+                <a class="nav-link" href="{% if app.request.attributes.get('_route') != 'front_home' %}{{ path('front_home') }}{% endif %}#tricksList" title="Tricks">
                     <span class="d-none d-sm-inline">Tricks</span>
                     <em class="icon trick-icon d-sm-none"></em>
                 </a>
@@ -22,8 +22,8 @@
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarUserDropdown">
                     <div class="text-center profile-info"><span class="text-warning">{{ app.user.username }}</span></div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('profile-edit') }}">Profile</a>
-                    {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin-users') }}">Administration</a>{% endif %}
+                    <a class="dropdown-item" href="{{ path('profile_edit') }}">Profile</a>
+                    {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin_users') }}">Administration</a>{% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
                 </div>

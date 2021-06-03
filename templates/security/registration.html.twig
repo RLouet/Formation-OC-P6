@@ -4,14 +4,14 @@
 
 {% block content %}
     <div id="contentContainer">
-        <div class="container h-100 form-page">
+        <div class="container d-flex flex-column form-page">
             <header class="row d-sm-none">
                 <div class=" col-12 text-center brand-container">
-                    <a class="brand" href="{{ path('home') }}#"><h1 class="logo">SnowTricks</h1></a>
+                    <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
                 </div>
             </header>
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6 h-100 rounded form-container">
+            <div class="row justify-content-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 rounded form-container align-self-center">
                     <h2 class="text-center">Inscription</h2>
 
                     {% if app.user %}

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class FrontController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/", name="front_home")
      * @param TrickRepository $trickRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -38,7 +38,7 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/{id}", name="home-tricks-single")
+     * @Route("/tricks/{id}", name="front_tricks-single")
      * @param Trick $trick
      * @return \Symfony\Component\HttpFoundation\Response
      */
