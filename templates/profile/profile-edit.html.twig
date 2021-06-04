@@ -30,6 +30,22 @@
                 <div class=" col-12 text-center brand-container">
                     <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
                 </div>
+                <div id="flash-messages-container" class="container-fluid fixed fixed-top-sm justify-content-around">
+                    <div class="row justify-content-around align-items-baseline">
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="col-auto alert-container">
+                                    <div class="alert alert-{{ label }} alert-dismissible fade show my-1" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
             </header>
             <div class="row justify-content-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 rounded form-container align-self-center">
@@ -60,12 +76,12 @@
                         </div>
                     </div>
                     <div class="text-center mt-2">
-                        <button class="btn btn-primary mt-1" type="button" data-toggle="collapse" data-target="#ChangePasswordContainer" aria-expanded="false" aria-controls="ChangePasswordContainer">
+                        <button class="btn btn-primary mt-1" type="button" data-toggle="collapse" data-target="#ChangePasswordContainer" aria-expanded="true" aria-controls="ChangePasswordContainer">
                             Changer de mot de passe
                         </button>
                     </div>
 
-                    <div class="collapse mb-1" id="ChangePasswordContainer">
+                    <div class="collapse mb-1{% if form_errors(form.plainPassword) or form_errors(form.plainPassword.first) or form_errors(form.plainPassword.second) %} show{% endif %}" id="ChangePasswordContainer">
                         <div class="card card-body py-2">
                             <div class="form-group">
                                 <div class="col-12 text-center form-field-error">

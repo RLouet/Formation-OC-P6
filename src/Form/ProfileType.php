@@ -12,8 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ProfileType extends AbstractType
 {
@@ -21,6 +26,18 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+                $oldUsername = $event->getData()->getUsername();
+                //dd($input);
+                $event->getForm()->add('username', TextType::class, [
+                    'label' => "Nom d'utilisateur",
+                    'mapped' => false,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'value' => $oldUsername,
+                    ],
+                ]);
+            })
             ->add('avatar', FileType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -42,9 +59,6 @@ class ProfileType extends AbstractType
                 'disabled' => true,
                 'label' => "Email"
             ])
-            ->add('username', TextType::class, [
-                'label' => "Nom d'utilisateur"
-            ])
             ->add('plainPassword', RepeatedType::class, [
                 'mapped' => false,
                 'type' => PasswordType::class,
@@ -52,6 +66,9 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'first_options' => ['label' => 'Nouveau mot de passe'],
                 'second_options' => ['label' => 'Confirme ton nouveau mot de passe'],
+                'constraints' => [
+                    new Regex('/[a-z]{3,}/')
+                ],
             ])
             ->add('originPassword', PasswordType::class, [
                 'mapped' => false,
