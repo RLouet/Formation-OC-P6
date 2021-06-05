@@ -267,7 +267,7 @@ class User implements UserInterface
     public function getAvatarUrl(): string
     {
         if ($this->avatar) {
-            return $this->avatar;
+            return '/uploads/avatars/' . $this->avatar;
         }
         return "/imgs/avatar.png";
     }
