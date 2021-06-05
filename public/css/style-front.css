@@ -42,10 +42,6 @@
   z-index: 999;
 }
 
-.trick-single .brand-container {
-  position: absolute;
-}
-
 .trick-single .brand,
 .form-page .brand-container .brand {
   text-decoration: none;

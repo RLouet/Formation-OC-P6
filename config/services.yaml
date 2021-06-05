@@ -6,6 +6,7 @@
 parameters:
     app.tricks_pagination_length: '%env(TRICKS_PAGINATION_LENGTH)%'
     app.comments_pagination_length: '%env(COMMENTS_PAGINATION_LENGTH)%'
+    app.users_pagination_length: '%env(USERS_PAGINATION_LENGTH)%'
     upload_directory: '%kernel.project_dir%/public/uploads'
 
 services:

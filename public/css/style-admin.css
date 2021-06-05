@@ -1,0 +1,56 @@
+#contentContainer {
+  background-color: #aacdde;
+  min-height: calc(100vh - 3.6rem);
+  display: flex;
+}
+
+.align-self-center {
+  align-self: center;
+}
+/* --- Home --- */
+
+/* --- Hero --- */
+
+.users-management .brand-container .brand h1 {
+  font-size: 2rem;
+}
+
+.users-management .brand-container {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: #343a40;
+  z-index: 999;
+}
+
+.users-management .brand-container .brand {
+  text-decoration: none;
+}
+
+.users-management .brand-container .brand {
+  color: white;
+}
+
+/* --- User Management --- */
+.users-management {
+  min-height: 79vh;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
+}
+
+.users-management header .page-title {
+  border-radius: 0.25rem 0.25rem 0 0;
+  background-color: rgba(94, 181, 224, 0.6);
+}
+
+.users-management header .page-title h2 {
+  font-size: 2rem;
+  padding: 1rem;
+  margin: 0;
+  text-align: center;
+}
+
+.users-table td,
+.users-table th {
+  vertical-align: middle;
+  text-align: center;
+}
