@@ -38,8 +38,8 @@ class ProfileController extends AbstractController
             }
             if ($form->isValid()) {
                 $this->addFlash(
-                    'notice',
-                    "success."
+                    'primary',
+                    "Ton profil a fien été modifié !"
                 );
                 $user->setUsername($form['username']->getData());
                 if (!empty($form['plainPassword']->getData())) {
@@ -54,6 +54,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/profile-edit.html.twig', [
             'form' => $form->createView(),
+            'avatarUrl' => $user->getAvatarUrl()
         ]);
     }
 }

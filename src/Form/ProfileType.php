@@ -67,7 +67,7 @@ class ProfileType extends AbstractType
                 'first_options' => ['label' => 'Nouveau mot de passe'],
                 'second_options' => ['label' => 'Confirme ton nouveau mot de passe'],
                 'constraints' => [
-                    new Regex('/[a-z]{3,}/')
+                    new Regex('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,50}$/', 'Ton mot de passe doit contenir entre 8 et 50 caractères, au moins une lettre en minuscule, une lettre en majuscule et un chiffre.')
                 ],
             ])
             ->add('originPassword', PasswordType::class, [

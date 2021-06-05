@@ -22,7 +22,7 @@
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarUserDropdown">
                     <div class="text-center profile-info"><span class="text-warning">{{ app.user.username }}</span></div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('profile_edit') }}">Profile</a>
+                    <a class="dropdown-item" href="{{ path('profile_edit') }}">Profil</a>
                     {% if is_granted('ROLE_ADMIN') %}<a class="dropdown-item" href="{{ path('admin_users') }}">Administration</a>{% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
