@@ -1,7 +1,12 @@
 #contentContainer {
+  background-color: #aacdde;
   min-height: calc(100vh - 3.6rem);
+  display: flex;
 }
 
+.align-self-center {
+  align-self: center;
+}
 /* --- Home --- */
 
 /* --- Hero --- */
@@ -33,7 +38,7 @@
 .trick-single .brand-container,
 .form-page .brand-container {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #343a40;
   z-index: 999;
 }
 
@@ -249,7 +254,6 @@ article.trick-single .trick-medias .image button:hover {
   }
 
   #contentContainer {
-    background-color: #5eb5e0;
     background-image: url("../imgs/snowtricks-home-hero.jpg");
     background-repeat: no-repeat;
     background-size: cover;

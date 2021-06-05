@@ -270,7 +270,6 @@ class Trick
         return $this;
     }
 
-
     /**
      * @Groups({"paginate_trick"})
      */

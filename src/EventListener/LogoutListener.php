@@ -13,6 +13,9 @@ class LogoutListener
     public function onSymfonyComponentSecurityHttpEventLogoutEvent(LogoutEvent $event)
     {
         $redirectUrl = $event->getRequest()->headers->get('referer');
+
+        $event->getRequest()->getSession()->set("from_logout", true);
+        //dd($redirectUrl);
         if ($redirectUrl) {
             $event->setResponse(new RedirectResponse($event->getRequest()->headers->get('referer')));
         }

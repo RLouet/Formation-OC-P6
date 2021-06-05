@@ -11,10 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="admin")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/admin", name="admin_users")
      */
-    public function admin() {
+    public function admin(): Response
+    {
         return new Response('Admin');
     }
 }

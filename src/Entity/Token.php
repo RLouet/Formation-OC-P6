@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TokenRepository;
+use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,22 +16,21 @@ class Token
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $value;
+    private string $value;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $expiresAt;
+    private \DateTimeInterface $expiresAt;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="token", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     public function __construct(User $user, int $lifetime = 3)
     {
-
         $date = new \DateTime();
         $date->add(new \DateInterval('PT' . $lifetime . 'H'));
         $this->expiresAt = $date;

@@ -38,7 +38,9 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request): Response
     {
-        $target = $request->getSession()->get('_security.main.target_path')?:$this->generateUrl('home');
+        $target = $request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home');
+
+        //dd($request->getSession()->get('_security.main.target_path'));
 
         if ($this->getUser()) {
             $this->addFlash(
@@ -47,6 +49,8 @@ class SecurityController extends AbstractController
             );
             return $this->redirect($target);
         }
+
+        $target .= $request->get("target")?"?target=" . $request->get("target"):"";
 
         return $this->redirect($target . '#login');
     }
@@ -64,6 +68,9 @@ class SecurityController extends AbstractController
      */
     public function registration(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder, TokenService $tokenService): Response
     {
+        if ($this->getUser()) {
+            return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+        }
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -142,7 +149,7 @@ class SecurityController extends AbstractController
                         'primary',
                         "Un Email de validation vient de t'être envoyé."
                     );
-                    return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('home'));
+                    return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
                 }
 
                 $this->addFlash(
@@ -219,6 +226,9 @@ class SecurityController extends AbstractController
      */
     public function passwordForgot(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, TokenService $tokenService): Response
     {
+        if ($this->getUser()) {
+            return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+        }
         $submittedToken = $request->request->get('token');
         $submittedEmail = $request->request->get('email');
 
@@ -254,13 +264,14 @@ class SecurityController extends AbstractController
                     "Un lien de réinitialisation vient de t'être envoyé par Email."
                 );
 
-                return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('home'));
+                return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
             }
             $this->addFlash(
                 'danger',
                 "Une erreur s'est produite. Merci de recommencer2."
             );
         }
+        //dd($this->lastAuthError);
 
         return $this->render('security/forgot-password.html.twig', [
             'last_username' => $this->lastUsername,
@@ -294,7 +305,7 @@ class SecurityController extends AbstractController
                     'primary',
                     "Ton mot de passe a bien été modifié, tu peux te connecter."
                 );
-                return $this->redirect(($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('home')) . '#login');
+                return $this->redirect(($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home')) . '#login');
             }
 
             $this->addFlash(

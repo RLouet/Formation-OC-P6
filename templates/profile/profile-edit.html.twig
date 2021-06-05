@@ -1,0 +1,127 @@
+{% extends 'front/_front-base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Frontend CSS -->
+    <link rel="stylesheet" href="{{ asset("css/image-input.css") }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% form_theme form _self %}
+{#
+
+{% block _profile_avatar_widget %}
+    <div class="custom-avatar-file">
+    {%- set type = type|default('file') -%}
+    {%- set input_lang = 'en' -%}
+    {% if app is defined and app.request is defined %}{%- set input_lang = app.request.locale -%}{%- endif -%}
+    {%- set attr = {lang: input_lang} | merge(attr) -%}
+    {{- block('form_widget_simple') -}}
+    {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label')|trim }) -%}
+    <label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+        {%- if attr.placeholder is defined and attr.placeholder is not none -%}
+            {{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+        {%- endif -%}
+    </label>
+    </div>
+{% endblock %}
+
+#}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div id="contentContainer">
+        <div class="container d-flex flex-column form-page">
+            <header class="row d-sm-none">
+                <div class=" col-12 text-center brand-container">
+                    <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
+                </div>
+                <div id="flash-messages-container" class="container-fluid fixed fixed-top-sm justify-content-around">
+                    <div class="row justify-content-around align-items-baseline">
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="col-auto alert-container">
+                                    <div class="alert alert-{{ label }} alert-dismissible fade show my-1" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </header>
+            <div class="row justify-content-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 rounded form-container align-self-center">
+                    <h2 class="text-center">Ton profil</h2>
+
+                    {{ form_start(form) }}
+                    <div class="col-12 text-center form-field-error">
+                        {{ form_errors(form) }}
+                    </div>
+                    <div class="form-row justify-content-center">
+                        <div class="col-6 col-md-4 col-xl-3 text-center px-4 image-input-container">
+                            <label for="profile_avatar" class="mb-0 rounded-circle border border-info overflow-hidden avatar-preview image-input-preview">
+                                <img src="{{ avatarUrl }}" alt="Avatar" id="avatarInputPreview" class="w-100">
+                                <span class="img-prev-ol d-none">
+                                    <span class="spinner"></span>
+                                </span>
+                            </label>
+                            <label for="profile_avatar" class="btn btn-primary btn-sm mb-0">Modifier</label>
+                            <div class="img-alert invalid-feedback">
+                                <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+                                <span class="form-error-message"></span>
+                            </div>
+                            {{ form_label(form.avatar) }}
+                            <div class="d-none">{{ form_widget(form.avatar) }}</div>
+                        </div>
+                        <div class="col-md-8 col-xl-9">
+                            <div class="form-group">
+                                {{ form_label(form.email) }}
+                                {{ form_widget(form.email) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.username) }}
+                                {{ form_widget(form.username) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <button class="btn btn-primary mt-1" type="button" data-toggle="collapse" data-target="#ChangePasswordContainer" aria-expanded="true" aria-controls="ChangePasswordContainer">
+                            Changer de mot de passe
+                        </button>
+                    </div>
+
+                    <div class="collapse mb-1{% if form_errors(form.plainPassword) or form_errors(form.plainPassword.first) or form_errors(form.plainPassword.second) %} show{% endif %}" id="ChangePasswordContainer">
+                        <div class="card card-body py-2">
+                            <div class="form-group">
+                                <div class="col-12 text-center form-field-error">
+                                    {{ form_errors(form.plainPassword) }}
+                                </div>
+                                {{ form_label(form.plainPassword.first) }}
+                                {{ form_widget(form.plainPassword.first) }}
+                                {{ form_label(form.plainPassword.second) }}
+                                {{ form_widget(form.plainPassword.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group my-4">
+                        {{ form_label(form.originPassword) }}
+                        {{ form_widget(form.originPassword) }}
+                    </div>
+                    <button class="btn btn-lg btn-block btn-primary" type="submit">Modifier mon profil</button>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascriptsBottom %}
+    {{ parent() }}
+    <script src="{{ asset('js/profile.js') }}"></script>
+{% endblock %}

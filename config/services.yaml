@@ -6,6 +6,7 @@
 parameters:
     app.tricks_pagination_length: '%env(TRICKS_PAGINATION_LENGTH)%'
     app.comments_pagination_length: '%env(COMMENTS_PAGINATION_LENGTH)%'
+    upload_directory: '%kernel.project_dir%/public/uploads'
 
 services:
     # default configuration for services in *this* file
@@ -34,6 +35,10 @@ services:
     App\EventListener\LogoutListener:
         tags:
             - { name: 'kernel.event_listener', event: 'Symfony\Component\Security\Http\Event\LogoutEvent'}
+
+    App\Service\UploadService:
+        arguments:
+            $uploadPath: '%upload_directory%'
 
     # App\Service\Security\TokenService:
     #     arguments:
