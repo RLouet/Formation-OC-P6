@@ -15,7 +15,7 @@ $(document).ready(function() {
                 const h = this.height;
                 const isPortrait = w < h;
                 const ratio = w/h;
-                $("img", $preview).removeClass("w-100").removeClass("h-100")
+                $("img", $preview).removeClass("w-100").removeClass("h-100");
                 if (isPortrait) {
                     $("img", $preview).addClass("w-100");
                     $("img", $preview).css("margin", "calc(50% - " + $preview.width() / ratio * 0.5 + "px) auto");
@@ -25,6 +25,13 @@ $(document).ready(function() {
                 $("img", $preview).css("margin", "auto calc(50% - " + $preview.width() * ratio * 0.5 + "px)");
             };
         });
+    }
+
+    function checkMimeType(file, types) {
+        if (window.FileReader && window.Blob) {
+            return file.type.match(types);
+        }
+        return true;
     }
 
     function initImagePreview($input) {
@@ -44,19 +51,15 @@ $(document).ready(function() {
             if (e.target.files.length > 0) {
                 $previewLoader.show();
                 const image = e.target.files[0];
-                console.log(image.type);
 
                 // check Mime type
-                if (window.FileReader && window.Blob) {
-                    if(!image.type.match("image/png|image/gif|image/jpeg"))
-                    {
-                        $preview.addClass("border-danger");
-                        $(".img-alert .form-error-message", $container).html("Les formats supportés sont png, jpeg et gif.");
-                        $(".img-alert", $container).addClass("d-block");
-                        $(this).val(oldVal);
-                        $previewLoader.hide();
-                        return true;
-                    }
+                if (!checkMimeType(image, "image/png|image/gif|image/jpeg")) {
+                    $preview.addClass("border-danger");
+                    $(".img-alert .form-error-message", $container).html("Les formats supportés sont png, jpeg et gif.");
+                    $(".img-alert", $container).addClass("d-block");
+                    $(this).val(oldVal);
+                    $previewLoader.hide();
+                    return true;
                 }
 
                 centerImagePreview(image, $preview);

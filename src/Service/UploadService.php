@@ -72,12 +72,15 @@ class UploadService
         $imagine = new Imagine();
         $image = $imagine->open($imagePath);
 
-        if ($tRation > $oRatio) {
-            $image->resize(new Box($tWidth, $tWidth / $oRatio));
-            $image->crop(new Point(0, (($tWidth / $oRatio) - $tHeight) / 2), new Box($tWidth, $tHeight));
-        } else {
-            $image->resize(new Box($tHeight * $oRatio, $tHeight));
-            $image->crop(new Point((($tHeight * $oRatio) - $tWidth) / 2,0), new Box($tWidth, $tHeight));
+        switch ($tRation > $oRatio) {
+            case true:
+                $image->resize(new Box($tWidth, $tWidth / $oRatio));
+                $image->crop(new Point(0, (($tWidth / $oRatio) - $tHeight) / 2), new Box($tWidth, $tHeight));
+                break;
+            case false:
+                $image->resize(new Box($tHeight * $oRatio, $tHeight));
+                $image->crop(new Point((($tHeight * $oRatio) - $tWidth) / 2,0), new Box($tWidth, $tHeight));
+                break;
         }
         $image->save($imagePath);
     }
