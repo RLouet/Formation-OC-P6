@@ -20,9 +20,11 @@ class AdminController extends AbstractController
         $users = $userRepository->findBy(
             [],
             ['id' => 'ASC'],
-            $this->getParameter('app.tricks_pagination_length')
+            $this->getParameter('app.users_pagination_length')
         );
+        $paginateUsers = count($users) < $userRepository->count([]);
         return $this->render('admin/users-manage.html.twig', [
+            'paginate_users' => $paginateUsers,
             'users' => $users,
         ]);
     }

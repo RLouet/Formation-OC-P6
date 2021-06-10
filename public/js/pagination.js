@@ -54,6 +54,24 @@ $(document).ready(function() {
                     "</div>"
                 ;
                 break;
+            case "user":
+                const subscription = new Date(data.subscriptionDate);
+                const role = data.roles.includes("ROLE_ADMIN")?"Admin":"Membre";
+                const enabledClass = data.enabled?"":" table-dark";
+                const enabledText = data.enabled?"":"<br><b>(Non activé)</b>";
+                item = "<tr class=\"user-item" + enabledClass + "\">\n" +
+                    "    <th scope=\"row\">" + data.id + "</th>\n" +
+                    "    <td>" + data.username + "</td>\n" +
+                    "    <td>" + data.email + "</td>\n" +
+                    "    <td>" + subscription.toLocaleDateString() + enabledText + "</td>\n" +
+                    "    <td>\n" +
+                    "        " + role + "<br>\n" +
+                    "        <a href=\"#\" title=\"Change le rôle\">Modifier</a>\n" +
+                    "    </td>\n" +
+                    "    <td><a href=\"#\" title=\"Supprimer\">Supprimer</a></td>\n" +
+                    "</tr>"
+                ;
+                break;
         }
         return item;
     }

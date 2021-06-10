@@ -20,15 +20,16 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *
      * @Assert\Email(
      *     message = "TEST '{{value}}'"
      * )
+     * @Groups({"paginate_user"})
      */
     private string $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"paginate_user"})
      */
     private array $roles = [];
 
@@ -40,17 +41,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=128, unique=true)
-     * @Groups({"paginate_message"})
+     * @Groups({"paginate_message", "paginate_user"})
      */
     private string $username;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"paginate_user"})
      */
     private \DateTimeInterface $subscriptionDate;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"paginate_user"})
      */
     private bool $enabled = false;
 

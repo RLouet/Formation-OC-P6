@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\MessageRepository;
 use App\Repository\TrickRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,6 +63,34 @@ class AjaxController extends AbstractController
             $response,
             'json',
             ['groups' => 'paginate_message']
+        );
+        return JsonResponse::fromJsonString($response);
+    }
+
+    /**
+     * @Route("/ajax/loadusers",
+     *     name="ajax-load-users",
+     *     methods={"POST"},
+     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
+     */
+    public function loadUsers(Request $request, UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
+    {
+        $response = [];
+
+        $response['itemsData'] = $userRepository->findBy(
+            [],
+            ['id' => 'ASC'],
+            $this->getParameter('app.users_pagination_length'),
+            $request->get('offset')
+        );
+        $response['end'] = count($response['itemsData']) + $request->get('offset') >= $userRepository->count([]);
+
+        //dd($response);
+
+        $response = $serializer->serialize(
+            $response,
+            'json',
+            ['groups' => 'paginate_user']
         );
         return JsonResponse::fromJsonString($response);
     }
