@@ -7,6 +7,7 @@
 .align-self-center {
   align-self: center;
 }
+
 /* --- Home --- */
 
 /* --- Hero --- */
@@ -23,9 +24,6 @@
 
 .users-management .brand-container .brand {
   text-decoration: none;
-}
-
-.users-management .brand-container .brand {
   color: white;
 }
 

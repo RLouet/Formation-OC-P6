@@ -1,13 +1,15 @@
+/*global showFlashMessage*/
+
 $(document).ready(function() {
-    const $switchRoleModal = $("#switchRoleModal")
+    const $switchRoleModal = $("#switchRoleModal");
 
     $switchRoleModal.on("show.bs.modal", function (e) {
         const $button = $(e.relatedTarget);
-        const targetRole = $button.data("target-role")
+        const targetRole = $button.data("target-role");
         $(".user-username").html($button.data("user-username"));
         $(".target-role").html(targetRole);
         $("#userToSwitchField").val($button.data("user-id"));
-    })
+    });
 
     $("form", $switchRoleModal).submit(function (e){
         e.preventDefault();
@@ -31,7 +33,7 @@ $(document).ready(function() {
                             break;
                     }
 
-                    $switchRoleModal.modal('hide');
+                    $switchRoleModal.modal("hide");
                     showFlashMessage("primary", "Le rôle de l'utilisateur a bien été modifié.");
                     return;
                 }
@@ -44,15 +46,15 @@ $(document).ready(function() {
                 showFlashMessage("danger", "Une erreur s'est produite.");
             }
         });
-    })
+    });
 
-    const $deleteUserModal = $("#deleteUserModal")
+    const $deleteUserModal = $("#deleteUserModal");
 
     $deleteUserModal.on("show.bs.modal", function (e) {
         const $button = $(e.relatedTarget);
         $(".user-username").html($button.data("user-username"));
         $("#userToDeleteField").val($button.data("user-id"));
-    })
+    });
 
     $("form", $deleteUserModal).submit(function (e){
         e.preventDefault();
@@ -68,7 +70,7 @@ $(document).ready(function() {
 
                     $userItem.remove();
 
-                    $deleteUserModal.modal('hide');
+                    $deleteUserModal.modal("hide");
                     showFlashMessage("primary", "L'utilisateur a bien été supprimé.");
                     return;
                 }
@@ -81,5 +83,5 @@ $(document).ready(function() {
                 showFlashMessage("danger", "Une erreur s'est produite.");
             }
         });
-    })
+    });
 });
