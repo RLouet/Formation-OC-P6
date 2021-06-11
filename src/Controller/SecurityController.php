@@ -77,6 +77,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
+            //dd('sub');
             $expiredTokens = $tokenRepository->findExpired();
             foreach ($expiredTokens as $expiredToken) {
                 if (!$expiredToken->getUser()->getEnabled()) {

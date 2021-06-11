@@ -108,10 +108,10 @@
                                 <th scope="row">{{ user.id }}</th>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
-                                <td>{{ user.subscriptionDate|date('d/m/Y') }}</td>
+                                <td>{{ user.subscriptionDate|date('d/m/Y') }}{% if not user.enabled %}<br><b>(Non activé)</b>{% endif %}</td>
                                 <td>
-                                    <span class="user-role">{% if 'ROLE_ADMIN' in user.roles %}Admin{% else %}Membre{% endif %}</span><br>
-                                    {% if user != app.user %}<a href="#" role="button" class="switch-role-btn" data-toggle="modal" data-target="#switchRoleModal" title="Changer le rôle" data-user-id="{{ user.id }}" data-user-username="{{ user.username }}" data-target-role="{% if 'ROLE_ADMIN' in user.roles %}membre{% else %}administrateur{% endif %}">Modifier</a>{% endif %}
+                                    <span class="user-role">{% if 'ROLE_ADMIN' in user.roles %}Admin{% else %}Membre{% endif %}</span>
+                                    {% if user != app.user %}<br><a href="#" role="button" class="switch-role-btn" data-toggle="modal" data-target="#switchRoleModal" title="Changer le rôle" data-user-id="{{ user.id }}" data-user-username="{{ user.username }}" data-target-role="{% if 'ROLE_ADMIN' in user.roles %}membre{% else %}administrateur{% endif %}">Modifier</a>{% endif %}
                                 </td>
                                 <td>{% if user != app.user %}<a href="#" role="button" data-toggle="modal" data-target="#deleteUserModal" title="Supprimer" data-user-id="{{ user.id }}" data-user-username="{{ user.username }}">Supprimer</a>{% endif %}</td>
                             </tr>
@@ -136,5 +136,8 @@
 {% block javascriptsBottom %}
     {{ parent() }}
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script>
+        const currentUser = {{ app.user.id }}
+    </script>
     <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}
