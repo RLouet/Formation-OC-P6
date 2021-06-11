@@ -3,10 +3,12 @@
 namespace App\EventListener;
 
 use App\Entity\Image;
+use App\Entity\Trick;
+use App\Entity\User;
 use App\Service\UploadService;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-class ImageDeleteListener
+class UserDeleteListener
 {
     private UploadService $uploadService;
 
@@ -15,9 +17,11 @@ class ImageDeleteListener
         $this->uploadService = $uploadService;
     }
 
-    public function preRemove(Image $image, LifecycleEventArgs $event): void
+    public function preRemove(User $user, LifecycleEventArgs $event): void
     {
-        $this->uploadService->deleteFile('/tricks/' . $image->getName());
+        if ($user->getAvatar()) {
+            $this->uploadService->deleteFile('/avatars/' . $user->getAvatar());
+        }
     }
 
 
