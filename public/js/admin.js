@@ -38,7 +38,7 @@ $(document).ready(function() {
                     return;
                 }
 
-                $switchRoleModal.modal('hide');
+                $switchRoleModal.modal("hide");
                 showFlashMessage("danger", data.error);
             },
             error(e) {
@@ -75,11 +75,11 @@ $(document).ready(function() {
                     return;
                 }
 
-                $deleteUserModal.modal('hide');
+                $deleteUserModal.modal("hide");
                 showFlashMessage("danger", data.error);
             },
             error(e) {
-                $deleteUserModal.modal('hide');
+                $deleteUserModal.modal("hide");
                 showFlashMessage("danger", "Une erreur s'est produite.");
             }
         });
