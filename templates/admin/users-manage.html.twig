@@ -9,6 +9,76 @@
 {% block title %}Utilisateurs{% endblock %}
 
 {% block content %}
+    <div class="modal fade" id="switchRoleModal" tabindex="-1" role="dialog" aria-labelledby="switchRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="switchRoleModalLabel">Changer de rôle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ path("ajax-switch-role") }}">
+                    <div class="modal-body">
+                        <div class="errors d-none">
+                                <div class="alert alert-danger">error</div>
+                        </div>
+
+                        <p>Vous êtes sur le point de modifier le rôle de l'utilisateur <span class="user-username"></span>.<br>
+                        Il passera ainsi <span class="target-role"></span>.</p>
+
+                        <input id="userToSwitchField" type="hidden" name="user_id" value="">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('switch-user-role') }}">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Annuler
+                        </button>
+
+                        <button class="btn btn-primary" type="submit">
+                            Valider
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteUserModalLabel">Supprimer l'utilisateur</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ path("ajax-delete-user") }}">
+                    <div class="modal-body">
+                        <div class="errors d-none">
+                                <div class="alert alert-danger">error</div>
+                        </div>
+
+                        <p>Vous êtes sur le point de supprimer l'utilisateur <span class="user-username"></span>.<br>
+                            <b>Tous ses tricks et commentaires seront également supprimés.</b></p>
+
+                        <input id="userToDeleteField" type="hidden" name="user_id" value="">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete-user') }}">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Annuler
+                        </button>
+
+                        <button class="btn btn-primary" type="submit">
+                            Valider
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="contentContainer">
         <div class="container rounded users-management pb-3">
             <header class="row">
@@ -34,16 +104,16 @@
                         </thead>
                         <tbody>
                         {% for user in users %}
-                            <tr class="user-item{% if not user.enabled %} table-dark{% endif %}">
+                            <tr class="user-item user-{{ user.id }}{% if not user.enabled %} table-dark{% endif %}">
                                 <th scope="row">{{ user.id }}</th>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.subscriptionDate|date('d/m/Y') }}</td>
                                 <td>
-                                    {% if 'ROLE_ADMIN' in user.roles %}Admin{% else %}Membre{% endif %}<br>
-                                    <a href="#" title="Change le rôle">Modifier</a>
+                                    <span class="user-role">{% if 'ROLE_ADMIN' in user.roles %}Admin{% else %}Membre{% endif %}</span><br>
+                                    {% if user != app.user %}<a href="#" role="button" class="switch-role-btn" data-toggle="modal" data-target="#switchRoleModal" title="Changer le rôle" data-user-id="{{ user.id }}" data-user-username="{{ user.username }}" data-target-role="{% if 'ROLE_ADMIN' in user.roles %}membre{% else %}administrateur{% endif %}">Modifier</a>{% endif %}
                                 </td>
-                                <td><a href="#" title="Supprimer">Supprimer</a></td>
+                                <td>{% if user != app.user %}<a href="#" role="button" data-toggle="modal" data-target="#deleteUserModal" title="Supprimer" data-user-id="{{ user.id }}" data-user-username="{{ user.username }}">Supprimer</a>{% endif %}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -281,4 +281,14 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function switchRole(): self
+    {
+        if (in_array('ROLE_ADMIN',$this->getRoles())) {
+            $this->setRoles(['ROLE_USER']);
+            return $this;
+        }
+        $this->setRoles(['ROLE_ADMIN']);
+        return $this;
+    }
 }

@@ -54,3 +54,8 @@
   vertical-align: middle;
   text-align: center;
 }
+
+#switchRoleModal .user-username,
+#switchRoleModal .target-role {
+  font-weight: bold;
+}

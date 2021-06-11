@@ -4,7 +4,10 @@
 namespace App\Controller;
 
 
+use App\Repository\ImageRepository;
+use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,8 +17,17 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin_users")
      */
-    public function admin(UserRepository $userRepository): Response
+    public function admin(UserRepository $userRepository, EntityManagerInterface $manager, TrickRepository $trickRepository, ImageRepository $imageRepository): Response
     {
+
+
+        //$trick = $trickRepository->find(14);
+        //$trick->setHero(NULL);
+        //$manager->remove($trick);
+
+        //$image = $imageRepository->find(43);
+        //$manager->remove($image);
+        //$manager->flush();
 
         $users = $userRepository->findBy(
             [],

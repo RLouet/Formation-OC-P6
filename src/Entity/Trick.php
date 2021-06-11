@@ -20,53 +20,54 @@ class Trick
      * @ORM\Column(type="string", length=255)
      * @Groups({"paginate_trick"})
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $creationDate;
+    private \DateTimeInterface $creationDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $editDate;
+    private ?\DateTimeInterface $editDate;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $author;
+    private ?User $author;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $messages;
+    private Collection $messages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")$this->getImages()
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")
      */
-    private $categories;
+    private Collection $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick", cascade={"persist", "remove"})
      */
-    private $images;
+    private Collection $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $videos;
+    private Collection $videos;
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $hero;
+    private ?Image $hero;
 
     public function __construct()
     {
