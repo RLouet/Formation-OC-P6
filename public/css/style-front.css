@@ -7,6 +7,7 @@
 .align-self-center {
   align-self: center;
 }
+
 /* --- Home --- */
 
 /* --- Hero --- */
@@ -40,10 +41,6 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   background-color: #343a40;
   z-index: 999;
-}
-
-.trick-single .brand-container {
-  position: absolute;
 }
 
 .trick-single .brand,

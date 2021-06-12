@@ -11,6 +11,7 @@ use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,10 +47,10 @@ class ProfileController extends AbstractController
                     $user->setPassword($passwordEncoded);
                 }
 
-                /** @var UploadedFile $avatarFile */
-                $avatarFile = $form->get('avatar')->getData();
+                $avatarFile = $this->getFile($form, 'avatar');
                 if ($avatarFile) {
                     $upload = $uploadService->uploadAvatar($avatarFile, $user);
+                    //dd($upload);
                     if (!$upload['success']) {
                         $this->addFlash(
                             'danger',
@@ -64,7 +65,7 @@ class ProfileController extends AbstractController
                 $manager->flush();
                 $this->addFlash(
                     'primary',
-                    "Ton profil a fien été modifié !"
+                    "Ton profil a bien été modifié !"
                 );
                 return $this->redirectToRoute("front_home");
             }
@@ -74,5 +75,10 @@ class ProfileController extends AbstractController
             'form' => $form->createView(),
             'avatarUrl' => $user->getAvatarUrl()
         ]);
+    }
+
+    private function getFile(FormInterface $form, string $fieldName): ?UploadedFile
+    {
+        return $form->get($fieldName)->getData();
     }
 }

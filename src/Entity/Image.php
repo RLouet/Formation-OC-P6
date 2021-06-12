@@ -15,13 +15,13 @@ class Image
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $trick;
+    private ?Trick $trick;
 
     public function getName(): ?string
     {

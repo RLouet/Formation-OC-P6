@@ -2,55 +2,18 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <!-- Frontend CSS -->
+    <!-- Profile CSS -->
     <link rel="stylesheet" href="{{ asset("css/image-input.css") }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% form_theme form _self %}
-{#
-
-{% block _profile_avatar_widget %}
-    <div class="custom-avatar-file">
-    {%- set type = type|default('file') -%}
-    {%- set input_lang = 'en' -%}
-    {% if app is defined and app.request is defined %}{%- set input_lang = app.request.locale -%}{%- endif -%}
-    {%- set attr = {lang: input_lang} | merge(attr) -%}
-    {{- block('form_widget_simple') -}}
-    {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label')|trim }) -%}
-    <label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
-        {%- if attr.placeholder is defined and attr.placeholder is not none -%}
-            {{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
-        {%- endif -%}
-    </label>
-    </div>
-{% endblock %}
-
-#}
-
-{% block title %}Profile{% endblock %}
+{% block title %}Profil{% endblock %}
 
 {% block content %}
     <div id="contentContainer">
         <div class="container d-flex flex-column form-page">
-            <header class="row d-sm-none">
-                <div class=" col-12 text-center brand-container">
+            <header class="row">
+                <div class="d-sm-none col-12 text-center brand-container">
                     <a class="brand" href="{{ path('front_home') }}#"><h1 class="logo">SnowTricks</h1></a>
-                </div>
-                <div id="flash-messages-container" class="container-fluid fixed fixed-top-sm justify-content-around">
-                    <div class="row justify-content-around align-items-baseline">
-                        {% for label, messages in app.flashes %}
-                            {% for message in messages %}
-                                <div class="col-auto alert-container">
-                                    <div class="alert alert-{{ label }} alert-dismissible fade show my-1" role="alert">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
                 </div>
             </header>
             <div class="row justify-content-center h-100">

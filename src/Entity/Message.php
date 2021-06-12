@@ -18,13 +18,13 @@ class Message
      * @ORM\Column(type="datetime")
      * @Groups({"paginate_message"})
      */
-    private $date;
+    private \DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="text")
      * @Groups({"paginate_message"})
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
@@ -38,7 +38,7 @@ class Message
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $trick;
+    private ?Trick$trick;
 
     public function getDate(): ?\DateTimeInterface
     {

@@ -58,7 +58,7 @@ class UploadService
         return true;
     }
 
-    private function deleteFile($path)
+    public function deleteFile($path)
     {
         $this->fileSystem->remove($this->uploadPath . $path);
     }

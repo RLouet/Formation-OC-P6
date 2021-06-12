@@ -1,4 +1,4 @@
-/*global showFlashMessage*/
+/*global showFlashMessage, currentUser*/
 
 $(document).ready(function() {
     function nl2br (str) {
@@ -52,6 +52,27 @@ $(document).ready(function() {
                     "        </div>\n" +
                     "    </div>\n" +
                     "</div>"
+                ;
+                break;
+            case "user":
+                const subscription = new Date(data.subscriptionDate);
+                const role = data.roles.includes("ROLE_ADMIN")?"Admin":"Membre";
+                const targetRole = data.roles.includes("ROLE_ADMIN")?"membre":"administrateur";
+                const enabledClass = data.enabled?"":" table-dark";
+                const enabledText = data.enabled?"":"<br><b>(Non activé)</b>";
+                const changeRoleBtn = data.id === currentUser?"":"<br><a href=\"#\" role=\"button\" class=\"switch-role-btn\" data-toggle=\"modal\" data-target=\"#switchRoleModal\" title=\"Change le rôle\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\" data-target-role=\"" + targetRole + "\">Modifier</a>";
+                const deleteBtn = data.id === currentUser?"":"<a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#deleteUserModal\" title=\"Supprimer\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\">Supprimer</a>";
+                item = "<tr class=\"user-item user-" + data.id + enabledClass + "\">\n" +
+                    "    <th scope=\"row\">" + data.id + "</th>\n" +
+                    "    <td>" + data.username + "</td>\n" +
+                    "    <td>" + data.email + "</td>\n" +
+                    "    <td>" + subscription.toLocaleDateString() + enabledText + "</td>\n" +
+                    "    <td>\n" +
+                    "        <span class=\"user-role\">" + role + "</span>\n" +
+                    "        " + changeRoleBtn + "\n" +
+                    "    </td>\n" +
+                    "    <td>" + deleteBtn +"</td>\n" +
+                    "</tr>"
                 ;
                 break;
         }
