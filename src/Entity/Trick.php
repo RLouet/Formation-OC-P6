@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -20,12 +21,29 @@ class Trick
      * @ORM\Column(type="string", length=255)
      * @Groups({"paginate_trick"})
      */
-    private string $name;
+    #[Assert\Regex(
+        pattern: '/^[\'"_\-)(.,@\s\wÜ-ü]{2,255}$/',
+        message: "Le nom du tricks n'est pas valide. ( entre 2 et 255 lettres, chiffres, espaces et @'\"-_/,(). )"
+    )]
+    #[Assert\NotBlank()]
+    private ?string $name = "";
 
     /**
      * @ORM\Column(type="text")
      */
-    private string $description;
+    #[Assert\Length(
+        min: 2,
+        max: 2500,
+        minMessage: "Minimum 2 caractères.",
+        maxMessage: "Maximum 2500 caractères."
+    )]
+    #[Assert\Regex(
+        pattern: '/[<>&]/',
+        message: "Les caractères \"<, > et &\" sont interdits.",
+        match: false
+    )]
+    #[Assert\NotBlank()]
+    private ?string $description = "";
 
     /**
      * @ORM\Column(type="datetime")
@@ -49,7 +67,7 @@ class Trick
     private Collection $messages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
      */
     private Collection $categories;
 
@@ -67,7 +85,7 @@ class Trick
      * @ORM\OneToOne(targetEntity=Image::class)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Image $hero;
+    private ?Image $hero = null;
 
     public function __construct()
     {
@@ -75,6 +93,7 @@ class Trick
         $this->categories = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->creationDate = new \DateTime();
     }
 
     public function getName(): ?string
@@ -82,7 +101,7 @@ class Trick
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -94,7 +113,7 @@ class Trick
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 

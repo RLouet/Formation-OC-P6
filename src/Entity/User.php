@@ -21,7 +21,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email(
-     *     message = "TEST '{{value}}'"
+     *     message = "Ton adresse Email est invalide."
      * )
      * @Groups({"paginate_user"})
      */
@@ -75,7 +75,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */
-    private $avatar;
+    private ?string $avatar;
 
     public function __construct()
     {

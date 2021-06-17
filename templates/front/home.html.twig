@@ -11,17 +11,31 @@
 
 {% block content %}
     <section class="container-fluid tricks-list pb-3" id="tricksList">
+        {% if app.user %}
+        <div class="row">
+            <div class="col-12 text-center mt-2">
+                <a class="btn btn-info" href="{{ path('front_tricks-add') }}" title="Ajouter un trick">Ajouter un Trick</a>
+            </div>
+        </div>
+        {% endif %}
 
-        <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-around pt-2 pt-xl-3">
+        <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-around pt-2 pt-xl-3 items">
             {% for trick in tricks %}
                 {% include 'front/trick-item.html.twig' %}
             {% endfor %}
         </div>
 
+        {% if app.user %}
+            <div class="row">
+                <div class="col-12 text-center mb-2">
+                    <a class="btn btn-info" href="{{ path('front_tricks-add') }}" title="Ajouter un trick">Ajouter un Trick</a>
+                </div>
+            </div>
+        {% endif %}
         <div class="row my-2">
             <div class="col-12 text-center">
                 {% if paginate_tricks %}
-                    <button class="btn btn-primary pagination-btn" data-target="#tricksList>div:first" data-entity="trick">Voir plus</button>
+                    <button class="btn btn-primary pagination-btn" data-target="#tricksList>div.items" data-entity="trick">Voir plus</button>
                 {% endif %}
                 <div class="trick-up"><a class="up-arrow" href="#tricksList" title="Premiers Tricks"><em class="fas fa-arrow-up"></em></a></div>
             </div>

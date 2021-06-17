@@ -20,7 +20,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Trick::class, inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity=Trick::class, mappedBy="categories")
      */
     private $tricks;
 

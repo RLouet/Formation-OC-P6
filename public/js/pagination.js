@@ -16,7 +16,7 @@ $(document).ready(function() {
                 item = "<article class=\"col mb-3 mb-md-4 trick-item\">\n" +
                     "    <div class=\"card h-100\">\n" +
                     "        <div class=\"item-header\">\n" +
-                    "            <a href=\"" + window.location.origin + "/tricks/" + data.id + "\" title=\"Voir le trick\">\n" +
+                    "            <a href=\"" + window.location.origin + "/tricks/details/" + data.id + "\" title=\"Voir le trick\">\n" +
                     "                <img src=\"" + data.heroUrl + "\" class=\"card-img-top\">\n" +
                     "            </a>\n" +
                     "        </div>\n" +

@@ -12,7 +12,7 @@
                     <h2 class="vertical-align-middle w-100">{{ trick.name }}</h2>
                     <div class="row management-btns py-1 rounded">
                         <div class="col-6 text-center edit border-right border-dark">
-                            <a href="#" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
+                            <a href="{{ path('front_tricks-edit', {id: trick.id}) }}" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
                         </div>
                         <div class="col-6 text-center delete">
                             <a href="#" title="Supprimer le Trick" class="delete-btn"><em class="far fa-trash-alt"></em></a>

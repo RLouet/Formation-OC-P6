@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("/admin", name="admin_users")
-     */
+    #[Route("/admin", name: "admin_users")]
     public function admin(UserRepository $userRepository, EntityManagerInterface $manager, TrickRepository $trickRepository, ImageRepository $imageRepository): Response
     {
 
