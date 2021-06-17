@@ -37,6 +37,8 @@ class RequestSubscriber implements EventSubscriberInterface
             || preg_match('/^profile_/', $request->attributes->get('_route'))
             || preg_match('/^admin_/', $request->attributes->get('_route'))
             || preg_match('/^_profiler/', $request->attributes->get('_route'))
+            || preg_match('/^front_tricks-edit/', $request->attributes->get('_route'))
+            //|| preg_match('/^front_tricks-add/', $request->attributes->get('_route'))
         ) {
             //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo() . "2");
             return;

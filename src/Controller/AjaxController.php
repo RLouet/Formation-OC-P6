@@ -18,12 +18,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class AjaxController extends AbstractController
 {
-    /**
-     * @Route("/ajax/loadtricks",
-     *     name="ajax-load-tricks",
-     *     methods={"POST"},
-     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     */
+    #[Route("/ajax/loadtricks",
+        name: "ajax-load-tricks",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
     public function loadTricks(Request $request, TrickRepository $trickRepository, SerializerInterface $serializer): JsonResponse
     {
         $response = [];
@@ -43,12 +42,11 @@ class AjaxController extends AbstractController
         return JsonResponse::fromJsonString($response);
     }
 
-    /**
-     * @Route("/ajax/loadmessages",
-     *     name="ajax-load-messages",
-     *     methods={"POST"},
-     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     */
+    #[Route("/ajax/loadmessages",
+        name: "ajax-load-messages",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
     public function loadMessages(Request $request, MessageRepository $messageRepository, SerializerInterface $serializer): JsonResponse
     {
         $response = [];
@@ -69,12 +67,11 @@ class AjaxController extends AbstractController
         return JsonResponse::fromJsonString($response);
     }
 
-    /**
-     * @Route("/ajax/loadusers",
-     *     name="ajax-load-users",
-     *     methods={"POST"},
-     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     */
+    #[Route("/ajax/loadusers",
+        name: "ajax-load-users",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
     public function loadUsers(Request $request, UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
     {
         $response = [];
@@ -95,12 +92,11 @@ class AjaxController extends AbstractController
         return JsonResponse::fromJsonString($response);
     }
 
-    /**
-     * @Route("admin/ajax/switchrole",
-     *     name="ajax-switch-role",
-     *     methods={"POST"},
-     *     condition="request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'")
-     */
+    #[Route("admin/ajax/switchrole",
+        name: "ajax-switch-role",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
     public function switchRole(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
         $response['success'] = false;

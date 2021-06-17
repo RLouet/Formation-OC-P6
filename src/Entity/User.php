@@ -75,7 +75,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
      */
-    private $avatar;
+    private ?string $avatar;
 
     public function __construct()
     {

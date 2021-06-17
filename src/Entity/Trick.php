@@ -20,12 +20,12 @@ class Trick
      * @ORM\Column(type="string", length=255)
      * @Groups({"paginate_trick"})
      */
-    private string $name;
+    private string $name = "";
 
     /**
      * @ORM\Column(type="text")
      */
-    private string $description;
+    private string $description = "";
 
     /**
      * @ORM\Column(type="datetime")
@@ -49,7 +49,7 @@ class Trick
     private Collection $messages;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="tricks")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
      */
     private Collection $categories;
 
@@ -67,7 +67,7 @@ class Trick
      * @ORM\OneToOne(targetEntity=Image::class)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?Image $hero;
+    private ?Image $hero = null;
 
     public function __construct()
     {
@@ -75,6 +75,7 @@ class Trick
         $this->categories = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->creationDate = new \DateTime();
     }
 
     public function getName(): ?string

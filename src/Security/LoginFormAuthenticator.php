@@ -47,7 +47,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if (
             (
                 (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
-                || preg_match('/^front_/', $request->attributes->get('_route'))
+                || preg_match('/^front_home/', $request->attributes->get('_route'))
+                || preg_match('/^front_tricks-single/', $request->attributes->get('_route'))
 
             )
             && $request->isMethod('POST')) {
@@ -125,14 +126,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     protected function getLoginUrl()
     {
-        $target = empty($this->targetUrl)?[]:["target" => $this->targetUrl];
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE, $target);
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        //$target = empty($this->targetUrl)?[]:["target" => $this->targetUrl];
+        //return $this->urlGenerator->generate(self::LOGIN_ROUTE, $target);
 
         $target = empty($this->targetUrl)?"":"?target=" . $this->targetUrl;
         //$this->originUrl?:$this->originUrl = $this->urlGenerator->generate("front_home");
         //$this->originUrl = $this->urlGenerator->generate("front_home");
         //dd($this->originUrl, $this->originUrl . $target ."#login");
         //$target = "";
-        return $this->originUrl . $target ."#login";
+        return $this->originUrl . $target ."#loginnnnnn";
     }
 }
