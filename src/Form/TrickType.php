@@ -32,9 +32,15 @@ class TrickType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
+                'attr' => [
+                    'rows' => 10,
+                ]
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
+                'label_attr' => [
+                    'class' => 'checkbox-inline'
+                ],
                 'choice_label' => 'name',
                 'required' => true,
                 'label' => 'Catégories',
