@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,6 +60,9 @@ class FrontController extends AbstractController
     public function addTrick(Request $request, EntityManagerInterface $manager): Response
     {
         $trick = new Trick();
+        $video = new Video();
+        $video->setName('testvideoname');
+        $trick->addVideo($video);
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);

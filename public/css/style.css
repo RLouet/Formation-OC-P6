@@ -30,7 +30,7 @@ footer p {
 
 /* --- Navbar --- */
 #NavContainer {
-  z-index: 1100;
+  z-index: 1049;
 }
 
 .navbar-brand {
@@ -99,13 +99,13 @@ footer p {
 @media (max-width: 575px) {
   /* --- Navbar --- */
   #NavContainer #flash-messages-container {
-    z-index: 1100;
+    z-index: 1049;
     position: fixed;
     top: 0;
   }
 
   #NavContainer nav {
-    z-index: 1100;
+    z-index: 1049;
     position: fixed;
     bottom: 0;
     right: 0;

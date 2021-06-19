@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VideoRepository::class)
@@ -15,6 +16,10 @@ class Video
     /**
      * @ORM\Column(type="string", length=32)
      */
+    #[Assert\Regex(
+        pattern: '/^[a-z0-9_-]{7,15}$/i',
+        message: "Le nom de la video n'est pas valide. ( entre 7 et 15 lettres, chiffres, - et _ )"
+    )]
     private $name;
 
     /**

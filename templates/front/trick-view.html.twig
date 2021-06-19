@@ -63,12 +63,12 @@
                 </div>
                 <span class="d-none d-lg-inline">|</span>
                 <div class="col-12 col-md-auto text-center">
-                    <span>Ajouté le {{ trick.creationDate|date('d/m/Y à H:m:s') }}</span>
+                    <span>Ajouté le {{ trick.creationDate|date('d/m/Y à H:i:s') }}</span>
                 </div>
                 {% if trick.editDate %}
                     <span class="d-none d-md-inline">|</span>
                     <div class="col-12 col-md-auto text-center">
-                        <span>Modifié le {{ trick.editDate|date('d/m/Y à H:m:s') }}</span>
+                        <span>Modifié le {{ trick.editDate|date('d/m/Y à H:i:s') }}</span>
                     </div>
                 {% endif %}
             </section>
@@ -94,7 +94,7 @@
 
     {% if trick.images|length > 0 %}
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="imageModalTitle">Trick : {{ trick.name }}</h5>

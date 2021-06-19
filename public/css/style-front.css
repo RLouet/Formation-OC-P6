@@ -120,11 +120,13 @@
 }
 
 .management-btns .edit-btn,
+.medias-management-btns .edit-btn,
 .trick-item .card-footer .edit-btn {
   color: #1f35e0;
 }
 
 .management-btns .delete-btn,
+.medias-management-btns .delete-btn,
 .trick-item .card-footer .delete-btn {
   color: #d60400;
 }
