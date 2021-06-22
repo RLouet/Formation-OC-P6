@@ -46,6 +46,17 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
             ])
+            ->add('newImages', CollectionType::class, [
+                'mapped' => false,
+                'entry_type'=> NewImageType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+            ])
+            ->add('images', CollectionType::class, [
+                'entry_type'=> ImageType::class,
+                'entry_options' => ['label' => false],
+            ])
         ;
     }
 

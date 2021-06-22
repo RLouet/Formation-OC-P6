@@ -1,5 +1,49 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block collection_row %}
+{% endblock %}
+
+{% block _trick_newImages_entry_row %}
+    <div class="col-md-2 px-1 image new-image-__name__">
+        <label for="{{ form.name.vars.id }}" class="overflow-hidden image-input-preview mb-0">
+            <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
+            <span class="img-prev-ol d-none">
+                <span class="spinner"></span>
+            </span>
+        </label>
+        {#
+        <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
+        <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
+        #}
+        <div class="medias-management-btns text-right mt-1">
+            <span class="p-1 border border-dark rounded">
+                <label for="{{ form.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-__name__" data-type="l'image"><em class="far fa-trash-alt"></em></a>
+            </span>
+        </div>
+        <div class="img-alert invalid-feedback d-block">
+            <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+            <span class="form-error-message">
+                {% if form_errors(form.name)|length > 0 %}
+                    {% for error in form.name.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                {% else %}
+                    Merci de choisir une image valide ou de supprimer cette image.
+                {% endif %}
+            </span>
+        </div>
+        <div class="d-none">{{ form_widget(form.name) }}</div>
+    </div>
+{% endblock %}
+
+
+{% block _trick_newImages_entry_name_widget %}
+    <input type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
+
 {% block content %}
 
     <div id="contentContainer">
@@ -11,6 +55,14 @@
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>
                     <h2 class="vertical-align-middle w-100 trick-name">{{ trick.name }}</h2>
+                    <div class="row management-btns py-1 rounded">
+                        <div class="col-6 text-center edit border-right border-dark">
+                            <a href="#" title="Modifier le Hero" class="edit-btn"><em class="far fa-edit"></em></a>
+                        </div>
+                        <div class="col-6 text-center delete">
+                            <a href="#" title="Réinitialiser le Hero" class="delete-btn"><em class="far fa-trash-alt"></em></a>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -23,24 +75,36 @@
                     </button>
                 </div>
                 <div class="collapse col-12 mt-2 d-md-block" id="mediasList">
-                    <div class="row p-0 justify-content-center medias-container mb-3">
+                    <div class="row p-0 justify-content-center medias-container mb-3 align-items-end">
                         <span class="image-prototype" data-prototype=""></span>
                         {% for image in trick.images %}
-                            <div class="col-md-2 px-1 image">
+                            <div class="col-md-2 px-1 image old-image">
                                 <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
                                 <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
                             </div>
                         {% endfor %}
+                        <span class="new-image-prototype" data-prototype="{{ form_row(form.newImages.vars.prototype)|e('html_attr') }}"></span>
+
+                        {{ form_errors(form.newImages) }}
+                        {% for newImage in form.newImages %}
+
+                            {{ form_row(newImage) }}
+                            {% for data in newImage.name.vars.value %}
+                                =>{{ data }}
+                            {% endfor %}
+
+                        {% endfor %}
+
                         <span class="video-prototype"  data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"></span>
                         {% for video in form.videos %}
                             <div class="col-md-2 px-1 video video-{{ loop.index0 }}">
                                 <div class="embed-responsive embed-responsive-4by3">
                                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.name.vars.value }}?rel=0" allowfullscreen></iframe>
                                 </div>
-                                <div class="medias-management-btns text-right mt-2">
+                                <div class="medias-management-btns text-right mt-3">
                                     <span class="p-1 border border-dark rounded">
                                     <a href="#" title="Modifier la vidéo" class="edit-btn px-2 border-right border-dark" data-toggle="modal" data-target="#videoFormModal" data-action="edit" data-index="{{ loop.index0 }}"><em class="far fa-edit"></em></a>
-                                    <a href="#" title="Supprimer la vidéo" class="delete-btn px-2" data-toggle="modal" data-target="#videoDeleteModal" data-index="{{ loop.index0 }}"><em class="far fa-trash-alt"></em></a>
+                                    <a href="#" title="Supprimer la vidéo" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".video-{{ loop.index0 }}" data-type="la vidéo"><em class="far fa-trash-alt"></em></a>
                                     </span>
                                 </div>
                                 <div id="trick_video_{{ loop.index0 }}">
@@ -50,7 +114,7 @@
                         {% endfor %}
                     </div>
                     <div class="row justify-content-center mt-2">
-                        <button type="button" class="btn btn-primary mx-1">Ajouter une image</button>
+                        <button type="button" class="btn btn-primary mx-1 add-image">Ajouter une image</button>
                         <button type="button" class="btn btn-primary mx-1" data-toggle="modal" data-target="#videoFormModal" data-action="add">Ajouter une vidéo</button>
                     </div>
                     <div class="col-12 text-center mt-2 d-md-none">
@@ -109,18 +173,18 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="videoDeleteModal" tabindex="-1" role="dialog" aria-labelledby="videoDeleteModalTitle" aria-hidden="true">
+    <div class="modal fade" id="mediaDeleteModal" tabindex="-1" role="dialog" aria-labelledby="mediaDeleteModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="videoDeleteModalTitle">Supprimer une vidéo</h5>
+                    <h5 class="modal-title" id="mediaDeleteModalTitle">Supprimer une vidéo</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="errors">
-                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer la vidéo ?</div>
+                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer <span class="type"></span> ?</div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -141,5 +205,6 @@
         trickImages.push("{{ image.name }}");
         {% endfor %}
     </script>
+    <script src="{{ asset('js/images.js') }}"></script>
     <script src="{{ asset('js/trick-edit.js') }}"></script>
 {% endblock %}

@@ -4,11 +4,13 @@
 namespace App\Service;
 
 
+use App\Entity\Trick;
 use App\Entity\User;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -41,6 +43,24 @@ class UploadService
         }
 
         $this->resizeImage($this->uploadPath . '/avatars/' . $fileName, 256, 256);
+        $return['success'] = true;
+        return $return;
+    }
+
+    public function uploadTrickImage(UploadedFile $imageFile, Trick $trick): array
+    {
+        $return = [
+            'success' => false,
+            'file' => ''
+        ];
+        $fileName = uniqid(rand(1000, 9999), true) . "." . $imageFile->guessExtension();
+
+        if (!$this->upload($imageFile, '/tricks', $fileName)) {
+            return $return;
+        }
+        $return['file'] = $fileName;
+
+        $this->resizeImage($this->uploadPath . '/tricks/' . $fileName, 1280, 1024);
         $return['success'] = true;
         return $return;
     }
@@ -83,5 +103,11 @@ class UploadService
                 break;
         }
         $image->save($imagePath);
+    }
+
+
+    public function getFormFile(FormInterface $form, string $fieldName): ?UploadedFile
+    {
+        return $form->get($fieldName)->getData();
     }
 }

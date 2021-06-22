@@ -40,7 +40,7 @@ $(document).ready(function() {
             "                    <div class=\"medias-management-btns text-right mt-2\">\n" +
             "                        <span class=\"p-1 border border-dark rounded\">\n" +
             "                           <a href=\"#\" title=\"Modifier la vidéo\" class=\"edit-btn px-2 border-right border-dark\" data-toggle=\"modal\" data-target=\"#videoFormModal\" data-action=\"edit\" data-index=\"" + index + "\"><em class=\"far fa-edit\"></em></a>\n" +
-            "                           <a href=\"#\" title=\"Supprimer la vidéo\" class=\"delete-btn px-2\" data-toggle=\"modal\" data-target=\"#videoDeleteModal\" data-index=\"" + index + "\"><em class=\"far fa-trash-alt\"></em></a>\n" +
+            "                           <a href=\"#\" title=\"Supprimer la vidéo\" class=\"delete-btn px-2\" data-toggle=\"modal\" data-target=\"#mediaDeleteModal\" data-item=\".video-" + index + "\" data-type=\"la video\"><em class=\"far fa-trash-alt\"></em></a>\n" +
             "                        </span>\n" +
             "                    </div>\n" +
             "                 </div>").append(newForm);
@@ -53,7 +53,7 @@ $(document).ready(function() {
         $("input", videoItem).val(value);
         $("iframe", videoItem).attr("src", "https://www.youtube.com/embed/" + value + "?rel=0");
     }
-    
+
     $addVideoForm.submit(function (e){
         e.preventDefault();
         let action = $("button[type=submit]", $(this)).data("action");
@@ -76,14 +76,28 @@ $(document).ready(function() {
         return false;
     });
 
-    const $deleteVideoModal = $("#videoDeleteModal");
+    const $deleteMediaModal = $("#mediaDeleteModal");
 
-    $deleteVideoModal.on("show.bs.modal", function (e) {
-        $("button.delete-btn", $(this)).data("index", $(e.relatedTarget).data("index"));
+    $deleteMediaModal.on("show.bs.modal", function (e) {
+        $("span.type", $(this)).html($(e.relatedTarget).data("type"))
+        $("button.delete-btn", $(this)).data("item", $(e.relatedTarget).data("item"));
     });
 
-    $("button.delete-btn", $deleteVideoModal).on("click", function (){
-        $(".video-" + $(this).data("index"), $mediasContainer).remove();
-        $deleteVideoModal.modal("hide");
+    $("button.delete-btn", $deleteMediaModal).on("click", function (){
+        $($(this).data("item"), $mediasContainer).remove();
+        $deleteMediaModal.modal("hide");
+    });
+
+
+    $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").length);
+
+    $(".add-image").on('click', function(e){
+        const prototype = $(".new-image-prototype", $mediasContainer).data('prototype');
+        const index = $(".new-image-prototype", $mediasContainer).data("index");
+        const $newImageItem = $(prototype.replace(/__name__/g, index));
+        $(".video-prototype", $mediasContainer).before($newImageItem);
+        $(".new-image-prototype", $mediasContainer).data("index", index + 1);
+        $("label.edit-btn", $newImageItem).click();
+        initImagePreview($("input", $newImageItem));
     });
 });
