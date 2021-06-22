@@ -57,7 +57,7 @@
                     <h2 class="vertical-align-middle w-100 trick-name">{{ trick.name }}</h2>
                     <div class="row management-btns py-1 rounded">
                         <div class="col-6 text-center edit border-right border-dark">
-                            <a href="#" title="Modifier le Hero" class="edit-btn"><em class="far fa-edit"></em></a>
+                            <a href="#" title="Modifier le Hero" class="edit-btn" data-toggle="modal" data-target="#heroChoiceModal"><em class="far fa-edit"></em></a>
                         </div>
                         <div class="col-6 text-center delete">
                             <a href="#" title="Réinitialiser le Hero" class="delete-btn"><em class="far fa-trash-alt"></em></a>
@@ -173,6 +173,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="mediaDeleteModal" tabindex="-1" role="dialog" aria-labelledby="mediaDeleteModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
@@ -190,6 +191,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                     <button type="button" class="btn btn-primary delete-btn">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="heroChoiceModal" tabindex="-1" role="dialog" aria-labelledby="heroChoiceModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heroChoiceModalTitle">Modifier le Hero</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <h6 class="col-12">Choisis un Hero parmi les images du trick</h6>
+                        <div class="row trick-images-list">
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary delete-btn">Valider</button>
                 </div>
             </div>
         </div>

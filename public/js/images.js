@@ -98,10 +98,11 @@ $("form[name='trick']").submit(function(e){
             $(".img-alert", $(this)).addClass("d-block");
             emptyImage = true;
         }
-    })
+    });
+
     if (emptyImage) {
-        $('#mediasList').collapse('show');
-        $('#mediasList')[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
+        $("#mediasList").collapse("show");
+        $("#mediasList")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
         return false;
     }
 })

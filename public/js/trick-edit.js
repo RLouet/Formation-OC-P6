@@ -1,3 +1,5 @@
+/*global initImagePreview*/
+
 $(document).ready(function() {
     $("#trick_name").keyup(function () {
         $(".trick-name").text($(this).val());
@@ -79,7 +81,7 @@ $(document).ready(function() {
     const $deleteMediaModal = $("#mediaDeleteModal");
 
     $deleteMediaModal.on("show.bs.modal", function (e) {
-        $("span.type", $(this)).html($(e.relatedTarget).data("type"))
+        $("span.type", $(this)).html($(e.relatedTarget).data("type"));
         $("button.delete-btn", $(this)).data("item", $(e.relatedTarget).data("item"));
     });
 
@@ -88,11 +90,10 @@ $(document).ready(function() {
         $deleteMediaModal.modal("hide");
     });
 
-
     $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").length);
 
-    $(".add-image").on('click', function(e){
-        const prototype = $(".new-image-prototype", $mediasContainer).data('prototype');
+    $(".add-image").on("click", function(e){
+        const prototype = $(".new-image-prototype", $mediasContainer).data("prototype");
         const index = $(".new-image-prototype", $mediasContainer).data("index");
         const $newImageItem = $(prototype.replace(/__name__/g, index));
         $(".video-prototype", $mediasContainer).before($newImageItem);
