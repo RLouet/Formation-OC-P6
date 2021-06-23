@@ -35,7 +35,7 @@
 
     function initImagePreview($input, targetWidth, targetHeight, maxSize) {
         let $img = $("img", $(".image-input-preview", $input.closest(".image-input-container")));
-        $img.data('old', $img.attr('src'));
+        $img.data('old', $img.attr("src"));
         $input.change(function (e) {
             const $container = $(this).closest(".image-input-container");
             const $preview = $(".image-input-preview", $container);
@@ -50,7 +50,7 @@
 
             // If is an image : check and change
             if (e.target.files.length > 0) {
-                $previewLoader.removeClass('d-none');
+                $previewLoader.removeClass("d-none");
                 const image = e.target.files[0];
                 const size = image.size / 1024 / 1024;
 

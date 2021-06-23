@@ -4,6 +4,24 @@ $(document).ready(function() {
 
     initImagePreview($(".image input"));
 
+    const targetRatio = 1280/1024;
+    function updateHeroImagesPreviews() {
+        const $imageItems = $(".new-image-item", $heroChoiceModal);
+        const itemWidth = $(".img-container", $imageItems).first().width();
+        updateImagesPreviews($imageItems, itemWidth, targetRatio);
+    }
+    function updateTrickImagesPreviews() {
+        const $imageItems = $("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer);
+        const itemWidth = $(".image-input-preview", $imageItems).first().width();
+        updateImagesPreviews($imageItems, itemWidth, targetRatio);
+        updateHeroImagesPreviews();
+    }
+    window.onresize = updateTrickImagesPreviews;
+
+    $('#mediasList').on("shown.bs.collapse", function () {
+        updateTrickImagesPreviews();
+    })
+
     $("#trick_name").keyup(function () {
         $(".trick-name").text($(this).val());
     });
@@ -111,14 +129,14 @@ $(document).ready(function() {
         const $imagesList = $(".trick-images-list", $(this));
         $imagesList.html("");
         let imageCount = 0;
-        $('div[class^=\'new-image-\'], div[class*=\' new-image-\']', $mediasContainer).each(function(){
+        $("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer).each(function(){
             if ($("input[type='file']", $(this)).val()) {
                 imageCount++;
                 const $image = $(".img-input-preview",$(this));
-                let $imageItem = $("<div class=\"col-6 col-md-3 p-1 new-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"new-" + $(this).data('index') + "\"></label></div></div></div>");
+                let $imageItem = $("<div class=\"col-6 col-md-3 p-1 new-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"new-" + $(this).data("index") + "\"></label></div></div></div>");
                 $imagesList.append($imageItem);
             }
-        })
+        });
         if (!imageCount) {
             $imagesList.html("<p>Il n'y a pas d'image disponible.</p>");
         }
@@ -138,30 +156,11 @@ $(document).ready(function() {
             found = Array.from(found);
             //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
             $("form[name='trick'] input#trick_hero").val(found[0][0]);
-            const imgSrc = $(".image." + found[0].groups['type'] + "-image-" + found[0].groups['index'] + " .img-input-preview").attr("src");
+            const imgSrc = $(".image." + found[0].groups["type"] + "-image-" + found[0].groups["index"] + " .img-input-preview").attr("src");
             $("header .trick-hero").css("background-image", "url('" + imgSrc + "')");
-            $heroChoiceModal.modal('hide');
+            $heroChoiceModal.modal("hide");
         }
 
         const string = "new-5797";
-    })
-
-    const targetRatio = 1280/1024;
-    function updateTrickImagesPreviews() {
-        const $imageItems = $('div[class^=\'new-image-\'], div[class*=\' new-image-\']', $mediasContainer);
-        const itemWidth = $(".image-input-preview", $imageItems).first().width();
-        updateImagesPreviews($imageItems, itemWidth, targetRatio);
-        updateHeroImagesPreviews();
-    }
-
-    function updateHeroImagesPreviews() {
-        const $imageItems = $('.new-image-item', $heroChoiceModal);
-        const itemWidth = $(".img-container", $imageItems).first().width();
-        updateImagesPreviews($imageItems, itemWidth, targetRatio);
-    }
-    window.onresize = updateTrickImagesPreviews;
-
-    $('#mediasList').on('shown.bs.collapse', function () {
-        updateTrickImagesPreviews();
     })
 });
