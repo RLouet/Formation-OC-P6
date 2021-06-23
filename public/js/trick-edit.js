@@ -161,5 +161,5 @@ $(document).ready(function() {
         }
 
         const string = "new-5797";
-    })
+    });
 });
