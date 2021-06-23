@@ -35,7 +35,7 @@
 
     function initImagePreview($input, targetWidth, targetHeight, maxSize) {
         let $img = $("img", $(".image-input-preview", $input.closest(".image-input-container")));
-        $img.data('old', $img.attr("src"));
+        $img.data("old", $img.attr("src"));
         $input.change(function (e) {
             const $container = $(this).closest(".image-input-container");
             const $preview = $(".image-input-preview", $container);
@@ -104,7 +104,7 @@
             }
             $("img", $(this)).css("margin", "0 -" + (((itemWidth / targetRatio) * ratio) - itemWidth) * 0.5 + "px");
 
-        })
+        });
     }
 
 $("form[name='trick']").submit(function(e){

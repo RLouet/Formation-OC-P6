@@ -1,6 +1,8 @@
 /*global initImagePreview, updateImagesPreviews*/
 
 $(document).ready(function() {
+    const $heroChoiceModal = $("#heroChoiceModal");
+    const $mediasContainer = $("#mediasList .medias-container");
 
     initImagePreview($(".image input"));
 
@@ -18,9 +20,9 @@ $(document).ready(function() {
     }
     window.onresize = updateTrickImagesPreviews;
 
-    $('#mediasList').on("shown.bs.collapse", function () {
+    $("#mediasList").on("shown.bs.collapse", function () {
         updateTrickImagesPreviews();
-    })
+    });
 
     $("#trick_name").keyup(function () {
         $(".trick-name").text($(this).val());
@@ -47,7 +49,6 @@ $(document).ready(function() {
     });
 
     const $addVideoForm = $("form", $addVideoModal);
-    const $mediasContainer = $("#mediasList .medias-container");
     $(".video-prototype", $mediasContainer).data("index", $mediasContainer.find(".video").length);
 
     function addVideo(value) {
@@ -123,8 +124,6 @@ $(document).ready(function() {
         initImagePreview($("input", $newImageItem), 1280, 1024, 5);
     });
 
-    const $heroChoiceModal = $("#heroChoiceModal");
-
     $heroChoiceModal.on("show.bs.modal", function (e) {
         const $imagesList = $(".trick-images-list", $(this));
         $imagesList.html("");
@@ -145,11 +144,11 @@ $(document).ready(function() {
         updateHeroImagesPreviews();
     });
 
-    const $heroChoiceForm = $('form', $heroChoiceModal);
+    const $heroChoiceForm = $("form", $heroChoiceModal);
 
     $heroChoiceForm.submit(function (e){
         e.preventDefault();
-        const choice = $('input[name="hero_choice"]:checked', $(this)).length > 0?$('input[name="hero_choice"]:checked', $(this)).val():null;
+        const choice = $("input[name='hero_choice']:checked", $(this)).length > 0?$("input[name='hero_choice']:checked", $(this)).val():null;
         if (choice) {
             const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
             let found = choice.matchAll(re);
