@@ -242,6 +242,29 @@ article.trick-single .trick-medias .image button:hover {
   }
 }
 
+/* Trick edit / add */
+.heroChoiceFieldContainer {
+  position: absolute;
+  top:0;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+
+.heroChoiceFieldContainer label {
+  width: 100%;
+  height: 100%;
+}
+
+.heroChoiceFieldContainer label:hover {
+  cursor: pointer;
+}
+
+.heroChoiceFieldContainer label input {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 @media (min-width: 576px) {
   /* --- Tricks list --- */
   #tricksList {

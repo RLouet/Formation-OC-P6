@@ -6,17 +6,13 @@
 {% endblock %}
 
 {% block _trick_newImages_entry_row %}
-    <div class="col-md-2 px-1 image new-image-__name__">
-        <label for="{{ form.name.vars.id }}" class="overflow-hidden image-input-preview mb-0">
+    <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-__name__" data-index="__name__">
+        <label for="{{ form.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
             <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
             <span class="img-prev-ol d-none">
                 <span class="spinner"></span>
             </span>
         </label>
-        {#
-        <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
-        <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
-        #}
         <div class="medias-management-btns text-right mt-1">
             <span class="p-1 border border-dark rounded">
                 <label for="{{ form.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
@@ -75,10 +71,10 @@
                     </button>
                 </div>
                 <div class="collapse col-12 mt-2 d-md-block" id="mediasList">
-                    <div class="row p-0 justify-content-center medias-container mb-3 align-items-end">
+                    <div class="row p-0 justify-content-center medias-container mb-2 align-items-end">
                         <span class="image-prototype" data-prototype=""></span>
                         {% for image in trick.images %}
-                            <div class="col-md-2 px-1 image old-image">
+                            <div class="col-md-2 px-1 image image-input-container old-image">
                                 <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
                                 <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
                             </div>
@@ -97,7 +93,7 @@
 
                         <span class="video-prototype"  data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"></span>
                         {% for video in form.videos %}
-                            <div class="col-md-2 px-1 video video-{{ loop.index0 }}">
+                            <div class="col-6 col-md-2 px-1 pb-2 video video-{{ loop.index0 }}">
                                 <div class="embed-responsive embed-responsive-4by3">
                                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.name.vars.value }}?rel=0" allowfullscreen></iframe>
                                 </div>
@@ -205,10 +201,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form>
+
                 <div class="modal-body">
                     <div class="row text-center">
                         <h6 class="col-12">Choisis un Hero parmi les images du trick</h6>
-                        <div class="row trick-images-list">
+                        <div class="col-12 text-center trick-images-list d-flex flex-wrap justify-content-center">
 
                         </div>
 
@@ -217,8 +215,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary delete-btn">Valider</button>
+                    <button type="submit" class="btn btn-primary delete-btn">Valider</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>

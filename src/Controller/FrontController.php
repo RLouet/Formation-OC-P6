@@ -73,6 +73,16 @@ class FrontController extends AbstractController
             //dd ($form['newImages'][1]['name']);
             if ($form->isValid()) {
                 $trick->setAuthor($this->getUser());
+                $hero = false;
+                preg_match_all("/^(?<type>new|old)-(?<index>\d{1,4})$/i",$form->get('hero')->getData(), $matches);
+                if (!empty($matches[0])) {
+                    $hero = [
+                        'all' => (string)$matches[0][0],
+                        'type' => (string)$matches['type'][0],
+                        'index' => (int)$matches['index'][0]
+                    ];
+                }
+                //dd($hero);
 
                 $uploadError = false;
                 foreach ($form['newImages'] as $key => $imageForm) {
@@ -92,6 +102,9 @@ class FrontController extends AbstractController
                             $image = new Image();
                             $image->setName($upload['file']);
                             $trick->addImage($image);
+                            if ($hero && $hero['type'] === "new" && $hero['index'] === $key) {
+                                $trick->setHero($image);
+                            }
                         }
                     }
                 }

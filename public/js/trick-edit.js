@@ -1,6 +1,9 @@
-/*global initImagePreview*/
+/*global initImagePreview, updateImagesPreviews*/
 
 $(document).ready(function() {
+
+    initImagePreview($(".image input"));
+
     $("#trick_name").keyup(function () {
         $(".trick-name").text($(this).val());
     });
@@ -35,7 +38,7 @@ $(document).ready(function() {
         let newForm = prototype;
         newForm = newForm.replace(/__name__/g, index);
         $(".video-prototype", $mediasContainer).data("index", index + 1);
-        let newVideoItem = $("<div class=\"col-md-2 px-1 video video-" + index + "\">\n" +
+        let newVideoItem = $("<div class=\"col-6 col-md-2 px-1 pb-2 video video-" + index + "\">\n" +
             "                    <div class=\"embed-responsive embed-responsive-4by3\">\n" +
             "                        <iframe class=\"embed-responsive-item\" src=\"https://www.youtube.com/embed/" + value + "?rel=0\" allowfullscreen></iframe>\n" +
             "                    </div>\n" +
@@ -99,6 +102,66 @@ $(document).ready(function() {
         $(".video-prototype", $mediasContainer).before($newImageItem);
         $(".new-image-prototype", $mediasContainer).data("index", index + 1);
         $("label.edit-btn", $newImageItem).click();
-        initImagePreview($("input", $newImageItem));
+        initImagePreview($("input", $newImageItem), 1280, 1024, 5);
     });
+
+    const $heroChoiceModal = $("#heroChoiceModal");
+
+    $heroChoiceModal.on("show.bs.modal", function (e) {
+        const $imagesList = $(".trick-images-list", $(this));
+        $imagesList.html("");
+        let imageCount = 0;
+        $('div[class^=\'new-image-\'], div[class*=\' new-image-\']', $mediasContainer).each(function(){
+            if ($("input[type='file']", $(this)).val()) {
+                imageCount++;
+                const $image = $(".img-input-preview",$(this));
+                let $imageItem = $("<div class=\"col-6 col-md-3 p-1 new-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"new-" + $(this).data('index') + "\"></label></div></div></div>");
+                $imagesList.append($imageItem);
+            }
+        })
+        if (!imageCount) {
+            $imagesList.html("<p>Il n'y a pas d'image disponible.</p>");
+        }
+    });
+    $heroChoiceModal.on("shown.bs.modal", function (e) {
+        updateHeroImagesPreviews();
+    });
+
+    const $heroChoiceForm = $('form', $heroChoiceModal);
+
+    $heroChoiceForm.submit(function (e){
+        e.preventDefault();
+        const choice = $('input[name="hero_choice"]:checked', $(this)).length > 0?$('input[name="hero_choice"]:checked', $(this)).val():null;
+        if (choice) {
+            const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
+            let found = choice.matchAll(re);
+            found = Array.from(found);
+            //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
+            $("form[name='trick'] input#trick_hero").val(found[0][0]);
+            const imgSrc = $(".image." + found[0].groups['type'] + "-image-" + found[0].groups['index'] + " .img-input-preview").attr("src");
+            $("header .trick-hero").css("background-image", "url('" + imgSrc + "')");
+            $heroChoiceModal.modal('hide');
+        }
+
+        const string = "new-5797";
+    })
+
+    const targetRatio = 1280/1024;
+    function updateTrickImagesPreviews() {
+        const $imageItems = $('div[class^=\'new-image-\'], div[class*=\' new-image-\']', $mediasContainer);
+        const itemWidth = $(".image-input-preview", $imageItems).first().width();
+        updateImagesPreviews($imageItems, itemWidth, targetRatio);
+        updateHeroImagesPreviews();
+    }
+
+    function updateHeroImagesPreviews() {
+        const $imageItems = $('.new-image-item', $heroChoiceModal);
+        const itemWidth = $(".img-container", $imageItems).first().width();
+        updateImagesPreviews($imageItems, itemWidth, targetRatio);
+    }
+    window.onresize = updateTrickImagesPreviews;
+
+    $('#mediasList').on('shown.bs.collapse', function () {
+        updateTrickImagesPreviews();
+    })
 });

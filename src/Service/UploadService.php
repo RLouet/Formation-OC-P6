@@ -6,8 +6,10 @@ namespace App\Service;
 
 use App\Entity\Trick;
 use App\Entity\User;
+use Imagine\Filter\Basic\Autorotate;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Image\Point;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
@@ -85,14 +87,34 @@ class UploadService
 
     private function resizeImage(string $imagePath, int $tWidth, int $tHeight)
     {
-        $tRation = $tWidth / $tHeight;
-        list($oWidth, $oHeight) = getimagesize($imagePath);
-        $oRatio = $oWidth / $oHeight;
+        $tRatio = $tWidth / $tHeight;
 
+        list($oWidth, $oHeight) = getimagesize($imagePath);
         $imagine = new Imagine();
         $image = $imagine->open($imagePath);
 
-        switch ($tRation > $oRatio) {
+        $exif = exif_read_data($imagePath);
+        if (!empty($exif['Orientation'])) {
+            switch ($exif['Orientation']) {
+                case 3:
+                    $image->rotate(180);
+                    break;
+                case 6:
+                    $image->rotate(90);
+                    list($oHeight, $oWidth) = getimagesize($imagePath);
+                    break;
+
+                case 8:
+                    $image->rotate(-90);
+                    list($oHeight, $oWidth) = getimagesize($imagePath);
+                    break;
+            }
+        }
+
+        $oRatio = $oWidth / $oHeight;
+
+
+        switch ($tRatio > $oRatio) {
             case true:
                 $image->resize(new Box($tWidth, $tWidth / $oRatio));
                 $image->crop(new Point(0, (($tWidth / $oRatio) - $tHeight) / 2), new Box($tWidth, $tHeight));
