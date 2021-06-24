@@ -56,7 +56,7 @@
                 // check Mime type
                 if (!checkMimeType(image, "image/png|image/gif|image/jpeg")) {
                     $preview.addClass("border-danger");
-                    $(".img-alert .form-error-message", $container).data('to-display', 1);
+                    $(".img-alert .form-error-message", $container).data("to-display", 1);
                     $(".img-alert .form-error-message", $container).html("Les formats supportés sont png, jpeg et gif.");
                     $(".img-alert", $container).addClass("d-block");
                     $(this).val("");
@@ -67,7 +67,7 @@
                 //CheckSize
                 if (size > maxSize) {
                     $preview.addClass("border-danger");
-                    $(".img-alert .form-error-message", $container).data('to-display', true);
+                    $(".img-alert .form-error-message", $container).data("to-display", true);
                     $(".img-alert .form-error-message", $container).html("L'image est trop volumineuse (Maxi : " + maxSize + " Mo) !");
                     $(".img-alert", $container).addClass("d-block");
                     $(this).val("");
@@ -88,10 +88,10 @@
             $("img", $preview).css("width", "100%");
             $("img", $preview).css("margin", "0");
             if (oldVal === "/imgs/no-image.png") {
-                if (!$(".img-alert .form-error-message", $container).data('to-display') === true) {
+                if (!$(".img-alert .form-error-message", $container).data("to-display") === true) {
                     $(".img-alert .form-error-message", $container).html("Merci de choisir une image valide ou de supprimer cette image.");
                 }
-                $(".img-alert .form-error-message", $container).data('to-display', false);
+                $(".img-alert .form-error-message", $container).data("to-display", false);
                 $(".img-alert", $container).addClass("d-block");
             }
             $("img", $preview).attr("src", oldVal);

@@ -20,6 +20,42 @@ $(document).ready(function() {
     }
     window.onresize = updateTrickImagesPreviews;
 
+    function updateHeroImage(choice = "", force = false) {
+        let imgSrc = "/imgs/no-image.png";
+        const $heroFormField = $("form[name='trick'] input#trick_hero");
+        const $headerHero = $("header .trick-hero");
+        let found;
+        if (force) {
+            $heroFormField.val(choice);
+        } else {
+            if (choice === "") {
+                choice = $heroFormField.val();
+            }
+            const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
+            found = choice.matchAll(re);
+            found = Array.from(found);
+            if (found.length > 0) {
+                $heroFormField.val(found[0][0]);
+            }
+        }
+        //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
+
+        if ($heroFormField.val() === "") {
+            const imgItems = $(".image", $mediasContainer);
+            imgItems.each(function () {
+                let itemSrc = $(".img-input-preview", $(this)).attr("src");
+                if (itemSrc !== imgSrc) {
+                    imgSrc = itemSrc;
+                    return false;
+                }
+            })
+            $headerHero.css("background-image", "url('" + imgSrc + "')");
+            return;
+        }
+        imgSrc = $(".image." + found[0].groups["type"] + "-image-" + found[0].groups["index"] + " .img-input-preview").attr("src");
+        $headerHero.css("background-image", "url('" + imgSrc + "')");
+    }
+
     $("#mediasList").on("shown.bs.collapse", function () {
         updateTrickImagesPreviews();
     });
@@ -128,7 +164,7 @@ $(document).ready(function() {
         initImagePreview($("input", $newImageItem), 1280, 1024, 5);
         $("input", $newImageItem).change(function (e) {
             updateHeroImage();
-        })
+        });
     });
 
     $heroChoiceModal.on("show.bs.modal", function (e) {
@@ -176,42 +212,6 @@ $(document).ready(function() {
         updateHeroImage("", true);
         $("#heroDeleteModal").modal("hide");
     });
-
-    function updateHeroImage(choice = "", force = false) {
-        let imgSrc = "/imgs/no-image.png";
-        const $heroFormField = $("form[name='trick'] input#trick_hero");
-        const $headerHero = $("header .trick-hero");
-        let found;
-        if (force) {
-            $heroFormField.val(choice);
-        } else {
-            if (choice === "") {
-                choice = $heroFormField.val();
-            }
-            const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
-            found = choice.matchAll(re);
-            found = Array.from(found);
-            if (found.length > 0) {
-                $heroFormField.val(found[0][0]);
-            }
-        }
-        //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
-
-        if ($heroFormField.val() === "") {
-            const imgItems = $(".image", $mediasContainer);
-            imgItems.each(function () {
-                let itemSrc = $(".img-input-preview", $(this)).attr("src");
-                if (itemSrc !== imgSrc) {
-                    imgSrc = itemSrc;
-                    return false;
-                }
-            })
-            $headerHero.css("background-image", "url('" + imgSrc + "')");
-            return;
-        }
-        imgSrc = $(".image." + found[0].groups["type"] + "-image-" + found[0].groups["index"] + " .img-input-preview").attr("src");
-        $headerHero.css("background-image", "url('" + imgSrc + "')");
-    }
 
     if ($("form[name='trick'] input#trick_hero").val().match(/^new-((\d){1,4})$/i)) {
         updateHeroImage("", true);
