@@ -48,7 +48,7 @@ $(document).ready(function() {
                     imgSrc = itemSrc;
                     return false;
                 }
-            })
+            });
             $headerHero.css("background-image", "url('" + imgSrc + "')");
             return;
         }
