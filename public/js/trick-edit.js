@@ -221,8 +221,8 @@ $(document).ready(function() {
         initImagePreview($(this), 1280, 1024, 5);
         $(this).change(function (e) {
             updateHeroImage();
-        })
-    })
+        });
+    });
 
     $("form[name='trick']").submit(function(e){
         let emptyImage = false;
