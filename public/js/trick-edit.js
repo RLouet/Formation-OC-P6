@@ -152,14 +152,19 @@ $(document).ready(function() {
         $deleteMediaModal.modal("hide");
     });
 
+    let newImageIndex = 0;
+
+    if ($("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer).length > 0) {
+        newImageIndex = $("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer).last().data("index") + 1;
+    }
+
     $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").last().data("index") + 1);
 
     $(".add-image").on("click", function(e){
         const prototype = $(".new-image-prototype", $mediasContainer).data("prototype");
-        const index = $(".new-image-prototype", $mediasContainer).data("index");
-        const $newImageItem = $(prototype.replace(/__name__/g, index));
+        const $newImageItem = $(prototype.replace(/__name__/g, newImageIndex));
         $(".video-prototype", $mediasContainer).before($newImageItem);
-        $(".new-image-prototype", $mediasContainer).data("index", index + 1);
+        newImageIndex++;
         $("label.edit-btn", $newImageItem).click();
         initImagePreview($("input", $newImageItem), 1280, 1024, 5);
         $("input", $newImageItem).change(function (e) {
