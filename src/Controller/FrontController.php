@@ -4,9 +4,12 @@
 namespace App\Controller;
 
 
+use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,25 +59,69 @@ class FrontController extends AbstractController
     }
 
     #[Route("/tricks/add", name: "front_tricks-add")]
-    public function addTrick(Request $request, EntityManagerInterface $manager): Response
+    public function addTrick(Request $request, EntityManagerInterface $manager, UploadService $uploadService): Response
     {
         $trick = new Trick();
+        /*$video = new Video();
+        $video->setName('testvideoname');
+        $trick->addVideo($video);*/
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $trick->setAuthor($this->getUser());
-            //dd($trick);
-            $manager->persist($trick);
-            $manager->flush();
+        if ($form->isSubmitted()) {
+            //dd ($form['newImages'][1]['name']);
+            if ($form->isValid()) {
+                $trick->setAuthor($this->getUser());
+                $hero = false;
+                preg_match_all("/^(?<type>new|old)-(?<index>\d{1,4})$/i",$form->get('hero')->getData(), $matches);
+                if (!empty($matches[0])) {
+                    $hero = [
+                        'all' => (string)$matches[0][0],
+                        'type' => (string)$matches['type'][0],
+                        'index' => (int)$matches['index'][0]
+                    ];
+                }
+                //dd($hero);
 
-            $this->addFlash(
-                'primary',
-                "Ton trick a bien été enregistré."
-            );
+                $uploadError = false;
+                foreach ($form['newImages'] as $key => $imageForm) {
+                    $imageFile = $uploadService->getFormFile($form->get('newImages')[$key], 'name');
+                    //dd($image, $imageFile);
+                    if ($imageFile) {
+                        $upload = $uploadService->uploadTrickImage($imageFile, $trick);
+                        //dd($upload);
+                        if (!$upload['success']) {
+                            $uploadError = true;
+                            $this->addFlash(
+                                'danger',
+                                "Une erreur s'est produite lors de l'enregistrement d'une image'."
+                            );
+                        }
+                        if ($upload['success']) {
+                            $image = new Image();
+                            $image->setName($upload['file']);
+                            $trick->addImage($image);
+                            if ($hero && $hero['type'] === "new" && $hero['index'] === $key) {
+                                $trick->setHero($image);
+                            }
+                        }
+                    }
+                }
+                //dd('ok');
+                $manager->persist($trick);
+                $manager->flush();
 
-            return $this->redirectToRoute('front_home');
+                $this->addFlash(
+                    'primary',
+                    "Ton trick a bien été enregistré."
+                );
+
+                if ($uploadError) {
+                    return $this->redirectToRoute('front_tricks-edit', ['id' => $trick->getId()]);
+                }
+                return $this->redirectToRoute('front_home');
+            }
         }
 
         return $this->render('front/trick-add.html.twig', [

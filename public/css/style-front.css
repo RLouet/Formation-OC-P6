@@ -120,11 +120,13 @@
 }
 
 .management-btns .edit-btn,
+.medias-management-btns .edit-btn,
 .trick-item .card-footer .edit-btn {
   color: #1f35e0;
 }
 
 .management-btns .delete-btn,
+.medias-management-btns .delete-btn,
 .trick-item .card-footer .delete-btn {
   color: #d60400;
 }
@@ -238,6 +240,29 @@ article.trick-single .trick-medias .image button:hover {
   .hero-bottom {
     margin: 1rem;
   }
+}
+
+/* Trick edit / add */
+.heroChoiceFieldContainer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+}
+
+.heroChoiceFieldContainer label {
+  width: 100%;
+  height: 100%;
+}
+
+.heroChoiceFieldContainer label:hover {
+  cursor: pointer;
+}
+
+.heroChoiceFieldContainer label input {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 @media (min-width: 576px) {

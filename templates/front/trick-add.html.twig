@@ -1,6 +1,47 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block collection_row %}
+{% endblock %}
+
+{% block _trick_newImages_entry_row %}
+    <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-__name__" data-index="__name__" data-type="new">
+        <label for="{{ form.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
+            <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
+            <span class="img-prev-ol d-none">
+                <span class="spinner"></span>
+            </span>
+        </label>
+        <div class="medias-management-btns text-right mt-1">
+            <span class="p-1 border border-dark rounded">
+                <label for="{{ form.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-__name__" data-type="l'image"><em class="far fa-trash-alt"></em></a>
+            </span>
+        </div>
+        <div class="img-alert invalid-feedback d-block">
+            <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+            <span class="form-error-message">
+                {% if form_errors(form.name)|length > 0 %}
+                    {% for error in form.name.vars.errors %}
+                        {{ error.message }}
+                    {% endfor %}
+                {% else %}
+                    Merci de choisir une image valide ou de supprimer cette image.
+                {% endif %}
+            </span>
+        </div>
+        <div class="d-none">{{ form_widget(form.name) }}</div>
+    </div>
+{% endblock %}
+
+
+{% block _trick_newImages_entry_name_widget %}
+    <input type="file" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
+
 {% block content %}
+
     <div id="contentContainer">
         <article class="container rounded trick-single pb-3">
             <header class="row">
@@ -10,6 +51,14 @@
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>
                     <h2 class="vertical-align-middle w-100 trick-name">{{ trick.name }}</h2>
+                    <div class="row management-btns py-1 rounded">
+                        <div class="col-6 text-center edit border-right border-dark">
+                            <a href="#" title="Modifier le Hero" class="edit-btn" data-toggle="modal" data-target="#heroChoiceModal"><em class="far fa-edit"></em></a>
+                        </div>
+                        <div class="col-6 text-center delete">
+                            <a href="#" title="Réinitialiser le Hero" class="delete-btn" data-toggle="modal" data-target="#heroDeleteModal"><em class="far fa-trash-alt"></em></a>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -22,24 +71,74 @@
                     </button>
                 </div>
                 <div class="collapse col-12 mt-2 d-md-block" id="mediasList">
-                    <div class="row p-0 justify-content-center">
+                    <div class="row p-0 justify-content-center medias-container mb-2 align-items-end">
+                        <span class="image-prototype" data-prototype=""></span>
                         {% for image in trick.images %}
-                            <div class="col-md-2 px-1 image">
+                            <div class="col-md-2 px-1 image image-input-container old-image">
                                 <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
                                 <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
                             </div>
                         {% endfor %}
-                        {% for video in trick.videos %}
-                            <div class="col-md-2 px-1 video">
+                        <span class="new-image-prototype" data-prototype="{{ form_row(form.newImages.vars.prototype)|e('html_attr') }}"></span>
+
+                        {{ form_errors(form.newImages) }}
+                        {% for key,newImage in form.newImages %}
+                            <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-{{ key }}" data-index="{{ key }}" data-type="new">
+                                <label for="{{ newImage.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
+                                    <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
+                                    <span class="img-prev-ol d-none">
+                                        <span class="spinner"></span>
+                                    </span>
+                                </label>
+                                <div class="medias-management-btns text-right mt-1">
+                                    <span class="p-1 border border-dark rounded">
+                                        <label for="{{ newImage.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
+                                    </span>
+                                </div>
+                                <div class="img-alert invalid-feedback d-block">
+                                    <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+                                    <span class="form-error-message">
+                                        {% if form_errors(newImage.name)|length > 0 %}
+                                            {% for error in newImage.name.vars.errors %}
+                                                {{ error.message }}
+                                            {% endfor %}
+                                        {% else %}
+                                            Merci de choisir une image valide ou de supprimer cette image.
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="d-none">{{ form_widget(newImage.name) }}</div>
+                            </div>
+{#
+{% for data in newImage.name.vars.value %}
+    =>{{ data }}
+{% endfor %}
+#}
+
+                        {% endfor %}
+
+                        <span class="video-prototype"  data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"></span>
+                        {% for video in form.videos %}
+                            <div class="col-6 col-md-2 px-1 pb-2 video video-{{ loop.index0 }}">
                                 <div class="embed-responsive embed-responsive-4by3">
-                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.name }}?rel=0" allowfullscreen></iframe>
+                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ video.name.vars.value }}?rel=0" allowfullscreen></iframe>
+                                </div>
+                                <div class="medias-management-btns text-right mt-3">
+                                    <span class="p-1 border border-dark rounded">
+                                    <a href="#" title="Modifier la vidéo" class="edit-btn px-2 border-right border-dark" data-toggle="modal" data-target="#videoFormModal" data-action="edit" data-index="{{ loop.index0 }}"><em class="far fa-edit"></em></a>
+                                    <a href="#" title="Supprimer la vidéo" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".video-{{ loop.index0 }}" data-type="la vidéo"><em class="far fa-trash-alt"></em></a>
+                                    </span>
+                                </div>
+                                <div id="trick_video_{{ loop.index0 }}">
+                                    {{ form_widget(video.name) }}
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="row justify-content-center">
-                        <button type="button" class="btn btn-primary mx-1">Ajouter une image</button>
-                        <button type="button" class="btn btn-primary mx-1">Ajouter une vidéo</button>
+                    <div class="row justify-content-center mt-2">
+                        <button type="button" class="btn btn-primary mx-1 add-image">Ajouter une image</button>
+                        <button type="button" class="btn btn-primary mx-1" data-toggle="modal" data-target="#videoFormModal" data-action="add">Ajouter une vidéo</button>
                     </div>
                     <div class="col-12 text-center mt-2 d-md-none">
                         <button class="btn btn-secondary hide-medias" type="button" data-toggle="collapse" data-target="#mediasList" aria-expanded="false" aria-controls="mediasList">
@@ -68,6 +167,110 @@
             {{ form_end(form) }}
         </article>
     </div>
+    <div class="modal fade" id="videoFormModal" tabindex="-1" role="dialog" aria-labelledby="videoFormModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoFormModalTitle"><span class="action">Ajouter</span> une vidéo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="errors d-none">
+                            <div class="alert alert-danger"></div>
+                        </div>
+
+                        <label for="videoName">Vidéo Youtube</label>
+                        <input type="text" name="name" id="videoName" class="form-control" required autofocus>
+                        <small class="form-text text-muted">
+                            Exemple : Frln61fCrGk (pour la vidéo "https://www.youtube.com/watch?v=Frln61fCrGk")
+                        </small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button class="btn btn-primary" type="submit">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mediaDeleteModal" tabindex="-1" role="dialog" aria-labelledby="mediaDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mediaDeleteModalTitle">Supprimer une vidéo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer <span class="type"></span> ?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary delete-btn">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="heroChoiceModal" tabindex="-1" role="dialog" aria-labelledby="heroChoiceModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heroChoiceModalTitle">Modifier le Hero</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+
+                <div class="modal-body">
+                    <div class="row text-center">
+                        <h6 class="col-12">Choisis un Hero parmi les images du trick</h6>
+                        <div class="col-12 text-center trick-images-list d-flex flex-wrap justify-content-center">
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary delete-btn">Valider</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="heroDeleteModal" tabindex="-1" role="dialog" aria-labelledby="heroDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heroDeleteModalTitle">Réinitialiser le Hero</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir réinitialiser le hero ?</div>
+                        <p>Le hero affiché sera la première image du trick s'il y en a une.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary delete-btn">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascriptsBottom %}
@@ -79,5 +282,6 @@
         trickImages.push("{{ image.name }}");
         {% endfor %}
     </script>
+    <script src="{{ asset('js/images.js') }}"></script>
     <script src="{{ asset('js/trick-edit.js') }}"></script>
 {% endblock %}

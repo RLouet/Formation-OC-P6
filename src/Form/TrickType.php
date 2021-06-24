@@ -8,18 +8,12 @@ use App\Entity\Category;
 use App\Entity\Trick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class TrickType extends AbstractType
 {
@@ -46,6 +40,27 @@ class TrickType extends AbstractType
                 'label' => 'Catégories',
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('videos', CollectionType::class, [
+                'entry_type'=> VideoType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+            ])
+            ->add('newImages', CollectionType::class, [
+                'mapped' => false,
+                'entry_type'=> NewImageType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+            ])
+            ->add('images', CollectionType::class, [
+                'entry_type'=> ImageType::class,
+                'entry_options' => ['label' => false],
+            ])
+            ->add('hero', HiddenType::class, [
+                'mapped' => false,
+                'required' => false
             ])
         ;
     }

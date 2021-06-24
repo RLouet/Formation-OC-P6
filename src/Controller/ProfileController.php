@@ -47,7 +47,7 @@ class ProfileController extends AbstractController
                     $user->setPassword($passwordEncoded);
                 }
 
-                $avatarFile = $this->getFile($form, 'avatar');
+                $avatarFile = $uploadService->getFormFile($form, 'avatar');
                 if ($avatarFile) {
                     $upload = $uploadService->uploadAvatar($avatarFile, $user);
                     //dd($upload);
@@ -75,10 +75,5 @@ class ProfileController extends AbstractController
             'form' => $form->createView(),
             'avatarUrl' => $user->getAvatarUrl()
         ]);
-    }
-
-    private function getFile(FormInterface $form, string $fieldName): ?UploadedFile
-    {
-        return $form->get($fieldName)->getData();
     }
 }

@@ -285,7 +285,9 @@ class Trick
 
     public function setHero(?Image $hero): self
     {
-        $this->hero = $hero;
+        if ($hero->getTrick() === $this) {
+            $this->hero = $hero;
+        }
 
         return $this;
     }
@@ -295,11 +297,11 @@ class Trick
      */
     public function getHeroUrl(): string
     {
-        if (!$this->getImages()->isEmpty()) {
-            return "uploads/tricks/" . $this->getImages()->first()->getName();
-        }
         if ($this->getHero()) {
             return "uploads/tricks/" . $this->getHero()->getName();
+        }
+        if (!$this->getImages()->isEmpty()) {
+            return "uploads/tricks/" . $this->getImages()->first()->getName();
         }
         return "imgs/no-image.png";
     }

@@ -4,11 +4,15 @@
 namespace App\Service;
 
 
+use App\Entity\Trick;
 use App\Entity\User;
+use Imagine\Filter\Basic\Autorotate;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Image\Point;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -45,6 +49,24 @@ class UploadService
         return $return;
     }
 
+    public function uploadTrickImage(UploadedFile $imageFile, Trick $trick): array
+    {
+        $return = [
+            'success' => false,
+            'file' => ''
+        ];
+        $fileName = uniqid(rand(1000, 9999), true) . "." . $imageFile->guessExtension();
+
+        if (!$this->upload($imageFile, '/tricks', $fileName)) {
+            return $return;
+        }
+        $return['file'] = $fileName;
+
+        $this->resizeImage($this->uploadPath . '/tricks/' . $fileName, 1280, 1024);
+        $return['success'] = true;
+        return $return;
+    }
+
     private function upload(UploadedFile $file, $directory, $fileName): bool
     {
         try {
@@ -65,14 +87,34 @@ class UploadService
 
     private function resizeImage(string $imagePath, int $tWidth, int $tHeight)
     {
-        $tRation = $tWidth / $tHeight;
-        list($oWidth, $oHeight) = getimagesize($imagePath);
-        $oRatio = $oWidth / $oHeight;
+        $tRatio = $tWidth / $tHeight;
 
+        list($oWidth, $oHeight) = getimagesize($imagePath);
         $imagine = new Imagine();
         $image = $imagine->open($imagePath);
 
-        switch ($tRation > $oRatio) {
+        $exif = exif_read_data($imagePath);
+        if (!empty($exif['Orientation'])) {
+            switch ($exif['Orientation']) {
+                case 3:
+                    $image->rotate(180);
+                    break;
+                case 6:
+                    $image->rotate(90);
+                    list($oHeight, $oWidth) = getimagesize($imagePath);
+                    break;
+
+                case 8:
+                    $image->rotate(-90);
+                    list($oHeight, $oWidth) = getimagesize($imagePath);
+                    break;
+            }
+        }
+
+        $oRatio = $oWidth / $oHeight;
+
+
+        switch ($tRatio > $oRatio) {
             case true:
                 $image->resize(new Box($tWidth, $tWidth / $oRatio));
                 $image->crop(new Point(0, (($tWidth / $oRatio) - $tHeight) / 2), new Box($tWidth, $tHeight));
@@ -83,5 +125,11 @@ class UploadService
                 break;
         }
         $image->save($imagePath);
+    }
+
+
+    public function getFormFile(FormInterface $form, string $fieldName): ?UploadedFile
+    {
+        return $form->get($fieldName)->getData();
     }
 }

@@ -42,7 +42,7 @@ $(document).ready(function() {
                 showFlashMessage("danger", data.error);
             },
             error(e) {
-                $switchRoleModal.modal('hide');
+                $switchRoleModal.modal("hide");
                 showFlashMessage("danger", "Une erreur s'est produite.");
             }
         });
