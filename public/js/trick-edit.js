@@ -108,11 +108,15 @@ $(document).ready(function() {
     });
 
     $("button.delete-btn", $deleteMediaModal).on("click", function (){
-        $($(this).data("item"), $mediasContainer).remove();
+        const $item = $($(this).data("item"), $mediasContainer);
+        $item.remove();
+        if ($("form[name='trick'] input#trick_hero").val() === $item.data("type") + "-" + $item.data("index") ) {
+            updateHeroImage("", true);
+        }
         $deleteMediaModal.modal("hide");
     });
 
-    $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").length);
+    $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").last().data("index") + 1);
 
     $(".add-image").on("click", function(e){
         const prototype = $(".new-image-prototype", $mediasContainer).data("prototype");
@@ -122,17 +126,28 @@ $(document).ready(function() {
         $(".new-image-prototype", $mediasContainer).data("index", index + 1);
         $("label.edit-btn", $newImageItem).click();
         initImagePreview($("input", $newImageItem), 1280, 1024, 5);
+        $("input", $newImageItem).change(function (e) {
+            updateHeroImage();
+        })
     });
 
     $heroChoiceModal.on("show.bs.modal", function (e) {
         const $imagesList = $(".trick-images-list", $(this));
         $imagesList.html("");
+        let checkedHero = "";
+        const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
+        let found = Array.from($("form[name='trick'] input#trick_hero").val().matchAll(re));
+        if (found.length > 0) {
+            checkedHero = found[0][0];
+        }
         let imageCount = 0;
         $("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer).each(function(){
             if ($("input[type='file']", $(this)).val()) {
+                const index = $(this).data("index");
                 imageCount++;
+                let checked = "new-" + $(this).data("index") === checkedHero?" checked":"";
                 const $image = $(".img-input-preview",$(this));
-                let $imageItem = $("<div class=\"col-6 col-md-3 p-1 new-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"new-" + $(this).data("index") + "\"></label></div></div></div>");
+                let $imageItem = $("<div class=\"col-6 col-md-3 p-1 new-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"new-" + index + "\"" + checked + "></label></div></div></div>");
                 $imagesList.append($imageItem);
             }
         });
@@ -150,16 +165,81 @@ $(document).ready(function() {
         e.preventDefault();
         const choice = $("input[name='hero_choice']:checked", $(this)).length > 0?$("input[name='hero_choice']:checked", $(this)).val():null;
         if (choice) {
-            const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
-            let found = choice.matchAll(re);
-            found = Array.from(found);
-            //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
-            $("form[name='trick'] input#trick_hero").val(found[0][0]);
-            const imgSrc = $(".image." + found[0].groups["type"] + "-image-" + found[0].groups["index"] + " .img-input-preview").attr("src");
-            $("header .trick-hero").css("background-image", "url('" + imgSrc + "')");
+            updateHeroImage(choice);
             $heroChoiceModal.modal("hide");
         }
 
         const string = "new-5797";
+    });
+    $("#heroDeleteModal button.delete-btn").click(function (e){
+        e.preventDefault();
+        updateHeroImage("", true);
+        $("#heroDeleteModal").modal("hide");
+    });
+
+    function updateHeroImage(choice = "", force = false) {
+        let imgSrc = "/imgs/no-image.png";
+        const $heroFormField = $("form[name='trick'] input#trick_hero");
+        const $headerHero = $("header .trick-hero");
+        let found;
+        if (force) {
+            $heroFormField.val(choice);
+        } else {
+            if (choice === "") {
+                choice = $heroFormField.val();
+            }
+            const re = /^(?<type>(new|old))-(?<index>(\d){1,4})$/gi;
+            found = choice.matchAll(re);
+            found = Array.from(found);
+            if (found.length > 0) {
+                $heroFormField.val(found[0][0]);
+            }
+        }
+        //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
+
+        if ($heroFormField.val() === "") {
+            const imgItems = $(".image", $mediasContainer);
+            imgItems.each(function () {
+                let itemSrc = $(".img-input-preview", $(this)).attr("src");
+                if (itemSrc !== imgSrc) {
+                    imgSrc = itemSrc;
+                    return false;
+                }
+            })
+            $headerHero.css("background-image", "url('" + imgSrc + "')");
+            return;
+        }
+        imgSrc = $(".image." + found[0].groups["type"] + "-image-" + found[0].groups["index"] + " .img-input-preview").attr("src");
+        $headerHero.css("background-image", "url('" + imgSrc + "')");
+    }
+
+    if ($("form[name='trick'] input#trick_hero").val().match(/^new-((\d){1,4})$/i)) {
+        updateHeroImage("", true);
+    }
+
+    $(".image.image-input-container input", $mediasContainer).each(function (){
+        initImagePreview($(this), 1280, 1024, 5);
+        $(this).change(function (e) {
+            updateHeroImage();
+        })
+    })
+
+    $("form[name='trick']").submit(function(e){
+        let emptyImage = false;
+        $(".image", $(this)).each(function(){
+            const $fileInput = $("input", $(this));
+            if ($fileInput.val() === "") {
+                $(".image-input-preview", $(this)).addClass("border border-danger");
+                $(".img-alert .form-error-message", $(this)).html("Merci de choisir une image valide ou de supprimer cette image.");
+                $(".img-alert", $(this)).addClass("d-block");
+                emptyImage = true;
+            }
+        });
+
+        if (emptyImage) {
+            $("#mediasList").collapse("show");
+            $("#mediasList")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
+            return false;
+        }
     });
 });

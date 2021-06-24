@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block _trick_newImages_entry_row %}
-    <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-__name__" data-index="__name__">
+    <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-__name__" data-index="__name__" data-type="new">
         <label for="{{ form.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
             <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
             <span class="img-prev-ol d-none">
@@ -56,7 +56,7 @@
                             <a href="#" title="Modifier le Hero" class="edit-btn" data-toggle="modal" data-target="#heroChoiceModal"><em class="far fa-edit"></em></a>
                         </div>
                         <div class="col-6 text-center delete">
-                            <a href="#" title="Réinitialiser le Hero" class="delete-btn"><em class="far fa-trash-alt"></em></a>
+                            <a href="#" title="Réinitialiser le Hero" class="delete-btn" data-toggle="modal" data-target="#heroDeleteModal"><em class="far fa-trash-alt"></em></a>
                         </div>
                     </div>
                 </div>
@@ -82,12 +82,39 @@
                         <span class="new-image-prototype" data-prototype="{{ form_row(form.newImages.vars.prototype)|e('html_attr') }}"></span>
 
                         {{ form_errors(form.newImages) }}
-                        {% for newImage in form.newImages %}
-
-                            {{ form_row(newImage) }}
-                            {% for data in newImage.name.vars.value %}
-                                =>{{ data }}
-                            {% endfor %}
+                        {% for key,newImage in form.newImages %}
+                            <div class="col-6 col-md-2 px-1 pb-2 image image-input-container new-image-{{ key }}" data-index="{{ key }}" data-type="new">
+                                <label for="{{ newImage.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
+                                    <img src="/imgs/no-image.png" alt="Nouvelle image" class="img-input-preview w-100">
+                                    <span class="img-prev-ol d-none">
+                                        <span class="spinner"></span>
+                                    </span>
+                                </label>
+                                <div class="medias-management-btns text-right mt-1">
+                                    <span class="p-1 border border-dark rounded">
+                                        <label for="{{ newImage.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
+                                    </span>
+                                </div>
+                                <div class="img-alert invalid-feedback d-block">
+                                    <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+                                    <span class="form-error-message">
+                                        {% if form_errors(newImage.name)|length > 0 %}
+                                            {% for error in newImage.name.vars.errors %}
+                                                {{ error.message }}
+                                            {% endfor %}
+                                        {% else %}
+                                            Merci de choisir une image valide ou de supprimer cette image.
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="d-none">{{ form_widget(newImage.name) }}</div>
+                            </div>
+{#
+{% for data in newImage.name.vars.value %}
+    =>{{ data }}
+{% endfor %}
+#}
 
                         {% endfor %}
 
@@ -218,6 +245,29 @@
                     <button type="submit" class="btn btn-primary delete-btn">Valider</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="heroDeleteModal" tabindex="-1" role="dialog" aria-labelledby="heroDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="heroDeleteModalTitle">Réinitialiser le Hero</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir réinitialiser le hero ?</div>
+                        <p>Le hero affiché sera la première image du trick s'il y en a une.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary delete-btn">Supprimer</button>
+                </div>
             </div>
         </div>
     </div>

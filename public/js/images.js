@@ -41,7 +41,6 @@
             const $preview = $(".image-input-preview", $container);
             const oldVal = $("img", $preview).data("old")?$("img", $preview).data("old"):"/imgs/no-image.png";
             const $previewLoader = $(".img-prev-ol", $container);
-            //alert(oldVal);
             e.preventDefault();
 
 
@@ -57,19 +56,21 @@
                 // check Mime type
                 if (!checkMimeType(image, "image/png|image/gif|image/jpeg")) {
                     $preview.addClass("border-danger");
+                    $(".img-alert .form-error-message", $container).data('to-display', 1);
                     $(".img-alert .form-error-message", $container).html("Les formats supportés sont png, jpeg et gif.");
                     $(".img-alert", $container).addClass("d-block");
-                    //$(this).val(oldVal);
+                    $(this).val("");
                     $previewLoader.addClass("d-none");
-                    return false;
+                    return true;
                 }
 
                 //CheckSize
                 if (size > maxSize) {
                     $preview.addClass("border-danger");
+                    $(".img-alert .form-error-message", $container).data('to-display', true);
                     $(".img-alert .form-error-message", $container).html("L'image est trop volumineuse (Maxi : " + maxSize + " Mo) !");
                     $(".img-alert", $container).addClass("d-block");
-                    //$(this).val(oldVal);
+                    $(this).val("");
                     $previewLoader.addClass("d-none");
                     return false;
                 }
@@ -87,7 +88,10 @@
             $("img", $preview).css("width", "100%");
             $("img", $preview).css("margin", "0");
             if (oldVal === "/imgs/no-image.png") {
-                $(".img-alert .form-error-message", $container).html("Merci de choisir une image valide ou de supprimer cette image.");
+                if (!$(".img-alert .form-error-message", $container).data('to-display') === true) {
+                    $(".img-alert .form-error-message", $container).html("Merci de choisir une image valide ou de supprimer cette image.");
+                }
+                $(".img-alert .form-error-message", $container).data('to-display', false);
                 $(".img-alert", $container).addClass("d-block");
             }
             $("img", $preview).attr("src", oldVal);
@@ -107,22 +111,4 @@
         });
     }
 
-$("form[name='trick']").submit(function(e){
-    let emptyImage = false;
-    $(".image", $(this)).each(function(){
-        const $fileInput = $("input", $(this));
-        if ($fileInput.val() === "") {
-            $(".image-input-preview", $(this)).addClass("border border-danger");
-            $(".img-alert .form-error-message", $(this)).html("Merci de choisir une image valide ou de supprimer cette image.");
-            $(".img-alert", $(this)).addClass("d-block");
-            emptyImage = true;
-        }
-    });
-
-    if (emptyImage) {
-        $("#mediasList").collapse("show");
-        $("#mediasList")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
-        return false;
-    }
-});
 
