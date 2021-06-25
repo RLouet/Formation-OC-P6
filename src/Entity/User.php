@@ -29,7 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"paginate_user"})
+     * @Groups({"paginate_user", "paginate_trick"})
      */
     private array $roles = [];
 

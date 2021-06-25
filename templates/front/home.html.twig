@@ -42,9 +42,34 @@
         </div>
 
     </section>
+
+    <div class="modal fade" id="trickDeleteModal" tabindex="-1" role="dialog" aria-labelledby="trickDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="trickDeleteModalTitle">Supprimer le Trick</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer le Trick "<span class="trick-name"></span>" ?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary delete-btn" data-token="{{ csrf_token('delete-trick') }}">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascriptsBottom %}
     {{ parent() }}
+    <script>
+        const currentUser = {% if app.user %}{{ app.user.id }}{% else %}null{% endif %}
+    </script>
     <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}

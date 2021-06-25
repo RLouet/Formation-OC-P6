@@ -10,6 +10,7 @@
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>
                     <h2 class="vertical-align-middle w-100">{{ trick.name }}</h2>
+                    {% if is_granted('ROLE_ADMIN') or app.user == trick.author %}
                     <div class="row management-btns py-1 rounded">
                         <div class="col-6 text-center edit border-right border-dark">
                             <a href="{{ path('front_tricks-edit', {id: trick.id}) }}" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
@@ -18,6 +19,7 @@
                             <a href="#" title="Supprimer le Trick" class="delete-btn"><em class="far fa-trash-alt"></em></a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </header>
             <section class="row my-3 justify-content-center trick-medias" id="trickMedias">

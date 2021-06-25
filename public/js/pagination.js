@@ -9,11 +9,24 @@ $(document).ready(function() {
         return (str + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" + breakTag + "$2");
     }
 
-    function generatePaginationItem(entity, data) {
+    function generatePaginationItem(entity, data, userRoles) {
         let item = "";
         switch (entity) {
             case "trick":
-                item = "<article class=\"col mb-3 mb-md-4 trick-item\">\n" +
+                let managementBtns = "";
+                if (data.author.id === currentUser || userRoles.includes("ROLE_ADMIN")) {
+                    managementBtns = "<div class=\"card-footer\">\n" +
+                        "                 <div class=\"row\">\n" +
+                        "                     <div class=\"col-6 text-center edit\">\n" +
+                        "                         <a href=\"#\" title=\"Modifier le Trick\" class=\"edit-btn\"><em class=\"far fa-edit\"></em></a>\n" +
+                        "                     </div>\n" +
+                        "                     <div class=\"col-6 text-center delete\">\n" +
+                        "                         <a href=\"#\" title=\"Supprimer les Trick\" class=\"delete-btn\" data-toggle=\"modal\" data-target=\"#trickDeleteModal\" data-name=\"" + data.name + "\" data-id=\"" + data.id + "\"><em class=\"far fa-trash-alt\"></em></a>\n" +
+                        "                     </div>\n" +
+                        "                 </div>\n" +
+                        "            </div>\n"
+                }
+                item = "<article class=\"col mb-3 mb-md-4 trick-item trick-" + data.id + "\">\n" +
                     "    <div class=\"card h-100\">\n" +
                     "        <div class=\"item-header\">\n" +
                     "            <a href=\"" + window.location.origin + "/tricks/details/" + data.id + "\" title=\"Voir le trick\">\n" +
@@ -22,18 +35,7 @@ $(document).ready(function() {
                     "        </div>\n" +
                     "        <div class=\"card-body\">\n" +
                     "            <h3 class=\"card-title mb-0\">" + data.name + "</h3>\n" +
-                    "        </div>\n" +
-                    "        <div class=\"card-footer\">\n" +
-                    "            <div class=\"row\">\n" +
-                    "                <div class=\"col-6 text-center edit\">\n" +
-                    "                    <a href=\"#\" title=\"Modifier le Trick\" class=\"edit-btn\"><em class=\"far fa-edit\"></em></a>\n" +
-                    "                </div>\n" +
-                    "                <div class=\"col-6 text-center delete\">\n" +
-                    "                    <a href=\"#\" title=\"Supprimer les Trick\" class=\"delete-btn\"><em class=\"far fa-trash-alt\"></em></a>\n" +
-                    "                </div>\n" +
-                    "            </div>\n" +
-                    "\n" +
-                    "        </div>\n" +
+                    "        </div>\n" + managementBtns +
                     "    </div>\n" +
                     "</article>"
                 ;
@@ -85,6 +87,7 @@ $(document).ready(function() {
         const $target = $($button.data("target"));
         const parentId = $button.data("parent-id");
 
+        $button.prop('disabled', true);
         $button.addClass("disabled");
         $button.html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Chargement...");
 
@@ -102,14 +105,16 @@ $(document).ready(function() {
                     $button.remove();
                 }
                 for (const itemData of data.itemsData) {
-                    $target.append(generatePaginationItem(entity, itemData));
+                    $target.append(generatePaginationItem(entity, itemData, data.userRoles));
                 }
                 $button.removeClass("disabled");
+                $button.prop('disabled', false);
                 $button.html("Voir plus");
             },
             error(e) {
-                showFlashMessage("danger", "Une erreur s'est produite.");
+                showFlashMessage("danger", "Une erreur s'est produite !!!!.");
                 $button.removeClass("disabled");
+                $button.prop('disabled', false);
                 $button.html("Voir plus");
             }
         });
