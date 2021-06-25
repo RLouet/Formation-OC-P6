@@ -32,10 +32,4 @@ $(document).ready(function() {
         $("#imageModal .modal-body .nav.next").data("index", recipient + 2 > trickImages.length ? 0 : recipient + 1 );
         $("#imageModal .modal-body .nav.prev").data("index", recipient - 1 < 0 ? trickImages.length - 1 : recipient - 1 );
     });
-
-    $("#trickDeleteModal button.delete-btn").on("click", function () {
-        $(this).addClass("disabled");
-        $(this).prop("disabled", true);
-        $(this).parent("form").submit();
-    });
 });
