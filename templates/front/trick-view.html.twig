@@ -133,7 +133,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
 
-                    <form method="post" action="{{ path('profile_trick_delete') }}">
+                    <form method="post" action="{{ path('front_trick-delete') }}">
                         <input type="hidden" name="trick_id" value="{{ trick.id }}">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete-trick') }}">
                         <button type="submit" class="btn btn-danger delete-btn">Supprimer</button>

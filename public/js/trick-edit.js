@@ -247,4 +247,10 @@ $(document).ready(function() {
             return false;
         }
     });
+
+    $("#trickDeleteModal button.delete-btn").on("click", function () {
+        $(this).addClass("disabled");
+        $(this).prop("disabled", true);
+        $(this).parent("form").submit();
+    });
 });

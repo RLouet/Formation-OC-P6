@@ -75,6 +75,7 @@ class AjaxController extends AbstractController
     )]
     public function loadUsers(Request $request, UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response = [];
 
         $response['itemsData'] = $userRepository->findBy(
@@ -100,6 +101,7 @@ class AjaxController extends AbstractController
     )]
     public function switchRole(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -135,6 +137,7 @@ class AjaxController extends AbstractController
     )]
     public function deleteUser(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -166,6 +169,7 @@ class AjaxController extends AbstractController
     )]
     public function deleteTrick(Request $request, TrickRepository $trickRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $response['success'] = false;
 
@@ -176,13 +180,8 @@ class AjaxController extends AbstractController
             return new JsonResponse($response);
         }
 
-        if (!$trick) {
+        if (!$trick || (!$this->isGranted('ROLE_ADMIN') && $user !== $trick->getAuthor())) {
             $response['error'] = "Le trick est invalide.";
-            return new JsonResponse($response);
-        }
-
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $user !== $trick->getAuthor()) {
-            $response['error'] = "Tu ne peux pas supprimer ce trick.";
             return new JsonResponse($response);
         }
 

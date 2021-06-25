@@ -124,32 +124,60 @@ class FrontController extends AbstractController
             }
         }
 
-        return $this->render('front/trick-add.html.twig', [
+        return $this->render('front/trick-add-edit.html.twig', [
             "trick" => $trick,
             "form" => $form->createView()
         ]);
     }
 
     #[Route("/tricks/edit/{id}", name: "front_tricks-edit")]
-    public function editTrick(Trick $trick, AuthenticationUtils $authenticationUtils): Response
+    public function editTrick(Trick $trick, Request $request): Response
     {
         $user = $this->getUser();
 
         if (!($this->isGranted('ROLE_ADMIN') || $trick->getAuthor() === $user)) {
-            //return $this->redirectToRoute('front_tricks-single', ['id' => $trick->getId()]);
             throw $this->createAccessDeniedException();
         }
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
 
-        $paginateComments =  $this->getParameter('app.comments_pagination_length') < $trick->getMessages()->count();
-        return $this->render('front/trick-view.html.twig', [
-            'paginate_comments' => $paginateComments,
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        return $this->render('front/trick-add-edit.html.twig', [
             "trick" => $trick,
-            'last_username' => $lastUsername,
-            'error' => $error
+            "form" => $form->createView()
         ]);
+    }
+
+    #[Route("/tricks/delete", name: "front_trick-delete")]
+    public function deleteTrick(Request $request, TrickRepository $trickRepository, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $trick = $trickRepository->find($request->get('trick_id'));
+
+
+        if (!$trick || (!$this->isGranted('ROLE_ADMIN') && $user !== $trick->getAuthor())) {
+            $this->addFlash(
+                'danger',
+                "Le trick est invalide."
+            );
+            return $this->redirectToRoute('front_home');
+        }
+
+        if (!$this->isCsrfTokenValid('delete-trick', $request->get('_csrf_token'))) {
+            $this->addFlash(
+                'danger',
+                "Une erreur s'est produite."
+            );
+            return $this->redirectToRoute('front_tricks-single', ['id' => $trick->getId()]);
+        }
+
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash(
+            'primary',
+            "Le trick a bien été supprimé."
+        );
+        return $this->redirect($this->generateUrl("front_home") . "#tricksList");
     }
 }
