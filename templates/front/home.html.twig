@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary delete-btn" data-token="{{ csrf_token('delete-trick') }}">Supprimer</button>
+                    <button type="button" class="btn btn-danger delete-btn" data-token="{{ csrf_token('delete-trick') }}">Supprimer</button>
                 </div>
             </div>
         </div>
@@ -71,5 +71,6 @@
     <script>
         const currentUser = {% if app.user %}{{ app.user.id }}{% else %}null{% endif %}
     </script>
+    <script src="{{ asset('js/home.js') }}"></script>
     <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}

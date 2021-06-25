@@ -16,7 +16,7 @@
                             <a href="{{ path('front_tricks-edit', {id: trick.id}) }}" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
                         </div>
                         <div class="col-6 text-center delete">
-                            <a href="#" title="Supprimer le Trick" class="delete-btn"><em class="far fa-trash-alt"></em></a>
+                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#trickDeleteModal"><em class="far fa-trash-alt"></em></a>
                         </div>
                     </div>
                     {% endif %}
@@ -115,6 +115,35 @@
         </div>
     </div>
     {% endif %}
+
+    <div class="modal fade" id="trickDeleteModal" tabindex="-1" role="dialog" aria-labelledby="trickDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="trickDeleteModalTitle">Supprimer le Trick</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer ce Trick ?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+
+                    <form method="post" action="{{ path('profile_trick_delete') }}">
+                        <input type="hidden" name="trick_id" value="{{ trick.id }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete-trick') }}">
+                        <button type="submit" class="btn btn-danger delete-btn">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block javascriptsBottom %}

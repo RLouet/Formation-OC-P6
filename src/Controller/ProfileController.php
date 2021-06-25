@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 
+use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\ProfileType;
+use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,5 +77,38 @@ class ProfileController extends AbstractController
             'form' => $form->createView(),
             'avatarUrl' => $user->getAvatarUrl()
         ]);
+    }
+
+    #[Route("/profile/delete/trick/", name: "profile_trick_delete")]
+    public function deleteTrick(Request $request, TrickRepository $trickRepository, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+        $trick = $trickRepository->find($request->get('trick_id'));
+
+
+        if (!$trick || (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $user !== $trick->getAuthor())) {
+            $this->addFlash(
+                'danger',
+                "Le trick est invalide."
+            );
+            return $this->redirectToRoute('front_home');
+        }
+
+        if (!$this->isCsrfTokenValid('delete-trick', $request->get('_csrf_token'))) {
+            $this->addFlash(
+                'danger',
+                "Une erreur s'est produite."
+            );
+            return $this->redirectToRoute('front_tricks-single', ['id' => $trick->getId()]);
+        }
+
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash(
+            'primary',
+            "Le trick a bien été supprimé."
+        );
+        return $this->redirect($this->generateUrl("front_home") . "#tricksList");
     }
 }
