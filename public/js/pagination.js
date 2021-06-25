@@ -25,6 +25,7 @@ $(document).ready(function() {
                         "                     </div>\n" +
                         "                 </div>\n" +
                         "            </div>\n"
+                    ;
                 }
                 item = "<article class=\"col mb-3 mb-md-4 trick-item trick-" + data.id + "\">\n" +
                     "    <div class=\"card h-100\">\n" +
@@ -87,7 +88,7 @@ $(document).ready(function() {
         const $target = $($button.data("target"));
         const parentId = $button.data("parent-id");
 
-        $button.prop('disabled', true);
+        $button.prop("disabled", true);
         $button.addClass("disabled");
         $button.html("<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Chargement...");
 
@@ -108,13 +109,13 @@ $(document).ready(function() {
                     $target.append(generatePaginationItem(entity, itemData, data.userRoles));
                 }
                 $button.removeClass("disabled");
-                $button.prop('disabled', false);
+                $button.prop("disabled", false);
                 $button.html("Voir plus");
             },
             error(e) {
                 showFlashMessage("danger", "Une erreur s'est produite !!!!.");
                 $button.removeClass("disabled");
-                $button.prop('disabled', false);
+                $button.prop("disabled", false);
                 $button.html("Voir plus");
             }
         });

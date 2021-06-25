@@ -3,10 +3,10 @@
 const $deleteTrickModal = $("#trickDeleteModal");
 const $deleteTrickButton = $("button.delete-btn", $deleteTrickModal);
 
-$deleteTrickModal.on('show.bs.modal', function (e) {
+$deleteTrickModal.on("show.bs.modal", function (e) {
     const $button = $(e.relatedTarget);
     $deleteTrickButton.removeClass("disabled");
-    $deleteTrickButton.prop('disabled', false);
+    $deleteTrickButton.prop("disabled", false);
     $(".trick-name", $(this)).text($button.data("name"));
     $deleteTrickButton.data("trick-id", $button.data("id"));
 });
@@ -14,7 +14,7 @@ $deleteTrickModal.on('show.bs.modal', function (e) {
 $deleteTrickButton.click(function (e) {
     //alert($(this).data("token") + " // " + $(this).data("trick-id"));
     $(this).addClass("disabled");
-    $(this).prop('disabled', true);
+    $(this).prop("disabled", true);
     let id = $(this).data("trick-id");
     let token = $(this).data("token");
     $.ajax({
@@ -29,16 +29,16 @@ $deleteTrickButton.click(function (e) {
             if (data.success) {
                 $("#tricksList article.trick-item.trick-" + id).remove();
                 showFlashMessage("primary", "Le trick a bien été supprimé.");
-                $deleteTrickModal.modal('hide');
+                $deleteTrickModal.modal("hide");
                 return;
             }
             showFlashMessage("danger", data.error);
-            $deleteTrickModal.modal('hide');
+            $deleteTrickModal.modal("hide");
 
         },
         error(e) {
             showFlashMessage("danger", "Une erreur s'est produite.");
-            $deleteTrickModal.modal('hide');
+            $deleteTrickModal.modal("hide");
         }
     });
-})
+});
