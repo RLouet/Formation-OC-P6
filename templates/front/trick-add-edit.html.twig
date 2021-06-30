@@ -72,11 +72,32 @@
                 </div>
                 <div class="collapse col-12 mt-2 d-md-block" id="mediasList">
                     <div class="row p-0 justify-content-center medias-container mb-2 align-items-end">
-                        <span class="image-prototype" data-prototype=""></span>
-                        {% for image in trick.images %}
-                            <div class="col-md-2 px-1 image image-input-container old-image">
-                                <img src="{{ asset('uploads/tricks/') }}{{ image.name }}" class="img-fluid">
-                                <button type="button" class="d-none d-md-block" href="#" title="Agrandir l'image" data-toggle="modal" data-target="#imageModal" data-index="{{ loop.index0 }}"><em class="fas fa-search-plus"></em></button>
+
+                        {% for key,oldImage in form.images %}
+                            <div class="col-6 col-md-2 px-1 pb-2 image image-input-container old-image-{{ key }}" data-index="{{ key }}" data-type="old">
+                                <label for="{{ oldImage.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
+                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.name.vars.value }}" alt="Image du Trick" class="img-input-preview img-fluid">
+                                    <span class="img-prev-ol d-none">
+                                        <span class="spinner"></span>
+                                    </span>
+                                </label>
+                                <div class="medias-management-btns text-right mt-1">
+                                    <span class="p-1 border border-dark rounded">
+                                        <label for="{{ oldImage.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".old-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
+                                    </span>
+                                </div>
+                                <div class="img-alert invalid-feedback{% if form_errors(oldImage.name)|length > 0 %} d-block{% endif %}">
+                                    <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
+                                    <span class="form-error-message">
+                                        {% if form_errors(oldImage.name)|length > 0 %}
+                                            {% for error in oldImage.name.vars.errors %}
+                                                {{ error.message }}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="d-none">{{ form_widget(oldImage.name) }}</div>
                             </div>
                         {% endfor %}
                         <span class="new-image-prototype" data-prototype="{{ form_row(form.newImages.vars.prototype)|e('html_attr') }}"></span>

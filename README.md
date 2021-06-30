@@ -6,7 +6,7 @@
 *   Version minimum de PHP : 8.0
 *   Git
 *   Composer
-  
+
 *   git clone
 *   composer install 
 *   apply fixe for fixtures
