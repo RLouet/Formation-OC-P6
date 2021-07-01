@@ -33,6 +33,7 @@ class AjaxController extends AbstractController
             $request->get('offset')
         );
         $response['end'] = count($response['itemsData']) + $request->get('offset') >= $trickRepository->count([]);
+        $response['userRoles'] = $this->getUser()->getRoles();
 
         $response = $serializer->serialize(
             $response,
@@ -74,6 +75,7 @@ class AjaxController extends AbstractController
     )]
     public function loadUsers(Request $request, UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response = [];
 
         $response['itemsData'] = $userRepository->findBy(
@@ -99,6 +101,7 @@ class AjaxController extends AbstractController
     )]
     public function switchRole(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -134,6 +137,7 @@ class AjaxController extends AbstractController
     )]
     public function deleteUser(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -153,6 +157,38 @@ class AjaxController extends AbstractController
             $manager->remove($user);
             $manager->flush();
         }
+        $response['success'] = true;
+
+        return new JsonResponse($response);
+    }
+
+    #[Route("/profile/ajax/deletetrick",
+        name: "ajax-delete-trick",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
+    public function deleteTrick(Request $request, TrickRepository $trickRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $user = $this->getUser();
+        $response['success'] = false;
+
+        $trick = $trickRepository->find($request->get('id'));
+
+        if (!$this->isCsrfTokenValid('delete-trick', $request->get('token'))) {
+            $response['error'] = "Une erreur s'est produite.";
+            return new JsonResponse($response);
+        }
+
+        if (!$trick || (!$this->isGranted('ROLE_ADMIN') && $user !== $trick->getAuthor())) {
+            $response['error'] = "Le trick est invalide.";
+            return new JsonResponse($response);
+        }
+
+        $response['trick'] = ['id' => $trick->getId()];
+        $manager->remove($trick);
+        $manager->flush();
+
         $response['success'] = true;
 
         return new JsonResponse($response);

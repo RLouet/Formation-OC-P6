@@ -44,3 +44,4 @@ $LOGIN_MODAL.on("hide.bs.modal", function(e){
         removeHashGet("#");
     }
 });
+

@@ -4,8 +4,10 @@
 namespace App\Controller;
 
 
+use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\ProfileType;
+use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 use App\Service\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
