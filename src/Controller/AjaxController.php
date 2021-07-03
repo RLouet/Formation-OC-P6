@@ -33,7 +33,7 @@ class AjaxController extends AbstractController
             $request->get('offset')
         );
         $response['end'] = count($response['itemsData']) + $request->get('offset') >= $trickRepository->count([]);
-        $response['userRoles'] = $this->getUser()->getRoles();
+        $response['userRoles'] = $this->getUser()?$this->getUser()->getRoles():null;
 
         $response = $serializer->serialize(
             $response,

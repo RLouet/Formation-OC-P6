@@ -5,7 +5,6 @@ namespace App\Service\Security;
 
 
 use App\Entity\Token;
-use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -45,11 +44,11 @@ class TokenService
         return $this->send($message);
     }
 
-    private function send(TemplatedEmail $message)
+    private function send(TemplatedEmail $message): bool
     {
         try {
             $this->mailer->send($message);
-        } catch (TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface) {
             return false;
         }
         return true;

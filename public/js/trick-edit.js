@@ -4,7 +4,7 @@ $(document).ready(function() {
     const $heroChoiceModal = $("#heroChoiceModal");
     const $mediasContainer = $("#mediasList .medias-container");
 
-    initImagePreview($(".image input"));
+    //initImagePreview($(".image input"), 1280, 1024, 5);
 
     const targetRatio = 1280/1024;
     function updateHeroImagesPreviews() {
@@ -182,6 +182,14 @@ $(document).ready(function() {
             checkedHero = found[0][0];
         }
         let imageCount = 0;
+        $("div[class^='old-image-'], div[class*=' old-image-']", $mediasContainer).each(function(){
+            const index = $(this).data("index");
+            imageCount++;
+            let checked = "old-" + $(this).data("index") === checkedHero?" checked":"";
+            const $image = $(".img-input-preview",$(this));
+            let $imageItem = $("<div class=\"col-6 col-md-3 p-1 old-image-item\"><div class=\"overflow-hidden img-container w-100\">" + $image.clone()[0].outerHTML + "<div class=\"heroChoiceFieldContainer\"><label for=\"heroChoice" + imageCount + "\"><input type=\"radio\" id=\"heroChoice" + imageCount + "\" name=\"hero_choice\" value=\"old-" + index + "\"" + checked + "></label></div></div></div>");
+            $imagesList.append($imageItem);
+        });
         $("div[class^='new-image-'], div[class*=' new-image-']", $mediasContainer).each(function(){
             if ($("input[type='file']", $(this)).val()) {
                 const index = $(this).data("index");
@@ -231,7 +239,7 @@ $(document).ready(function() {
 
     $("form[name='trick']").submit(function(e){
         let emptyImage = false;
-        $(".image", $(this)).each(function(){
+        $("div[class^='new-image-'], div[class*=' new-image-']", $(this)).each(function(){
             const $fileInput = $("input", $(this));
             if ($fileInput.val() === "") {
                 $(".image-input-preview", $(this)).addClass("border border-danger");

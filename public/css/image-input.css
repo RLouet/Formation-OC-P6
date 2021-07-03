@@ -2,6 +2,7 @@ label img {
   cursor: pointer;
 }
 
+/*
 .image-input-preview {
   position: relative;
   padding-top: calc(100% - 2px);
@@ -13,6 +14,7 @@ label img {
   top: 0;
   left: 0;
 }
+*/
 
 .img-prev-ol {
   display: block;
@@ -22,6 +24,11 @@ label img {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.avatar-preview.image-input-preview {
+  border-width: 1px;
+  border-style: solid;
 }
 
 /* --------- Spinner --------- */
