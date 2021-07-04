@@ -1,5 +1,11 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="{{ asset("css/image-input.css") }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
 {% form_theme form _self %}
 
 {% block collection_row %}
@@ -74,30 +80,31 @@
                     <div class="row p-0 justify-content-center medias-container mb-2 align-items-end">
 
                         {% for key,oldImage in form.images %}
-                            <div class="col-6 col-md-2 px-1 pb-2 image image-input-container old-image-{{ key }}" data-index="{{ key }}" data-type="old">
-                                <label for="{{ oldImage.name.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
-                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.name.vars.value }}" alt="Image du Trick" class="img-input-preview img-fluid">
+
+                            <div class="col-6 col-md-2 px-1 pb-2 image image-input-container old-image-{{ key }}" data-index="{{ key }}" data-type="old" data-id="{{ oldImage.vars.data.id }}">
+                                <label for="{{ oldImage.newFile.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
+                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.vars.data.name }}" alt="Image du Trick" class="img-input-preview w-100">
                                     <span class="img-prev-ol d-none">
                                         <span class="spinner"></span>
                                     </span>
                                 </label>
                                 <div class="medias-management-btns text-right mt-1">
                                     <span class="p-1 border border-dark rounded">
-                                        <label for="{{ oldImage.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <label for="{{ oldImage.newFile.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
                                         <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".old-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
                                     </span>
                                 </div>
-                                <div class="img-alert invalid-feedback{% if form_errors(oldImage.name)|length > 0 %} d-block{% endif %}">
+                                <div class="img-alert invalid-feedback{% if form_errors(oldImage.newFile)|length > 0 %} d-block{% endif %}">
                                     <span class="form-error-icon badge badge-danger text-uppercase">Erreur</span>
                                     <span class="form-error-message">
-                                        {% if form_errors(oldImage.name)|length > 0 %}
-                                            {% for error in oldImage.name.vars.errors %}
+                                        {% if form_errors(oldImage.newFile)|length > 0 %}
+                                            {% for error in oldImage.newFile.vars.errors %}
                                                 {{ error.message }}
                                             {% endfor %}
                                         {% endif %}
                                     </span>
                                 </div>
-                                <div class="d-none">{{ form_widget(oldImage.name) }}</div>
+                                <div class="d-none">{{ form_widget(oldImage.newFile) }}</div>
                             </div>
                         {% endfor %}
                         <span class="new-image-prototype" data-prototype="{{ form_row(form.newImages.vars.prototype)|e('html_attr') }}"></span>

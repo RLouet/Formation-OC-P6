@@ -44,7 +44,7 @@
             e.preventDefault();
 
 
-            $preview.removeClass("border-danger");
+            $preview.removeClass("border border-danger");
             $(".invalid-feedback", $container).removeClass("d-block");
 
             // If is an image : check and change
@@ -55,7 +55,7 @@
 
                 // check Mime type
                 if (!checkMimeType(image, "image/png|image/gif|image/jpeg")) {
-                    $preview.addClass("border-danger");
+                    $preview.addClass("border border-danger");
                     $(".img-alert .form-error-message", $container).data("to-display", 1);
                     $(".img-alert .form-error-message", $container).html("Les formats supportés sont png, jpeg et gif.");
                     $(".img-alert", $container).addClass("d-block");
@@ -66,7 +66,7 @@
 
                 //CheckSize
                 if (size > maxSize) {
-                    $preview.addClass("border-danger");
+                    $preview.addClass("border border-danger");
                     $(".img-alert .form-error-message", $container).data("to-display", true);
                     $(".img-alert .form-error-message", $container).html("L'image est trop volumineuse (Maxi : " + maxSize + " Mo) !");
                     $(".img-alert", $container).addClass("d-block");

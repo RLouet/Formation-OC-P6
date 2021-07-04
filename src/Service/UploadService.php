@@ -6,10 +6,8 @@ namespace App\Service;
 
 use App\Entity\Trick;
 use App\Entity\User;
-use Imagine\Filter\Basic\Autorotate;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Image\Point;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
@@ -49,7 +47,7 @@ class UploadService
         return $return;
     }
 
-    public function uploadTrickImage(UploadedFile $imageFile, Trick $trick): array
+    public function uploadTrickImage(UploadedFile $imageFile): array
     {
         $return = [
             'success' => false,
@@ -93,7 +91,8 @@ class UploadService
         $imagine = new Imagine();
         $image = $imagine->open($imagePath);
 
-        $exif = exif_read_data($imagePath);
+
+        $exif = @exif_read_data($imagePath);
         if (!empty($exif['Orientation'])) {
             switch ($exif['Orientation']) {
                 case 3:

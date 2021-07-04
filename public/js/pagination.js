@@ -14,7 +14,7 @@ $(document).ready(function() {
         switch (entity) {
             case "trick":
                 let managementBtns = "";
-                if (data.author.id === currentUser || userRoles.includes("ROLE_ADMIN")) {
+                if (data.author.id === currentUser || (userRoles && userRoles.includes("ROLE_ADMIN"))) {
                     managementBtns = "<div class=\"card-footer\">\n" +
                         "                 <div class=\"row\">\n" +
                         "                     <div class=\"col-6 text-center edit\">\n" +
