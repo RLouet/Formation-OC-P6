@@ -1,13 +1,18 @@
 <div class="row px-1 justify-content-center message-item">
     <div class="col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author">
         {# <img src="{{ asset('/') }}{% if message.author.avatar %}uploads/avatars/{{ message.author.avatar }}{% else %}imgs/avatar.png{% endif %}" class="rounded-circle" alt="..."> #}
-        <img src="/imgs/avatar.png" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="Avatar">
+        <img src="{{ message.author.avatarUrl }}" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="Avatar">
         <small class="text-break">{{ message.author.username }}</small>
     </div>
     <div class="col-10 col-md-11 col-xl-6 mt-3 message-content">
         <div class="border rounded px-2">
             <p class="mb-2 border-bottom"><small class="text-muted"><strong>Le {{ message.date|date('d/m/Y à H:m:s') }}</strong></small></p>
             <p>{{ message.content|nl2br() }}</p>
+            {% if is_granted('ROLE_ADMIN') or message.author == app.user %}
+            <div class="text-right delete-message-btn-container">
+                <button class="btn btn-sm btn-danger">Supprimer</button>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

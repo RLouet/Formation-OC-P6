@@ -76,10 +76,19 @@
             </section>
             <section class="row justify-content-center trick-messages border-top pt-3 mt-3">
                 <div class="col-12 col-xl-7 text-center border-bottom pb-2">
-                    <form>
-                        <textarea class="form-control" placeholder="Votre commentaire" aria-label="Votre commentaire"></textarea>
-                        <button class="btn btn-primary mt-2" type="submit">Envoyer votre commentaire</button>
-                    </form>
+                    {% if is_granted('ROLE_USER') %}
+                        <form method="post" action="{{ path('ajax-add-comment') }}" id="commentForm">
+                            <textarea name="comment" class="form-control" placeholder="Ton commentaire" aria-label="Ton commentaire"></textarea>
+                            <div class="invalid-feedback text-left">
+                            </div>
+                            <input type="hidden" name="comment_token" value="{{ csrf_token('comment_token') }}">
+                            <input type="hidden" name="trick" value="{{ trick.id }}">
+                            <button class="btn btn-primary mt-2" type="submit">Valider</button>
+                        </form>
+                    {% else %}
+                        <p>Tu dois être connecté pour commenter les tricks.</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#loginModal" title="Connexion / Inscription">Se connecter</button>
+                    {% endif %}
                 </div>
                 <div class="col-12 px-0" id="MessageItemsContainer">
                     {% for message in trick.messages(app.request.server.get('COMMENTS_PAGINATION_LENGTH')) %}
@@ -149,13 +158,14 @@
 {% block javascriptsBottom %}
     {{ parent() }}
     <script>
+        const currentUser = {% if app.user %}{{ app.user.id }}{% else %}null{% endif %};
         const TrickImgPath = "{{ asset('uploads/tricks/') }}";
         let trickImages = [];
         {% for image in trick.images %}
         trickImages.push("{{ image.name }}");
         {% endfor %}
     </script>
+    <script src="{{ asset('js/pagination.js') }}"></script>
     <script src="{{ asset('js/trick-view.js') }}"></script>
     <script src="{{ asset('js/trick-delete-modal.js') }}"></script>
-    <script src="{{ asset('js/pagination.js') }}"></script>
 {% endblock %}

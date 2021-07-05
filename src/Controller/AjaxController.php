@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Message;
 use App\Repository\MessageRepository;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AjaxController extends AbstractController
 {
@@ -59,6 +61,7 @@ class AjaxController extends AbstractController
             $request->get('offset')
         );
         $response['end'] = count($response['itemsData']) + $request->get('offset') >= $messageRepository->count(['trick' => $request->get('parentId')]);
+        $response['userRoles'] = $this->getUser()?$this->getUser()->getRoles():null;
 
         $response = $serializer->serialize(
             $response,
@@ -192,5 +195,51 @@ class AjaxController extends AbstractController
         $response['success'] = true;
 
         return new JsonResponse($response);
+    }
+
+    #[Route("/profile/ajax/addcomment",
+        name: "ajax-add-comment",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
+    public function addComment(Request $request, TrickRepository $trickRepository, ValidatorInterface $validator, EntityManagerInterface $manager, SerializerInterface $serializer): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $user = $this->getUser();
+        $response['success'] = false;
+
+        $trick = $trickRepository->find($request->get('trick'));
+
+        if (!$this->isCsrfTokenValid('comment_token', $request->get('comment_token')) || !$trick) {
+            $response['error'] = "Une erreur s'est produite.";
+            return new JsonResponse($response);
+        }
+
+        $comment = new Message();
+        $comment->setAuthor($user)->setContent($request->get('comment'));
+
+        $errors = $validator->validate($comment);
+
+        if (count($errors) > 0) {
+            $response['formErrors'] = [];
+            foreach ($errors as $error) {
+                $response['formErrors'][] = $error->getMessage();
+            }
+            return new JsonResponse($response);
+        }
+
+        $trick->addMessage($comment);
+        $manager->flush();
+
+        $response['message'] = $comment;
+        $response['success'] = true;
+
+        $response = $serializer->serialize(
+            $response,
+            'json',
+            ['groups' => 'paginate_message']
+        );
+
+        return JsonResponse::fromJsonString($response);
     }
 }

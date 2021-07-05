@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
@@ -36,6 +37,19 @@ class ProfileType extends AbstractType
                         'class' => 'form-control',
                         'value' => $oldUsername,
                     ],
+                    'constraints' => [
+                        new Length([
+                            'min'=> 2,
+                            'max'=> 128,
+                            'minMessage'=> "Minimum 2 caractères.",
+                            'maxMessage' => "Maximum 128 caractères."
+                        ]),
+                        new Regex([
+                            'pattern' => '/[<>&]/',
+                            'message' => "Les caractères \"<, > et &\" sont interdits!!!!.",
+                            'match' => false
+                        ])
+                    ]
                 ]);
             })
             ->add('avatar', FileType::class, [

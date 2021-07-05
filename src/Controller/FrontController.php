@@ -73,7 +73,7 @@ class FrontController extends AbstractController
                 $trick->setAuthor($this->getUser());
 
                 $processNewImages = $this->processNewImages($form, $uploadService);
-                $uploadError = $processNewImages['uploadError'];
+                $uploadError = !$processNewImages;
 
                 $manager->persist($trick);
                 $manager->flush();
@@ -114,11 +114,12 @@ class FrontController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $uploadError = $this->processNewImages($form, $uploadService);
+                $uploadError = !$this->processNewImages($form, $uploadService);
                 $processOldImages = $this->processOldImages($form, $uploadService);
                 if (!$uploadError) {
-                    $uploadError = $processOldImages;
+                    $uploadError = !$processOldImages;
                 }
+                $trick->setEditDate(new \DateTime());
                 $manager->persist($trick);
                 $manager->flush();
 

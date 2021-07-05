@@ -10,7 +10,7 @@ trait EntityIdManagementTrait
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"paginate_user", "paginate_trick"})
+     * @Groups({"paginate_user", "paginate_trick", "paginate_message"})
      */
     private int $id;
 
