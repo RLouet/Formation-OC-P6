@@ -1,4 +1,4 @@
-/*global TrickImgPath, trickImages, generatePaginationItem*/
+/*global TrickImgPath, trickImages, generatePaginationItem, showFlashMessage*/
 
 $(document).ready(function() {
 
@@ -33,7 +33,7 @@ $(document).ready(function() {
         $("#imageModal .modal-body .nav.prev").data("index", recipient - 1 < 0 ? trickImages.length - 1 : recipient - 1 );
     });
 
-    $("#commentForm").on('submit', function (e){
+    $("#commentForm").on("submit", function (e){
         e.preventDefault();
         const $button = $("button", $(this));
         const $textarea = $("textarea", $(this));
@@ -52,7 +52,7 @@ $(document).ready(function() {
             dataType: "json",
             success(data) {
                 if (data.success) {
-                    $("#MessageItemsContainer").prepend(generatePaginationItem("message", data.message, data.userRoles))
+                    $("#MessageItemsContainer").prepend(generatePaginationItem("message", data.message, data.userRoles));
                     $textarea.val("");
                     showFlashMessage("primary", "Ton commentaire a bien été ajouté.");
                     $button.removeClass("disabled");
@@ -63,7 +63,7 @@ $(document).ready(function() {
                 showFlashMessage("danger", "Ton commentaire n'est pas valide.");
 
                 for (const error of data.formErrors) {
-                    let $error = $("<span class=\"d-block\"><span class=\"form-error-icon badge badge-danger text-uppercase\">Erreur</span><span class=\"form-error-message\">" + error + "</span></span>")
+                    let $error = $("<span class=\"d-block\"><span class=\"form-error-icon badge badge-danger text-uppercase\">Erreur</span><span class=\"form-error-message\">" + error + "</span></span>");
                     $errors.append($error);
                 }
                 $errors.addClass("d-block");
