@@ -81,7 +81,7 @@
                             <textarea name="comment" class="form-control" placeholder="Ton commentaire" aria-label="Ton commentaire"></textarea>
                             <div class="invalid-feedback text-left">
                             </div>
-                            <input type="hidden" name="comment_token" value="{{ csrf_token('comment_token') }}">
+                            <input type="hidden" name="token" value="{{ csrf_token('comment_add_token') }}">
                             <input type="hidden" name="trick" value="{{ trick.id }}">
                             <button class="btn btn-primary mt-2" type="submit">Valider</button>
                         </form>
@@ -125,6 +125,7 @@
     </div>
     {% endif %}
 
+    {% if app.user %}
     <div class="modal fade" id="trickDeleteModal" tabindex="-1" role="dialog" aria-labelledby="trickDeleteModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -151,6 +152,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="messageDeleteModal" tabindex="-1" role="dialog" aria-labelledby="messageDeleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageDeleteModalTitle">Supprimer le commentaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="errors">
+                        <div class="alert alert-warning">Es tu sûr de vouloir supprimer ce commentaire ?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" id="deleteCommentBtn" class="btn btn-danger" data-token="{{ csrf_token('comment_delete_token') }}">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
 
 {% endblock %}

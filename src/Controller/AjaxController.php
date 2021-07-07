@@ -104,7 +104,6 @@ class AjaxController extends AbstractController
     )]
     public function switchRole(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -140,7 +139,6 @@ class AjaxController extends AbstractController
     )]
     public function deleteUser(Request $request, UserRepository $userRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $response['success'] = false;
 
         $user = $userRepository->find($request->get('user_id'));
@@ -172,7 +170,6 @@ class AjaxController extends AbstractController
     )]
     public function deleteTrick(Request $request, TrickRepository $trickRepository, UserInterface $currentUser, EntityManagerInterface $manager): JsonResponse
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $response['success'] = false;
 
@@ -204,13 +201,12 @@ class AjaxController extends AbstractController
     )]
     public function addComment(Request $request, TrickRepository $trickRepository, ValidatorInterface $validator, EntityManagerInterface $manager, SerializerInterface $serializer): JsonResponse
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $response['success'] = false;
 
         $trick = $trickRepository->find($request->get('trick'));
 
-        if (!$this->isCsrfTokenValid('comment_token', $request->get('comment_token')) || !$trick) {
+        if (!$this->isCsrfTokenValid('comment_add_token', $request->get('token')) || !$trick) {
             $response['error'] = "Une erreur s'est produite.";
             return new JsonResponse($response);
         }
@@ -241,5 +237,34 @@ class AjaxController extends AbstractController
         );
 
         return JsonResponse::fromJsonString($response);
+    }
+
+    #[Route("/profile/ajax/deletecomment",
+        name: "ajax-delete-comment",
+        methods: ["POST"],
+        condition: "request.headers.get('X-Requested-With') matches '/XMLHttpRequest/i'"
+    )]
+    public function deleteComment(Request $request, MessageRepository $messageRepository, EntityManagerInterface $manager): JsonResponse
+    {
+        $user = $this->getUser();
+        $response['success'] = false;
+
+        $comment = $messageRepository->find($request->get('id'));
+
+        if (!$this->isCsrfTokenValid('comment_delete_token', $request->get('token'))) {
+            $response['error'] = "Une erreur s'est produite.";
+            return new JsonResponse($response);
+        }
+
+        if (!$comment || (!$this->isGranted('ROLE_ADMIN') && $user !== $comment->getAuthor())) {
+            $response['error'] = "Tu ne peux pas supprimer ce commentaire.";
+            return new JsonResponse($response);
+        }
+
+        $manager->remove($comment);
+        $manager->flush();
+        $response['success'] = true;
+
+        return new JsonResponse($response);
     }
 }

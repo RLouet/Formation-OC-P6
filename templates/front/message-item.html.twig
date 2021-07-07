@@ -1,4 +1,4 @@
-<div class="row px-1 justify-content-center message-item">
+<div class="row px-1 justify-content-center message-item trick-message-{{ message.id }}">
     <div class="col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author">
         {# <img src="{{ asset('/') }}{% if message.author.avatar %}uploads/avatars/{{ message.author.avatar }}{% else %}imgs/avatar.png{% endif %}" class="rounded-circle" alt="..."> #}
         <img src="{{ message.author.avatarUrl }}" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="Avatar">
@@ -10,7 +10,7 @@
             <p>{{ message.content|nl2br() }}</p>
             {% if is_granted('ROLE_ADMIN') or message.author == app.user %}
             <div class="text-right delete-message-btn-container">
-                <button class="btn btn-sm btn-danger">Supprimer</button>
+                <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#messageDeleteModal" data-id="{{ message.id }}">Supprimer</button>
             </div>
             {% endif %}
         </div>

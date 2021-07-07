@@ -43,12 +43,12 @@ function generatePaginationItem(entity, data, userRoles) {
             let deleteMsgBtn = "";
             if (data.author.id === currentUser || (userRoles && userRoles.includes("ROLE_ADMIN"))) {
                 deleteMsgBtn = "<div class=\"text-right delete-message-btn-container\">\n" +
-                    "                 <button class=\"btn btn-sm btn-danger\">Supprimer</button>\n" +
+                    "                 <button type=\"button\" class=\"btn btn-sm btn-danger\" data-toggle=\"modal\" data-target=\"#messageDeleteModal\" data-id=\"" + data.id + "\">Supprimer</button>\n" +
                     "            </div>\n"
                 ;
             }
             const date = new Date(data.date);
-            item = "<div class=\"row px-1 justify-content-center message-item\">\n" +
+            item = "<div class=\"row px-1 justify-content-center message-item trick-message-" + data.id + "\">\n" +
                 "    <div class=\"col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author\">\n" +
                 "        <img src=\"" + data.author.avatarUrl + "\" class=\"img-fluid rounded-circle border border-info d-block m-auto\"  width=\"100%\" alt=\"...\">\n" +
                 "        <small class=\"text-break\">" + data.author.username + "</small>\n" +
