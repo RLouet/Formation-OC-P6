@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
+ * @UniqueEntity("slug")
  */
 class Trick
 {
@@ -89,6 +92,12 @@ class Trick
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private ?Image $hero = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    #[Groups(['paginate_trick'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -305,5 +314,32 @@ class Trick
             return "uploads/tricks/" . $this->getImages()->first()->getName();
         }
         return "imgs/no-image.png";
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function computeSlug(SluggerInterface $slugger, TrickRepository $trickRepository)
+    {
+        $slug = (string) $slugger->slug((string) $this->getName())->lower();
+        if ($trickRepository->findOneBy(['slug' => $slug]) !== $this && $this->slug !== $slug) {
+            $key = 2;
+            $matchedTrick = $trickRepository->findOneBy(['slug' => $slug . "_" . $key]);
+            while ($matchedTrick && $matchedTrick !== $this) {
+                $key++;
+                $matchedTrick = $trickRepository->findOneBy(['slug' => $slug . "_" . $key]);
+            }
+            $slug .= "_" . $key;
+        }
+        $this->slug = $slug;
     }
 }

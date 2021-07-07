@@ -42,7 +42,7 @@ class FrontController extends AbstractController
         ]);
     }
 
-    #[Route("/tricks/details/{id}", name: "front_tricks-single")]
+    #[Route("/tricks/details/{slug}", name: "front_tricks-single")]
     public function tricksSingle(Trick $trick, AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -100,7 +100,7 @@ class FrontController extends AbstractController
         ]);
     }
 
-    #[Route("/tricks/edit/{id}", name: "front_tricks-edit")]
+    #[Route("/tricks/edit/{slug}", name: "front_tricks-edit")]
     public function editTrick(Trick $trick, Request $request, EntityManagerInterface $manager, UploadService $uploadService): Response
     {
         $user = $this->getUser();
