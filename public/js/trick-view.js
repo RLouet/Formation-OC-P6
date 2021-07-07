@@ -93,7 +93,7 @@ $(document).ready(function() {
         const $modalButton = $("#deleteCommentBtn", $(this));
         $modalButton.removeClass("disabled");
         $modalButton.prop("disabled", false);
-        $modalButton.data("id", $button.data("id"))
+        $modalButton.data("id", $button.data("id"));
     });
 
     $("#deleteCommentBtn").on("click", function (e){
