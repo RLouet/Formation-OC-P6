@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
@@ -22,23 +23,40 @@ class Message
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"paginate_message"})
      */
+    #[Groups(['paginate_message'])]
+    #[Assert\Length(
+        min: 2,
+        max: 2500,
+        minMessage: "Minimum 2 caractères.",
+        maxMessage: "Maximum 2500 caractères."
+    )]
+    #[Assert\Regex(
+        pattern: '/[<>&]/',
+        message: "Les caractères \"<, > et &\" sont interdits.",
+        match: false
+    )]
+    #[Assert\NotBlank()]
     private string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"paginate_message"})
-     * @MaxDepth (1)
      */
+    #[Groups(['paginate_message'])]
+    #[MaxDepth(1)]
     private ?User $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Trick$trick;
+    private ?Trick $trick;
+
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     public function getDate(): ?\DateTimeInterface
     {

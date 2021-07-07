@@ -132,6 +132,10 @@
 }
 
 /* --- Trick Single --- */
+.delete-message-btn-container {
+  margin-bottom: -1rem;
+}
+
 article.trick-single {
   min-height: 79vh;
   background-color: white;

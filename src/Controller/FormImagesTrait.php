@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormInterface;
 
 trait FormImagesTrait
 {
-    private function handleHero(string $heroField): bool|array
+    private function handleHero(?string $heroField): bool|array
     {
         $hero = false;
         preg_match_all("/^(?<type>new|old)-(?<index>\d{1,4})$/i", $heroField, $matches);
@@ -28,13 +28,13 @@ trait FormImagesTrait
     private function processNewImages (FormInterface $form, UploadService $uploadService): bool
     {
         $hero = $this->handleHero($form->get('hero')->getData());
-        $uploadError = false;
+        $success = true;
         foreach ($form['newImages'] as $key => $imageForm) {
             $imageFile = $uploadService->getFormFile($form->get('newImages')[$key], 'name');
             if ($imageFile) {
                 $upload = $uploadService->uploadTrickImage($imageFile);
                 if (!$upload['success']) {
-                    $uploadError = true;
+                    $success = false;
                 }
                 if ($upload['success']) {
                     $trick = $form->getData();
@@ -48,20 +48,20 @@ trait FormImagesTrait
             }
         }
 
-        return $uploadError;
+        return $success;
     }
 
     private function processOldImages (FormInterface $form, UploadService $uploadService): bool
     {
         $hero = $this->handleHero($form->get('hero')->getData());
-        $uploadError = false;
+        $success = true;
         foreach ($form['images'] as $key => $imageForm) {
             $imageFile = $uploadService->getFormFile($form->get('images')[$key], 'newFile');
             $image = $imageForm->getData();
             if ($imageFile) {
                 $upload = $uploadService->uploadTrickImage($imageFile);
                 if (!$upload['success']) {
-                    $uploadError = true;
+                    $success = false;
                 }
                 if ($upload['success']) {
                     $uploadService->deleteFile('/tricks/' . $image->getName());
@@ -73,6 +73,6 @@ trait FormImagesTrait
             }
         }
 
-        return $uploadError;
+        return $success;
     }
 }

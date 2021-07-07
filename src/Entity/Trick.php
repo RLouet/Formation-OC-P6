@@ -19,12 +19,12 @@ class Trick
     use EntityIdManagementTrait;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"paginate_trick"})
+     * @ORM\Column(type="string", length=128)
      */
+    #[Groups(['paginate_trick'])]
     #[Assert\Regex(
-        pattern: '/^[\'"_\-)(.,@\s\wÜ-ü]{2,255}$/',
-        message: "Le nom du tricks n'est pas valide. ( entre 2 et 255 lettres, chiffres, espaces et @'\"-_/,(). )"
+        pattern: '/^[\'"_\-)(.,@\s\wÜ-ü]{2,128}$/',
+        message: "Le nom du tricks n'est pas valide. ( entre 2 et 128 lettres, chiffres, espaces et @'\"-_/,(). )"
     )]
     #[Assert\NotBlank()]
     private ?string $name = "";
@@ -59,9 +59,9 @@ class Trick
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"paginate_trick"})
-     * @MaxDepth (1)
      */
+    #[Groups(['paginate_trick'])]
+    #[MaxDepth(1)]
     private ?User $author;
 
     /**
@@ -295,9 +295,7 @@ class Trick
         return $this;
     }
 
-    /**
-     * @Groups({"paginate_trick"})
-     */
+    #[Groups(['paginate_trick'])]
     public function getHeroUrl(): string
     {
         if ($this->getHero()) {

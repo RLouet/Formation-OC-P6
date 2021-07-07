@@ -20,17 +20,15 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email(
-     *     message = "Ton adresse Email est invalide."
-     * )
-     * @Groups({"paginate_user"})
      */
+    #[Assert\Email(message: "Ton adresse Email est invalide.")]
+    #[Groups(['paginate_user'])]
     private string $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"paginate_user", "paginate_trick"})
      */
+    #[Groups(['paginate_user', 'paginate_trick'])]
     private array $roles = [];
 
     /**
@@ -41,20 +39,31 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=128, unique=true)
-     * @Groups({"paginate_message", "paginate_user"})
      */
+    #[Groups(['paginate_message', 'paginate_user'])]
+    #[Assert\Length(
+        min: 2,
+        max: 128,
+        minMessage: "Minimum 2 caractères.",
+        maxMessage: "Maximum 128 caractères."
+    )]
+    #[Assert\Regex(
+        pattern: '/[<>&]/',
+        message: "Les caractères \"<, > et &\" sont interdits!!!!.",
+        match: false
+    )]
     private string $username;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"paginate_user"})
      */
+    #[Groups(['paginate_user'])]
     private \DateTimeInterface $subscriptionDate;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"paginate_user"})
      */
+    #[Groups(['paginate_user'])]
     private bool $enabled = false;
 
     /**
@@ -267,6 +276,7 @@ class User implements UserInterface
         return $this->avatar;
     }
 
+    #[Groups(['paginate_message'])]
     public function getAvatarUrl(): string
     {
         if ($this->avatar) {
