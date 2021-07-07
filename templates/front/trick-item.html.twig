@@ -1,7 +1,7 @@
 <article class="col mb-3 mb-md-4 trick-item trick-{{ trick.id }}">
     <div class="card h-100">
         <div class="item-header">
-            <a href="{{ path('front_tricks-single', {'id' : trick.id}) }}" title="Voir le trick">
+            <a href="{{ path('front_tricks-single', {slug : trick.slug}) }}" title="Voir le trick">
                 <img src="{{ trick.heroUrl }}" class="card-img-top">
             </a>
         </div>
@@ -13,7 +13,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-6 text-center edit">
-                    <a href="{{ path('front_tricks-edit', {id: trick.id}) }}" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
+                    <a href="{{ path('front_tricks-edit', {slug: trick.slug}) }}" title="Modifier le Trick" class="edit-btn"><em class="far fa-edit"></em></a>
                 </div>
                 <div class="col-6 text-center delete">
                     <a href="#" title="Supprimer les Trick" class="delete-btn" data-toggle="modal" data-target="#trickDeleteModal" data-name="{{ trick.name }}" data-id="{{ trick.id }}"><em class="far fa-trash-alt"></em></a>

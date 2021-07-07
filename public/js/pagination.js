@@ -16,7 +16,7 @@ function generatePaginationItem(entity, data, userRoles) {
                 managementBtns = "<div class=\"card-footer\">\n" +
                     "                 <div class=\"row\">\n" +
                     "                     <div class=\"col-6 text-center edit\">\n" +
-                    "                         <a href=\"" + window.location.origin + "/tricks/edit/" + data.id + "\" title=\"Modifier le Trick\" class=\"edit-btn\"><em class=\"far fa-edit\"></em></a>\n" +
+                    "                         <a href=\"" + window.location.origin + "/tricks/edit/" + data.slug + "\" title=\"Modifier le Trick\" class=\"edit-btn\"><em class=\"far fa-edit\"></em></a>\n" +
                     "                     </div>\n" +
                     "                     <div class=\"col-6 text-center delete\">\n" +
                     "                         <a href=\"#\" title=\"Supprimer les Trick\" class=\"delete-btn\" data-toggle=\"modal\" data-target=\"#trickDeleteModal\" data-name=\"" + data.name + "\" data-id=\"" + data.id + "\"><em class=\"far fa-trash-alt\"></em></a>\n" +
@@ -28,7 +28,7 @@ function generatePaginationItem(entity, data, userRoles) {
             item = "<article class=\"col mb-3 mb-md-4 trick-item trick-" + data.id + "\">\n" +
                 "    <div class=\"card h-100\">\n" +
                 "        <div class=\"item-header\">\n" +
-                "            <a href=\"" + window.location.origin + "/tricks/details/" + data.id + "\" title=\"Voir le trick\">\n" +
+                "            <a href=\"" + window.location.origin + "/tricks/details/" + data.slug + "\" title=\"Voir le trick\">\n" +
                 "                <img src=\"" + data.heroUrl + "\" class=\"card-img-top\">\n" +
                 "            </a>\n" +
                 "        </div>\n" +
