@@ -8,7 +8,6 @@ use App\Entity\Message;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Video;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -28,30 +27,12 @@ class AppFixtures extends Fixture
         $faker = Factory::create('FR-fr');
 
         // Create an administrator
-        $user = new User();
-        $user
-            ->setUsername('Admin')
-            ->setEmail('contact@snowtricks.com')
-            ->setEnabled(true)
-            ->setSubscriptionDate($faker->dateTimeBetween($startDate = '-40 days', $endDate = '-31 days'))
-            ->setRoles(['ROLE_ADMIN']);
-        $user->setPassword($this->passwordEncoder->encodePassword(
-            $user,
-            'admin'
-        ));
+        $user = $this->createAdmin($faker);
 
         $manager->persist($user);
 
         // Create categories
-        $categories = [
-            'Grabs',
-            'Rotations',
-            'Flips',
-            'Rotations désaxées',
-            'Slides',
-            'One foot',
-            'Old school'
-        ];
+        $categories = $this->createCategories();
 
         for ($i = 0; $i < count($categories); $i++) {
             $category = new Category();
@@ -61,7 +42,92 @@ class AppFixtures extends Fixture
         }
 
         //create tricks
-        $tricks = [
+        $tricks = $this->createTricks();
+
+        foreach ($tricks as $trickName => $trickParams) {
+            $newTrick = new Trick();
+            $newTrick
+                ->setAuthor($user)
+                ->setName($trickName)
+                ->setCreationDate($faker->dateTimeBetween('-60 days', '-15 days'))
+                ->setDescription($faker->paragraphs(mt_rand(2, 5), true))
+            ;
+
+            foreach ($trickParams['categories'] as $trickCategory) {
+                $newTrick->addCategory($categories[$trickCategory]);
+            }
+
+            foreach ($trickParams['images'] as $trickImage) {
+                $image = new Image();
+                $image->setName($trickImage);
+                $newTrick->addImage($image);
+            }
+
+            foreach ($trickParams['videos'] as $trickVideo) {
+                $video = new Video();
+                $video->setName($trickVideo);
+                $newTrick->addVideo($video);
+            }
+
+            if (mt_rand(0,1)) {
+                $newTrick->setEditDate($faker->dateTimeBetween('-14 days', 'now'));
+            }
+
+            if (mt_rand(0,1)) {
+                $images = $newTrick->getImages();
+                $nbImages = $images->count();
+                if ($nbImages > 0) {
+                    $newTrick->setHero($images->get(mt_rand(0, $nbImages - 1)));
+                }
+            }
+
+            for ($i = 0; $i <= mt_rand(0, 20); $i++) {
+                $message = new Message();
+                $message
+                    ->setAuthor($user)
+                    ->setDate($faker->dateTimeBetween('-14 days', 'now'))
+                    ->setContent($faker->paragraphs(mt_rand(1, 3), true))
+                ;
+                $newTrick->addMessage($message);
+            }
+            $manager->persist($newTrick);
+        }
+
+        $manager->flush();
+    }
+
+    private function createAdmin($faker): User
+    {
+        $user = new User();
+        $user
+            ->setUsername('Admin')
+            ->setEmail('contact@snowtricks.com')
+            ->setEnabled(true)
+            ->setSubscriptionDate($faker->dateTimeBetween('-40 days', '-31 days'))
+            ->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($this->passwordEncoder->encodePassword(
+            $user,
+            'admin'
+        ));
+        return $user;
+    }
+
+    private function createCategories(): array
+    {
+        return [
+            'Grabs',
+            'Rotations',
+            'Flips',
+            'Rotations désaxées',
+            'Slides',
+            'One foot',
+            'Old school'
+        ];
+    }
+
+    private function createTricks(): array
+    {
+        return [
             "1080" => [
                 "categories" => [1],
                 "images" => ["sample01.jpg","sample02.jpg","sample03.jpg"],
@@ -148,56 +214,5 @@ class AppFixtures extends Fixture
                 "videos" => []
             ]
         ];
-
-        foreach ($tricks as $trickName => $trickParams) {
-            $newTrick = new Trick();
-            $newTrick
-                ->setAuthor($user)
-                ->setName($trickName)
-                ->setCreationDate($faker->dateTimeBetween($startDate = '-60 days', $endDate = '-15 days'))
-                ->setDescription($faker->paragraphs($nb = mt_rand(2, 5), $asText = true))
-            ;
-
-            foreach ($trickParams['categories'] as $trickCategory) {
-                $newTrick->addCategory($categories[$trickCategory]);
-            }
-
-            foreach ($trickParams['images'] as $trickImage) {
-                $image = new Image();
-                $image->setName($trickImage);
-                $newTrick->addImage($image);
-            }
-
-            foreach ($trickParams['videos'] as $trickVideo) {
-                $video = new Video();
-                $video->setName($trickVideo);
-                $newTrick->addVideo($video);
-            }
-
-            if (mt_rand(0,1)) {
-                $newTrick->setEditDate($faker->dateTimeBetween($startDate = '-14 days', $endDate = 'now'));
-            }
-
-            if (mt_rand(0,1)) {
-                $images = $newTrick->getImages();
-                $nbImages = $images->count();
-                if ($nbImages > 0) {
-                    $newTrick->setHero($images->get(mt_rand(0, $nbImages - 1)));
-                }
-            }
-
-            for ($i = 0; $i <= mt_rand(0, 20); $i++) {
-                $message = new Message();
-                $message
-                    ->setAuthor($user)
-                    ->setDate($faker->dateTimeBetween($startDate = '-14 days', $endDate = 'now'))
-                    ->setContent($faker->paragraphs($nb = mt_rand(1, 3), $asText = true))
-                ;
-                $newTrick->addMessage($message);
-            }
-            $manager->persist($newTrick);
-        }
-
-        $manager->flush();
     }
 }
