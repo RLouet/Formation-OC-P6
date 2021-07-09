@@ -63,12 +63,24 @@ function generateMessageItem(data, userRoles) {
 
 function generateUserItem(data) {
     const subscription = new Date(data.subscriptionDate);
-    const role = data.roles.includes("ROLE_ADMIN")?"Admin":"Membre";
-    const targetRole = data.roles.includes("ROLE_ADMIN")?"membre":"administrateur";
-    const enabledClass = data.enabled?"":" table-dark";
-    const enabledText = data.enabled?"":"<br><b>(Non activé)</b>";
-    const changeRoleBtn = data.id === currentUser?"":"<br><a href=\"#\" role=\"button\" class=\"switch-role-btn\" data-toggle=\"modal\" data-target=\"#switchRoleModal\" title=\"Change le rôle\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\" data-target-role=\"" + targetRole + "\">Modifier</a>";
-    const deleteBtn = data.id === currentUser?"":"<a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#deleteUserModal\" title=\"Supprimer\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\">Supprimer</a>";
+    let role = "Membre";
+    let targetRole = "administrateur";
+    if (data.roles.includes("ROLE_ADMIN")) {
+        role = "Admin";
+        targetRole = "membre";
+    }
+    let enabledClass = "";
+    let enabledText = "";
+    if (!data.enabled) {
+        enabledClass = "table-dark";
+        enabledText = "<br><b>(Non activé)</b>";
+    }
+    let changeRoleBtn = "";
+    let deleteBtn = "";
+    if (data.id !== currentUser) {
+        changeRoleBtn = "<br><a href=\"#\" role=\"button\" class=\"switch-role-btn\" data-toggle=\"modal\" data-target=\"#switchRoleModal\" title=\"Change le rôle\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\" data-target-role=\"" + targetRole + "\">Modifier</a>";
+        deleteBtn = "<a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#deleteUserModal\" title=\"Supprimer\" data-user-id=\"" + data.id + "\" data-user-username=\"" + data.username + "\">Supprimer</a>";
+    }
     return "<tr class=\"user-item user-" + data.id + enabledClass + "\">\n" +
         "    <th scope=\"row\">" + data.id + "</th>\n" +
         "    <td>" + data.username + "</td>\n" +
