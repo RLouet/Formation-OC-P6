@@ -18,7 +18,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{ path("ajax-switch-role") }}">
+                <form method="post" action="{{ path("ajax-switch-role") }}" class="submit-block">
                     <div class="modal-body">
                         <div class="errors d-none">
                                 <div class="alert alert-danger">error</div>
@@ -136,6 +136,7 @@
 {% block javascriptsBottom %}
     {{ parent() }}
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/form-block-submit.js') }}"></script>
     <script>
         const currentUser = {{ app.user.id }}
     </script>

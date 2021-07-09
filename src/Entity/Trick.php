@@ -331,7 +331,8 @@ class Trick
     public function computeSlug(SluggerInterface $slugger, TrickRepository $trickRepository)
     {
         $slug = (string) $slugger->slug((string) $this->getName())->lower();
-        if ($trickRepository->findOneBy(['slug' => $slug]) !== $this && $this->slug !== $slug) {
+        $matchedTrick = $trickRepository->findOneBy(['slug' => $slug]);
+        if ($matchedTrick && $matchedTrick !== $this && $this->slug !== $slug) {
             $key = 2;
             $matchedTrick = $trickRepository->findOneBy(['slug' => $slug . "_" . $key]);
             while ($matchedTrick && $matchedTrick !== $this) {

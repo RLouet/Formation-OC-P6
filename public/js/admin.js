@@ -1,4 +1,4 @@
-/*global showFlashMessage*/
+/*global showFlashMessage, unblockBtn*/
 
 $(document).ready(function() {
     const $switchRoleModal = $("#switchRoleModal");
@@ -9,6 +9,7 @@ $(document).ready(function() {
         $(".user-username").html($button.data("user-username"));
         $(".target-role").html(targetRole);
         $("#userToSwitchField").val($button.data("user-id"));
+        unblockBtn($("button[type='submit']", $(this)));
     });
 
     $("form", $switchRoleModal).submit(function (e){

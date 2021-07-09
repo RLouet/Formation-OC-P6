@@ -68,7 +68,7 @@
                 </div>
             </header>
 
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'class': 'submit-block'}}) }}
 
             <section class="row my-3 justify-content-center trick-medias" id="trickMedias">
                 <div class="col-12 text-center d-md-none">
@@ -138,12 +138,6 @@
                                 </div>
                                 <div class="d-none">{{ form_widget(newImage.name) }}</div>
                             </div>
-{#
-{% for data in newImage.name.vars.value %}
-    =>{{ data }}
-{% endfor %}
-#}
-
                         {% endfor %}
 
                         <span class="video-prototype"  data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"></span>
@@ -345,4 +339,5 @@
     <script src="{{ asset('js/images.js') }}"></script>
     <script src="{{ asset('js/trick-edit.js') }}"></script>
     <script src="{{ asset('js/trick-delete-modal.js') }}"></script>
+    <script src="{{ asset('js/form-block-submit.js') }}"></script>
 {% endblock %}

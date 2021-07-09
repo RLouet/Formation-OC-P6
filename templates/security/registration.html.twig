@@ -20,7 +20,7 @@
                         </div>
                     {% endif %}
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'class': 'submit-block'}}) }}
                     <div class="col-12 text-center form-field-error">
                         {{ form_errors(form) }}
                     </div>
@@ -50,4 +50,9 @@
         </div>
 
     </div>
+{% endblock %}
+
+{% block javascriptsBottom %}
+    {{ parent() }}
+    <script src="{{ asset('js/form-block-submit.js') }}"></script>
 {% endblock %}
