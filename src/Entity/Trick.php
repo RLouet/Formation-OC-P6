@@ -15,14 +15,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity("slug")
  */
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'Ce trick existe déjà.')
+]
 class Trick
 {
     use EntityIdManagementTrait;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @ORM\Column(type="string", length=128, unique=true)
      */
     #[Groups(['paginate_trick'])]
     #[Assert\Regex(

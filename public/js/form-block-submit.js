@@ -3,7 +3,7 @@ $("form.submit-block").on("submit", function(){
     $submitBtn.prop("disabled", true);
     $submitBtn.addClass("disabled");
     return true;
-})
+});
 
 function unblockBtn($button) {
     $button.prop("disabled", false);
