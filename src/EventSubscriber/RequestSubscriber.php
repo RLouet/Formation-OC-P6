@@ -23,28 +23,30 @@ class RequestSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        //dd("test");
-
+        /*
         $test = $request->getBaseUrl() . $request->getPathInfo();
+        dd($test, $request);
         if ($test == "https://localhost:8000/profile") {
             dd($request, $event);
         }
-        //dd($request);
+        */
+
         if (
             !$event->isMasterRequest()
             || $request->isXmlHttpRequest()
-            || preg_match('/^security_/', $request->attributes->get('_route'))
             || preg_match('/^profile_/', $request->attributes->get('_route'))
             || preg_match('/^admin_/', $request->attributes->get('_route'))
             || preg_match('/^_profiler/', $request->attributes->get('_route'))
             || preg_match('/^front_tricks-edit/', $request->attributes->get('_route'))
-            //|| preg_match('/^front_tricks-add/', $request->attributes->get('_route'))
+            || preg_match('/^front_tricks-add/', $request->attributes->get('_route'))
+            || preg_match('/^security_/', $request->attributes->get('_route'))
         ) {
             //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo() . "2");
             return;
         }
 
-        $this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo());
+        //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo());
+        $this->session->set('origin_path', $request->getPathInfo());
     }
 
     public static function getSubscribedEvents(): array

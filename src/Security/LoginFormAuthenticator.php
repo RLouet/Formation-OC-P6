@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,12 +27,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public const LOGIN_ROUTE = 'security_login';
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
-    private $originUrl;
-    private $targetUrl;
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private UserPasswordEncoderInterface $passwordEncoder;
+    private ?string $originUrl;
+    private string $targetUrl;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -41,14 +42,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
-        $this->originUrl = $request->getSession()->get('_security.main.target_path');
+        $this->originUrl = $request->getSession()->get('origin_path');
         if (
             (
                 (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
                 || preg_match('/^front_home/', $request->attributes->get('_route'))
                 || preg_match('/^front_tricks-single/', $request->attributes->get('_route'))
+                || preg_match('/^security_registration/', $request->attributes->get('_route'))
+                || preg_match('/^security_password_forgot/', $request->attributes->get('_route'))
+                || preg_match('/^security_password_recovery/', $request->attributes->get('_route'))
 
             )
             && $request->isMethod('POST')) {
@@ -70,7 +74,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return false;
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $credentials = [
             'email' => $request->request->get('email'),
@@ -85,7 +89,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): object|null
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
@@ -102,7 +106,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
@@ -115,7 +119,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return $credentials['password'];
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
         if ($request->get('target')) {
             return new RedirectResponse($this->urlGenerator->generate($request->get('target')));
@@ -124,17 +128,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         return new RedirectResponse($request->getUri());
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
-        //$target = empty($this->targetUrl)?[]:["target" => $this->targetUrl];
-        //return $this->urlGenerator->generate(self::LOGIN_ROUTE, $target);
-
         $target = empty($this->targetUrl)?"":"?target=" . $this->targetUrl;
-        //$this->originUrl?:$this->originUrl = $this->urlGenerator->generate("front_home");
-        //$this->originUrl = $this->urlGenerator->generate("front_home");
-        //dd($this->originUrl, $this->originUrl . $target ."#login");
-        //$target = "";
-        return $this->originUrl . $target ."#loginnnnnn";
+        return $this->originUrl . $target ."#login";
     }
 }
