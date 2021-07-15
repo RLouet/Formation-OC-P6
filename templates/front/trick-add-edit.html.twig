@@ -1,5 +1,7 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% block title %}{% if app.request.attributes.get('_route') == 'front_tricks-edit' %}{{ trick.name }} : Modification{% else %}Ajouter un Trick{% endif %}{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <!-- Profile CSS -->

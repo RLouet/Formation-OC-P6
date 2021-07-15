@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         // Create categories
-        $categories = $this->createCategories();
+        $categories = $this->getCategories();
 
         for ($i = 0; $i < count($categories); $i++) {
             $category = new Category();
@@ -42,55 +42,10 @@ class AppFixtures extends Fixture
         }
 
         //create tricks
-        $tricks = $this->createTricks();
+        $tricks = $this->getTricks();
 
         foreach ($tricks as $trickName => $trickParams) {
-            $newTrick = new Trick();
-            $newTrick
-                ->setAuthor($user)
-                ->setName($trickName)
-                ->setCreationDate($faker->dateTimeBetween('-60 days', '-15 days'))
-                ->setDescription($faker->paragraphs(mt_rand(2, 5), true))
-            ;
-
-            foreach ($trickParams['categories'] as $trickCategory) {
-                $newTrick->addCategory($categories[$trickCategory]);
-            }
-
-            foreach ($trickParams['images'] as $trickImage) {
-                $image = new Image();
-                $image->setName($trickImage);
-                $newTrick->addImage($image);
-            }
-
-            foreach ($trickParams['videos'] as $trickVideo) {
-                $video = new Video();
-                $video->setName($trickVideo);
-                $newTrick->addVideo($video);
-            }
-
-            if (mt_rand(0,1)) {
-                $newTrick->setEditDate($faker->dateTimeBetween('-14 days', 'now'));
-            }
-
-            if (mt_rand(0,1)) {
-                $images = $newTrick->getImages();
-                $nbImages = $images->count();
-                if ($nbImages > 0) {
-                    $newTrick->setHero($images->get(mt_rand(0, $nbImages - 1)));
-                }
-            }
-
-            for ($i = 0; $i <= mt_rand(0, 20); $i++) {
-                $message = new Message();
-                $message
-                    ->setAuthor($user)
-                    ->setDate($faker->dateTimeBetween('-14 days', 'now'))
-                    ->setContent($faker->paragraphs(mt_rand(1, 3), true))
-                ;
-                $newTrick->addMessage($message);
-            }
-            $manager->persist($newTrick);
+            $this->createTrick($manager, $faker, $user, $categories, $trickName, $trickParams);
         }
 
         $manager->flush();
@@ -112,7 +67,57 @@ class AppFixtures extends Fixture
         return $user;
     }
 
-    private function createCategories(): array
+    private function createTrick($manager, $faker, $user, $categories, $trickName, $trickParams)
+    {
+        $newTrick = new Trick();
+        $newTrick
+            ->setAuthor($user)
+            ->setName($trickName)
+            ->setCreationDate($faker->dateTimeBetween('-60 days', '-15 days'))
+            ->setDescription($faker->paragraphs(mt_rand(2, 5), true))
+        ;
+
+        foreach ($trickParams['categories'] as $trickCategory) {
+            $newTrick->addCategory($categories[$trickCategory]);
+        }
+
+        foreach ($trickParams['images'] as $trickImage) {
+            $image = new Image();
+            $image->setName($trickImage);
+            $newTrick->addImage($image);
+        }
+
+        foreach ($trickParams['videos'] as $trickVideo) {
+            $video = new Video();
+            $video->setName($trickVideo);
+            $newTrick->addVideo($video);
+        }
+
+        if (mt_rand(0,1)) {
+            $newTrick->setEditDate($faker->dateTimeBetween('-14 days', 'now'));
+        }
+
+        if (mt_rand(0,1)) {
+            $images = $newTrick->getImages();
+            $nbImages = $images->count();
+            if ($nbImages > 0) {
+                $newTrick->setHero($images->get(mt_rand(0, $nbImages - 1)));
+            }
+        }
+
+        for ($i = 0; $i <= mt_rand(0, 20); $i++) {
+            $message = new Message();
+            $message
+                ->setAuthor($user)
+                ->setDate($faker->dateTimeBetween('-14 days', 'now'))
+                ->setContent($faker->paragraphs(mt_rand(1, 3), true))
+            ;
+            $newTrick->addMessage($message);
+        }
+        $manager->persist($newTrick);
+    }
+
+    private function getCategories(): array
     {
         return [
             'Grabs',
@@ -125,7 +130,7 @@ class AppFixtures extends Fixture
         ];
     }
 
-    private function createTricks(): array
+    private function getTricks(): array
     {
         return [
             "1080" => [
