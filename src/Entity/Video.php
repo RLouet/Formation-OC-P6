@@ -16,13 +16,13 @@ class Video
         pattern: '/^[a-z0-9_-]{7,15}$/i',
         message: "Le nom de la video n'est pas valide. ( entre 7 et 15 lettres, chiffres, - et _ )"
     )]
-    private $name;
+    private string $name;
 
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: "videos")]
     #[ORM\JoinColumn(nullable: false)]
-    private $trick;
+    private Trick $trick;
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -34,12 +34,12 @@ class Video
         return $this;
     }
 
-    public function getTrick(): ?Trick
+    public function getTrick(): Trick
     {
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): self
+    public function setTrick(Trick $trick): self
     {
         $this->trick = $trick;
 

@@ -25,8 +25,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'security_login';
-
     private EntityManagerInterface $entityManager;
     private UrlGeneratorInterface $urlGenerator;
     private CsrfTokenManagerInterface $csrfTokenManager;
@@ -47,16 +45,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $this->originUrl = $request->getSession()->get('origin_path');
         if (
             (
-                (self::LOGIN_ROUTE  === $request->attributes->get('_route'))
-                || preg_match('/^front_home/', $request->attributes->get('_route'))
+                preg_match('/^front_home/', $request->attributes->get('_route'))
                 || preg_match('/^front_tricks-single/', $request->attributes->get('_route'))
                 || preg_match('/^security_registration/', $request->attributes->get('_route'))
                 || preg_match('/^security_password_forgot/', $request->attributes->get('_route'))
                 || preg_match('/^security_password_recovery/', $request->attributes->get('_route'))
 
             )
-            && $request->isMethod('POST')) {
-
+            && $request->isMethod('POST') && $request->get('login')) {
+            //dd($request);
             if ($request->get('target')) {
                 $this->targetUrl = $request->get('target');
             }
@@ -69,11 +66,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function getCredentials(Request $request): array
     {
-        $credentials = [
+        /*$credentials = [
             'email' => $request->request->get('email'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
-        ];
+        ];*/
+        $credentials = $request->request->get('login');
+
         $request->getSession()->set(
             Security::LAST_USERNAME,
             $credentials['email']
@@ -84,7 +83,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function getUser($credentials, UserProviderInterface $userProvider): object|null
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        $token = new CsrfToken('authenticate', $credentials['_csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }

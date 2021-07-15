@@ -33,20 +33,6 @@ class SecurityController extends AbstractController
         $this->lastUsername = $authenticationUtils->getLastUsername();
     }
 
-    #[Route("/login", name: "security_login")]
-    public function login(Request $request): Response
-    {
-        if ($this->getUser()) {
-            $this->addFlash(
-                'primary',
-                "Tu es déjà connecté."
-            );
-            return $this->redirect($request->getSession()->get('_security.main.target_path'));
-        }
-
-        return $this->redirect($request->getSession()->get('origin_path')?:$this->generateUrl('front_home') . '#login');
-    }
-
     #[Route("/logout", name: "security_logout")]
     public function logout()
     {
