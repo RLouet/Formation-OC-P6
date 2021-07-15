@@ -1,6 +1,6 @@
 * {
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -13,20 +13,20 @@ body {
   height: 100%;
 }
 
-#notfound .notfound {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-}
-
 .notfound {
   max-width: 560px;
   width: 100%;
   padding-left: 160px;
   line-height: 1.1;
+}
+
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound .notfound-404 {
@@ -46,8 +46,8 @@ body {
   width: 100%;
   height: 100%;
   -webkit-transform: scale(2.4);
-      -ms-transform: scale(2.4);
-          transform: scale(2.4);
+  -ms-transform: scale(2.4);
+  transform: scale(2.4);
   border-radius: 50%;
   background-color: #f2f5f8;
   z-index: -1;
@@ -57,7 +57,7 @@ body {
   font-family: 'Nunito', sans-serif;
   font-size: 65px;
   font-weight: 700;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 10px;
   color: #151723;
   text-transform: uppercase;
@@ -88,13 +88,14 @@ body {
 }
 
 @media only screen and (max-width: 767px) {
-  .notfound .notfound-404 {
-    width: 110px;
-    height: 110px;
-  }
   .notfound {
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 110px;
+  }
+
+  .notfound .notfound-404 {
+    width: 110px;
+    height: 110px;
   }
 }
