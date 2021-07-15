@@ -7,15 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\True_;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TrickRepository::class)
- */
+#[ORM\Entity(repositoryClass: TrickRepository::class)]
 #[UniqueEntity(
     fields: ['name'],
     message: 'Ce trick existe déjà.')
@@ -24,9 +23,11 @@ class Trick
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="string", length=128, unique=true)
-     */
+    #[ORM\Column(
+        type: 'string',
+        length: 128,
+        unique: true
+    )]
     #[Groups(['paginate_trick'])]
     #[Assert\Regex(
         pattern: '/^[\'"_\-)(.,@\s\wÜ-ü]{2,128}$/',
@@ -52,53 +53,59 @@ class Trick
     #[Assert\NotBlank()]
     private ?string $description = "";
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $creationDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(
+        type: 'datetime',
+        nullable: true
+    )]
     private ?\DateTimeInterface $editDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: "tricks"
+    )]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['paginate_trick'])]
     #[MaxDepth(1)]
     private ?User $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Message::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $messages;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
-     */
+    #[ORM\ManyToMany(
+        targetEntity: Category::class,
+        inversedBy: "tricks"
+    )]
     private Collection $categories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Image::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $images;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Video::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $videos;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Image::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\OneToOne(targetEntity: Image::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?Image $hero = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 255, unique: true)]
     #[Groups(['paginate_trick'])]
     private ?string $slug = null;
 

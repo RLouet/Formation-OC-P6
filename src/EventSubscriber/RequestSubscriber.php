@@ -12,7 +12,7 @@ class RequestSubscriber implements EventSubscriberInterface
 {
     use TargetPathTrait;
 
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {
@@ -22,14 +22,6 @@ class RequestSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-
-        /*
-        $test = $request->getBaseUrl() . $request->getPathInfo();
-        dd($test, $request);
-        if ($test == "https://localhost:8000/profile") {
-            dd($request, $event);
-        }
-        */
 
         if (
             !$event->isMasterRequest()
@@ -41,11 +33,9 @@ class RequestSubscriber implements EventSubscriberInterface
             || preg_match('/^front_tricks-add/', $request->attributes->get('_route'))
             || preg_match('/^security_/', $request->attributes->get('_route'))
         ) {
-            //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo() . "2");
             return;
         }
 
-        //$this->saveTargetPath($this->session, 'main', $request->getBaseUrl() . $request->getPathInfo());
         $this->session->set('origin_path', $request->getPathInfo());
     }
 

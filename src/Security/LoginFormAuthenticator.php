@@ -62,13 +62,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             }
             return true;
         }
-        /*if (preg_match('/^security_/', $request->attributes->get('_route')) && $request->isMethod('POST')) {
-            $this->targetUrl = "home";
-            if ($request->get('target')) {
-                $this->targetUrl = $request->get('target');
-            }
-            return true;
-        }*/
 
         $this->targetUrl = $request->attributes->get("_route");
         return false;

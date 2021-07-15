@@ -7,22 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: "string", length: 255)]
+    private ?string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Trick::class, mappedBy="categories")
-     */
-    private $tricks;
+    #[ORM\ManyToMany(targetEntity: Trick::class, mappedBy: "categories")]
+    private Collection $tricks;
 
     public function __construct()
     {
