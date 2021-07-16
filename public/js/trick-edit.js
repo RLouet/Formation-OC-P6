@@ -38,7 +38,6 @@ $(document).ready(function() {
                 $heroFormField.val(found[0][0]);
             }
         }
-        //alert("Type = " + found[0].groups['type'] + " // Index = " + found[0].groups['index'] + " // " + found[0][0]);
 
         if ($heroFormField.val() === "") {
             const imgItems = $(".image", $mediasContainer);
@@ -160,19 +159,19 @@ $(document).ready(function() {
 
     $(".new-image-prototype", $mediasContainer).data("index", $mediasContainer.find("div[class^='new-image-'], div[class*=' new-image-']").last().data("index") + 1);
 
-    $(".add-image").on("click", function(e){
+    $(".add-image").on("click", function(){
         const prototype = $(".new-image-prototype", $mediasContainer).data("prototype");
         const $newImageItem = $(prototype.replace(/__name__/g, newImageIndex));
         $(".video-prototype", $mediasContainer).before($newImageItem);
         newImageIndex++;
         $("label.edit-btn", $newImageItem).click();
         initImagePreview($("input", $newImageItem), 1280, 1024, 5);
-        $("input", $newImageItem).change(function (e) {
+        $("input", $newImageItem).change(function () {
             updateHeroImage();
         });
     });
 
-    $heroChoiceModal.on("show.bs.modal", function (e) {
+    $heroChoiceModal.on("show.bs.modal", function () {
         const $imagesList = $(".trick-images-list", $(this));
         $imagesList.html("");
         let checkedHero = "";
@@ -204,7 +203,7 @@ $(document).ready(function() {
             $imagesList.html("<p>Il n'y a pas d'image disponible.</p>");
         }
     });
-    $heroChoiceModal.on("shown.bs.modal", function (e) {
+    $heroChoiceModal.on("shown.bs.modal", function () {
         updateHeroImagesPreviews();
     });
 
@@ -217,8 +216,6 @@ $(document).ready(function() {
             updateHeroImage(choice);
             $heroChoiceModal.modal("hide");
         }
-
-        const string = "new-5797";
     });
     $("#heroDeleteModal button.delete-btn").click(function (e){
         e.preventDefault();
@@ -232,12 +229,12 @@ $(document).ready(function() {
 
     $(".image.image-input-container input", $mediasContainer).each(function (){
         initImagePreview($(this), 1280, 1024, 5);
-        $(this).change(function (e) {
+        $(this).change(function () {
             updateHeroImage();
         });
     });
 
-    $("form[name='trick']").submit(function(e){
+    $("form[name='trick']").submit(function(){
         let emptyImage = false;
         $("div[class^='new-image-'], div[class*=' new-image-']", $(this)).each(function(){
             const $fileInput = $("input", $(this));
@@ -250,8 +247,9 @@ $(document).ready(function() {
         });
 
         if (emptyImage) {
-            $("#mediasList").collapse("show");
-            $("#mediasList")[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
+            const $mediaList = $("#mediasList")
+            $mediaList.collapse("show");
+            $mediaList[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
             return false;
         }
     });
