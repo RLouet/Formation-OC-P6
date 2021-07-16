@@ -11,12 +11,11 @@ use App\Repository\UserRepository;
 use App\Service\Security\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -33,43 +32,21 @@ class SecurityController extends AbstractController
         $this->lastUsername = $authenticationUtils->getLastUsername();
     }
 
-    /**
-     * @Route("/login", name="security_login")
-     */
-    public function login(Request $request): Response
-    {
-        $target = $request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home');
-
-        //dd($request->getSession()->get('_security.main.target_path'));
-
-        if ($this->getUser()) {
-            $this->addFlash(
-                'primary',
-                "Tu es déjà connecté."
-            );
-            return $this->redirect($target);
-        }
-
-        $target .= $request->get("target")?"?target=" . $request->get("target"):"";
-
-        return $this->redirect($target . '#login');
-    }
-
-    /**
-     * @Route("/logout", name="security_logout")
-     */
+    #[Route("/logout", name: "security_logout")]
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    /**
-     * @Route("/registration", name="security_registration")
-     */
-    public function registration(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder, TokenService $tokenService): Response
+    #[Route("/registration", name: "security_registration")]
+    public function registration(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, TokenService $tokenService): Response
     {
         if ($this->getUser()) {
-            return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+            $this->addFlash(
+                'primary',
+                "Tu es déjà connecté."
+            );
+            return $this->redirect($request->getSession()->get('origin_path')?:$this->generateUrl('front_home'));
         }
         $user = new User();
 
@@ -77,7 +54,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
-            //dd('sub');
             $expiredTokens = $tokenRepository->findExpired();
             foreach ($expiredTokens as $expiredToken) {
                 if (!$expiredToken->getUser()->getEnabled()) {
@@ -104,7 +80,7 @@ class SecurityController extends AbstractController
                         "Cette adresse Email est déjà active. Tu peux te connecter"
                     );
                     $request->getSession()->set(Security::LAST_USERNAME, $mailExists->getEmail());
-                    return $this->redirect($request->getSession()->get('_security.main.target_path') . '#login');
+                    return $this->redirect($request->getSession()->get('origin_path')?:$this->generateUrl('front_home') . '#login');
                 }
 
                 if ($usernameExists) {
@@ -128,7 +104,7 @@ class SecurityController extends AbstractController
                     $manager->flush();
                 }
 
-                $passwordEncoded = $passwordEncoder->encodePassword($user, $form['plainPassword']->getData());
+                $passwordEncoded = $passwordHasher->hashPassword($user, $form['plainPassword']->getData());
                 $user->setPassword($passwordEncoded);
                 $user->setRoles(['ROLE_USER']);
                 $user->setSubscriptionDate(new \DateTime());
@@ -150,7 +126,7 @@ class SecurityController extends AbstractController
                         'primary',
                         "Un Email de validation vient de t'être envoyé."
                     );
-                    return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+                    return $this->redirectToRoute('front_home');
                 }
 
                 $this->addFlash(
@@ -179,14 +155,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/registration/confirmation/{value}", name="security_registration_confirmation")
-     */
+    #[Route("/registration/confirmation/{value}", name: "security_registration_confirmation")]
     public function registrationConfirmation(Token $token, Request $request, EntityManagerInterface $manager): Response
     {
         $user = $token->getUser();
 
-        if ($token->isValid()) {
+        if ($token->isValid() || $user->getEnabled()) {
             $user->setEnabled(true);
             $manager->remove($token);
             $manager->flush();
@@ -197,38 +171,28 @@ class SecurityController extends AbstractController
             );
 
             $request->getSession()->set(Security::LAST_USERNAME, $user->getEmail());
-            return $this->redirectToRoute('security_login');
+            return $this->redirect($this->generateUrl('front_home') . '#login');
         }
 
-        if (!$user->getEnabled()) {
-            $manager->remove($user);
-            $manager->flush();
-            $this->addFlash(
-                'danger',
-                "Désolé, ton lien a expiré ! Merci de t'inscrire à nouveau."
-            );
-
-            return $this->redirectToRoute('security_registration');
-        }
-
-        $manager->remove($token);
+        $manager->remove($user);
         $manager->flush();
         $this->addFlash(
-            'primary',
-            "Ton compte est déjà activé ! Tu peux te connecter."
+            'danger',
+            "Désolé, ton lien a expiré ! Merci de t'inscrire à nouveau."
         );
 
-        $request->getSession()->set(Security::LAST_USERNAME, $user->getEmail());
-        return $this->redirectToRoute('security_login');
+        return $this->redirectToRoute('security_registration');
     }
 
-    /**
-     * @Route("/password/forgot", name="security_password_forgot")
-     */
+    #[Route("/password/forgot", name: "security_password_forgot")]
     public function passwordForgot(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, TokenService $tokenService): Response
     {
         if ($this->getUser()) {
-            return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+            $this->addFlash(
+                'primary',
+                "Tu es déjà connecté."
+            );
+            return $this->redirect($request->getSession()->get('origin_path')?:$this->generateUrl('front_home'));
         }
         $submittedToken = $request->request->get('token');
         $submittedEmail = $request->request->get('email');
@@ -265,14 +229,13 @@ class SecurityController extends AbstractController
                     "Un lien de réinitialisation vient de t'être envoyé par Email."
                 );
 
-                return $this->redirect($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home'));
+                return $this->redirect($request->getSession()->get('origin_path')?:$this->generateUrl('front_home'));
             }
             $this->addFlash(
                 'danger',
                 "Une erreur s'est produite. Merci de recommencer2."
             );
         }
-        //dd($this->lastAuthError);
 
         return $this->render('security/forgot-password.html.twig', [
             'last_username' => $this->lastUsername,
@@ -280,10 +243,8 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/recovery/{value}", name="security_password_recovery")
-     */
-    public function passwordRecovery(Token $token, Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager): Response
+    #[Route("/recovery/{value}", name: "security_password_recovery")]
+    public function passwordRecovery(Token $token, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $manager): Response
     {
         $user = $token->getUser();
 
@@ -291,12 +252,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
-            //dd($form['username']->getData(), $user->getUsername());
             if ($form['username']->getData() != $user->getUsername()) {
                 $form->get('username')->addError(new FormError("Nom d'utlisateur invalide !"));
             }
             if ($form->isValid()) {
-                $passwordEncoded = $passwordEncoder->encodePassword($user, $form['plainPassword']->getData());
+                $passwordEncoded = $passwordHasher->hashPassword($user, $form['plainPassword']->getData());
                 $user->setPassword($passwordEncoded);
 
                 $manager->remove($token);
@@ -306,7 +266,7 @@ class SecurityController extends AbstractController
                     'primary',
                     "Ton mot de passe a bien été modifié, tu peux te connecter."
                 );
-                return $this->redirect(($request->getSession()->get('_security.main.target_path')?:$this->generateUrl('front_home')) . '#login');
+                return $this->redirect($this->generateUrl('front_home') . '#login');
             }
 
             $this->addFlash(

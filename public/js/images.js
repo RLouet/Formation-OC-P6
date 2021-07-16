@@ -61,7 +61,7 @@
                     $(".img-alert", $container).addClass("d-block");
                     $(this).val("");
                     $previewLoader.addClass("d-none");
-                    return true;
+                    return false;
                 }
 
                 //CheckSize
@@ -77,13 +77,10 @@
 
                 centerImagePreview(image, $preview, targetWidth, targetHeight);
                 const src = URL.createObjectURL(image);
-                //alert(src);
                 $("img", $preview).attr("src", src);
-                //$(this).data("old", $(this).val());
                 $previewLoader.addClass("d-none");
                 return true;
             }
-            //centerImagePreview(oldVal, $preview, targetWidth, targetHeight);
 
             $("img", $preview).css("width", "100%");
             $("img", $preview).css("margin", "0");

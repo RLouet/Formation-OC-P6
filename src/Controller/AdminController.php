@@ -17,16 +17,6 @@ class AdminController extends AbstractController
     #[Route("/admin", name: "admin_users")]
     public function admin(UserRepository $userRepository, EntityManagerInterface $manager, TrickRepository $trickRepository, ImageRepository $imageRepository): Response
     {
-
-
-        //$trick = $trickRepository->find(14);
-        //$trick->setHero(NULL);
-        //$manager->remove($trick);
-
-        //$image = $imageRepository->find(43);
-        //$manager->remove($image);
-        //$manager->flush();
-
         $users = $userRepository->findBy(
             [],
             ['id' => 'ASC'],

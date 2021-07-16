@@ -1,5 +1,7 @@
 {% extends 'front/_front-base.html.twig' %}
 
+{% block title %}{% if app.request.attributes.get('_route') == 'front_tricks-edit' %}{{ trick.name }} : Modification{% else %}Ajouter un Trick{% endif %}{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <!-- Profile CSS -->
@@ -68,7 +70,7 @@
                 </div>
             </header>
 
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'class': 'submit-block'}}) }}
 
             <section class="row my-3 justify-content-center trick-medias" id="trickMedias">
                 <div class="col-12 text-center d-md-none">
@@ -83,7 +85,7 @@
 
                             <div class="col-6 col-md-2 px-1 pb-2 image image-input-container old-image-{{ key }}" data-index="{{ key }}" data-type="old" data-id="{{ oldImage.vars.data.id }}">
                                 <label for="{{ oldImage.newFile.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
-                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.vars.data.name }}" alt="Image du Trick" class="img-input-preview w-100">
+                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.vars.data.name }}" alt="Image de {{ trick.name }}" class="img-input-preview w-100">
                                     <span class="img-prev-ol d-none">
                                         <span class="spinner"></span>
                                     </span>
@@ -138,12 +140,6 @@
                                 </div>
                                 <div class="d-none">{{ form_widget(newImage.name) }}</div>
                             </div>
-{#
-{% for data in newImage.name.vars.value %}
-    =>{{ data }}
-{% endfor %}
-#}
-
                         {% endfor %}
 
                         <span class="video-prototype"  data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"></span>
@@ -345,4 +341,5 @@
     <script src="{{ asset('js/images.js') }}"></script>
     <script src="{{ asset('js/trick-edit.js') }}"></script>
     <script src="{{ asset('js/trick-delete-modal.js') }}"></script>
+    <script src="{{ asset('js/form-block-submit.js') }}"></script>
 {% endblock %}

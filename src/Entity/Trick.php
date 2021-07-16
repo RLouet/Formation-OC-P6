@@ -13,28 +13,29 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TrickRepository::class)
- * @UniqueEntity("slug")
- */
+#[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'Ce trick existe déjà.')
+]
 class Trick
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="string", length=128)
-     */
+    #[ORM\Column(
+        type: 'string',
+        length: 128,
+        unique: true
+    )]
     #[Groups(['paginate_trick'])]
     #[Assert\Regex(
         pattern: '/^[\'"_\-)(.,@\s\wÜ-ü]{2,128}$/',
         message: "Le nom du tricks n'est pas valide. ( entre 2 et 128 lettres, chiffres, espaces et @'\"-_/,(). )"
     )]
     #[Assert\NotBlank()]
-    private ?string $name = "";
+    private string $name = '';
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     #[Assert\Length(
         min: 2,
         max: 2500,
@@ -47,55 +48,61 @@ class Trick
         match: false
     )]
     #[Assert\NotBlank()]
-    private ?string $description = "";
+    private string $description = '';
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $creationDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(
+        type: 'datetime',
+        nullable: true
+    )]
     private ?\DateTimeInterface $editDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        inversedBy: "tricks"
+    )]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['paginate_trick'])]
     #[MaxDepth(1)]
     private ?User $author;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Message::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $messages;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
-     */
+    #[ORM\ManyToMany(
+        targetEntity: Category::class,
+        inversedBy: "tricks"
+    )]
     private Collection $categories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Image::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $images;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(
+        mappedBy: "trick",
+        targetEntity: Video::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $videos;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Image::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\OneToOne(targetEntity: Image::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?Image $hero = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 255, unique: true)]
     #[Groups(['paginate_trick'])]
     private ?string $slug = null;
 
@@ -108,24 +115,24 @@ class Trick
         $this->creationDate = new \DateTime();
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -331,7 +338,8 @@ class Trick
     public function computeSlug(SluggerInterface $slugger, TrickRepository $trickRepository)
     {
         $slug = (string) $slugger->slug((string) $this->getName())->lower();
-        if ($trickRepository->findOneBy(['slug' => $slug]) !== $this && $this->slug !== $slug) {
+        $matchedTrick = $trickRepository->findOneBy(['slug' => $slug]);
+        if ($matchedTrick && $matchedTrick !== $this && $this->slug !== $slug) {
             $key = 2;
             $matchedTrick = $trickRepository->findOneBy(['slug' => $slug . "_" . $key]);
             while ($matchedTrick && $matchedTrick !== $this) {

@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationType extends AbstractType
 {
@@ -32,6 +34,15 @@ class RegistrationType extends AbstractType
                 'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirme ton mot de passe'],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length([
+                        'min' => 6,
+                        'max' => 4096,
+                        'minMessage' => "Minimum 6 caractères.",
+                        'maxMessage' => "Maximum 4096 caractères."
+                    ])
+                ]
             ])
         ;
     }

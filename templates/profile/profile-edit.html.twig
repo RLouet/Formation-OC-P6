@@ -20,7 +20,7 @@
                 <div class="col-12 col-md-8 col-lg-6 rounded form-container align-self-center">
                     <h2 class="text-center">Ton profil</h2>
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'class': 'submit-block'}}) }}
                     <div class="col-12 text-center form-field-error">
                         {{ form_errors(form) }}
                     </div>
@@ -87,5 +87,6 @@
 {% block javascriptsBottom %}
     {{ parent() }}
     <script src="{{ asset('js/images.js') }}"></script>
+    <script src="{{ asset('js/form-block-submit.js') }}"></script>
     <script src="{{ asset('js/profile.js') }}"></script>
 {% endblock %}

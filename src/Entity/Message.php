@@ -8,22 +8,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
-/**
- * @ORM\Entity(repositoryClass=MessageRepository::class)
- */
+#[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"paginate_message"})
-     */
+    #[ORM\Column(type: "datetime")]
+    #[Groups(['paginate_message'])]
     private \DateTimeInterface $date;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: "text")]
     #[Groups(['paginate_message'])]
     #[Assert\Length(
         min: 2,
@@ -39,18 +33,14 @@ class Message
     #[Assert\NotBlank()]
     private string $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "messages")]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['paginate_message'])]
     #[MaxDepth(1)]
     private ?User $author;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: "messages")]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick;
 
     public function __construct()

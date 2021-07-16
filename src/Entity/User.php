@@ -6,40 +6,31 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
- */
-class User implements UserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: "user")]
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
     #[Assert\Email(message: "Ton adresse Email est invalide.")]
     #[Groups(['paginate_user'])]
     private string $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: "json")]
     #[Groups(['paginate_user', 'paginate_trick'])]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private string $password;
 
-    /**
-     * @ORM\Column(type="string", length=128, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 128, unique: true)]
     #[Groups(['paginate_message', 'paginate_user'])]
     #[Assert\Length(
         min: 2,
@@ -54,36 +45,43 @@ class User implements UserInterface
     )]
     private string $username;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     #[Groups(['paginate_user'])]
-    private \DateTimeInterface $subscriptionDate;
+    private DateTimeInterface $subscriptionDate;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     #[Groups(['paginate_user'])]
     private bool $enabled = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(
+        mappedBy: "author",
+        targetEntity: Trick::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $tricks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="author", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(
+        mappedBy: "author",
+        targetEntity: Message::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private Collection $messages;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Token::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(
+        mappedBy: "user",
+        targetEntity: Token::class,
+        cascade: ["persist", "remove"],
+        orphanRemoval: true
+    )]
     private ?Token $token;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     */
+    #[ORM\Column(
+        type: "string",
+        length: 32,
+        nullable: true
+    )]
     private ?string $avatar;
 
     public function __construct()
@@ -104,14 +102,17 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 
     /**
@@ -138,7 +139,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -175,12 +176,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSubscriptionDate(): ?\DateTimeInterface
+    public function getSubscriptionDate(): ?DateTimeInterface
     {
         return $this->subscriptionDate;
     }
 
-    public function setSubscriptionDate(\DateTimeInterface $subscriptionDate): self
+    public function setSubscriptionDate(DateTimeInterface $subscriptionDate): self
     {
         $this->subscriptionDate = $subscriptionDate;
 

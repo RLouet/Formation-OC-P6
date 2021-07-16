@@ -1,17 +1,18 @@
 /*global TrickImgPath, trickImages, generatePaginationItem, showFlashMessage*/
 
 $(document).ready(function() {
+    const $mediaList = $("#mediasList");
 
-    $("#mediasList").on("show.bs.collapse", function () {
+    $mediaList.on("show.bs.collapse", function () {
         location.hash = "#trickMedias";
     });
-    $("#mediasList").on("hide.bs.collapse", function () {
+    $mediaList.on("hide.bs.collapse", function () {
         location.hash = "";
     });
-    $("#mediasList").on("shown.bs.collapse", function () {
+    $mediaList.on("shown.bs.collapse", function () {
         $(".trick-medias .view-medias").html("<em class=\"fas fa-arrow-up\"></em> Masquer les médias <em class=\"fas fa-arrow-up\"></em>").removeClass("btn-primary").addClass("btn-secondary");
     });
-    $("#mediasList").on("hidden.bs.collapse", function () {
+    $mediaList.on("hidden.bs.collapse", function () {
         $(".trick-medias .view-medias").html("<em class=\"fas fa-arrow-down\"></em> Voir les médias <em class=\"fas fa-arrow-down\"></em>").addClass("btn-primary").removeClass("btn-secondary");
     });
 
@@ -25,7 +26,7 @@ $(document).ready(function() {
         modal.find(".modal-body .nav.prev").data("index", recipient - 1 < 0 ? trickImages.length - 1 : recipient - 1 );
     });
 
-    $("#imageModal .modal-body .nav").on("click", function (event) {
+    $("#imageModal .modal-body .nav").on("click", function () {
         const recipient = $(this).data("index");
         const currentImage = trickImages[recipient];
         $("#imageModal .modal-body img").attr("src", TrickImgPath + currentImage);
@@ -77,7 +78,7 @@ $(document).ready(function() {
                 $button.prop("disabled", false);
                 $button.html("Valider");
             },
-            error(e) {
+            error() {
                 showFlashMessage("danger", "Une erreur s'est produite.");
                 $button.removeClass("disabled");
                 $button.prop("disabled", false);
@@ -96,7 +97,7 @@ $(document).ready(function() {
         $modalButton.data("id", $button.data("id"));
     });
 
-    $("#deleteCommentBtn").on("click", function (e){
+    $("#deleteCommentBtn").on("click", function (){
         const $button = $(this);
         const $messageItem = $("#MessageItemsContainer .trick-message-" + $button.data("id"));
 
@@ -120,7 +121,7 @@ $(document).ready(function() {
                 showFlashMessage("danger", data.error);
                 $messageDeleteModal.modal("hide");
             },
-            error(e) {
+            error() {
                 showFlashMessage("danger", "Une erreur s'est produite.");
                 $messageDeleteModal.modal("hide");
             }

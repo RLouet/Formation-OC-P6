@@ -5,22 +5,23 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ImageRepository::class)
- */
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
     use EntityIdManagementTrait;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(
+        type: "string",
+        length: 255,
+        unique: true
+    )]
     private string $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(
+        targetEntity: Trick::class,
+        inversedBy: "images"
+    )]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?Trick $trick;
 
     public function getName(): ?string
