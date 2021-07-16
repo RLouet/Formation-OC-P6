@@ -6,13 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "user")]
-class User implements UserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     use EntityIdManagementTrait;
 
@@ -45,7 +47,7 @@ class User implements UserInterface
 
     #[ORM\Column(type: "datetime")]
     #[Groups(['paginate_user'])]
-    private \DateTimeInterface $subscriptionDate;
+    private DateTimeInterface $subscriptionDate;
 
     #[ORM\Column(type: "boolean")]
     #[Groups(['paginate_user'])]
@@ -100,14 +102,17 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 
     /**
@@ -134,7 +139,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -171,12 +176,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSubscriptionDate(): ?\DateTimeInterface
+    public function getSubscriptionDate(): ?DateTimeInterface
     {
         return $this->subscriptionDate;
     }
 
-    public function setSubscriptionDate(\DateTimeInterface $subscriptionDate): self
+    public function setSubscriptionDate(DateTimeInterface $subscriptionDate): self
     {
         $this->subscriptionDate = $subscriptionDate;
 

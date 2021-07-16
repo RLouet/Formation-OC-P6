@@ -11,12 +11,11 @@ use App\Repository\UserRepository;
 use App\Service\Security\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -40,7 +39,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route("/registration", name: "security_registration")]
-    public function registration(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder, TokenService $tokenService): Response
+    public function registration(Request $request, UserRepository $userRepository, TokenRepository $tokenRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, TokenService $tokenService): Response
     {
         if ($this->getUser()) {
             $this->addFlash(
@@ -105,7 +104,7 @@ class SecurityController extends AbstractController
                     $manager->flush();
                 }
 
-                $passwordEncoded = $passwordEncoder->encodePassword($user, $form['plainPassword']->getData());
+                $passwordEncoded = $passwordHasher->hashPassword($user, $form['plainPassword']->getData());
                 $user->setPassword($passwordEncoded);
                 $user->setRoles(['ROLE_USER']);
                 $user->setSubscriptionDate(new \DateTime());
@@ -245,7 +244,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route("/recovery/{value}", name: "security_password_recovery")]
-    public function passwordRecovery(Token $token, Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $manager): Response
+    public function passwordRecovery(Token $token, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $manager): Response
     {
         $user = $token->getUser();
 
@@ -253,12 +252,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
-            //dd($form['username']->getData(), $user->getUsername());
             if ($form['username']->getData() != $user->getUsername()) {
                 $form->get('username')->addError(new FormError("Nom d'utlisateur invalide !"));
             }
             if ($form->isValid()) {
-                $passwordEncoded = $passwordEncoder->encodePassword($user, $form['plainPassword']->getData());
+                $passwordEncoded = $passwordHasher->hashPassword($user, $form['plainPassword']->getData());
                 $user->setPassword($passwordEncoded);
 
                 $manager->remove($token);

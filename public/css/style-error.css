@@ -40,7 +40,7 @@ body {
   background-size: cover;
 }
 
-.notfound .notfound-404:before {
+.notfound .notfound-404::before {
   content: '';
   position: absolute;
   width: 100%;
