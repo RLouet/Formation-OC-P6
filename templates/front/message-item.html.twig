@@ -1,7 +1,6 @@
 <div class="row px-1 justify-content-center message-item trick-message-{{ message.id }}">
     <div class="col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author">
-        {# <img src="{{ asset('/') }}{% if message.author.avatar %}uploads/avatars/{{ message.author.avatar }}{% else %}imgs/avatar.png{% endif %}" class="rounded-circle" alt="..."> #}
-        <img src="{{ message.author.avatarUrl }}" class="img-fluid rounded-circle border border-info d-block m-auto"  width="100%" alt="Avatar">
+        <img src="{{ message.author.avatarUrl }}" class="img-fluid rounded-circle border border-info d-block m-auto w-100" alt="Avatar">
         <small class="text-break">{{ message.author.username }}</small>
     </div>
     <div class="col-10 col-md-11 col-xl-6 mt-3 message-content">

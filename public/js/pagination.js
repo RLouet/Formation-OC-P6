@@ -48,7 +48,7 @@ function generateMessageItem(data, userRoles) {
     const date = new Date(data.date);
     return "<div class=\"row px-1 justify-content-center message-item trick-message-" + data.id + "\">\n" +
         "    <div class=\"col-2 col-md-1 text-center mt-4 pr-0 text-wrap message-author\">\n" +
-        "        <img src=\"" + data.author.avatarUrl + "\" class=\"img-fluid rounded-circle border border-info d-block m-auto\"  width=\"100%\" alt=\"...\">\n" +
+        "        <img src=\"" + data.author.avatarUrl + "\" class=\"img-fluid rounded-circle border border-info d-block m-auto w-100\" alt=\"...\">\n" +
         "        <small class=\"text-break\">" + data.author.username + "</small>\n" +
         "    </div>\n" +
         "    <div class=\"col-10 col-md-11 col-xl-6 mt-3 message-content\">\n" +

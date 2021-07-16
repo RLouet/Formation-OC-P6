@@ -85,7 +85,7 @@
 
                             <div class="col-6 col-md-2 px-1 pb-2 image image-input-container old-image-{{ key }}" data-index="{{ key }}" data-type="old" data-id="{{ oldImage.vars.data.id }}">
                                 <label for="{{ oldImage.newFile.vars.id }}" class="overflow-hidden image-input-preview mb-0 w-100">
-                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.vars.data.name }}" alt="Image du Trick" class="img-input-preview w-100">
+                                    <img src="{{ asset('uploads/tricks/') }}{{ oldImage.vars.data.name }}" alt="Image de {{ trick.name }}" class="img-input-preview w-100">
                                     <span class="img-prev-ol d-none">
                                         <span class="spinner"></span>
                                     </span>

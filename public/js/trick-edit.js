@@ -247,7 +247,7 @@ $(document).ready(function() {
         });
 
         if (emptyImage) {
-            const $mediaList = $("#mediasList")
+            const $mediaList = $("#mediasList");
             $mediaList.collapse("show");
             $mediaList[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
             return false;
