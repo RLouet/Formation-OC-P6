@@ -12,8 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationType extends AbstractType
 {
@@ -35,14 +34,8 @@ class RegistrationType extends AbstractType
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirme ton mot de passe'],
                 'constraints' => [
-                    new NotBlank(),
-                    new Length([
-                        'min' => 6,
-                        'max' => 4096,
-                        'minMessage' => "Minimum 6 caractères.",
-                        'maxMessage' => "Maximum 4096 caractères."
-                    ])
-                ]
+                    new Regex('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,50}$/', 'Ton mot de passe doit contenir entre 8 et 50 caractères, au moins une lettre en minuscule, une lettre en majuscule et un chiffre.')
+                ],
             ])
         ;
     }
