@@ -34,13 +34,18 @@ https://symfony.com/download
 *   symfony server:start
 *   localhost:8000
 ##### Production
-*   .env : prod
+*   .env: prod
 *   composer dump-env prod
 *   composer install --no-dev --optimize-autoloader
 *   APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 *   domaine vers /public
-*   Création d’un compte
-*   Passer nouveau compte en admin
-*   Suppression du compte contact@snowtricks.com
+###### Modifier l’administrateur
+*   En supprimant les tricks et commentaire par défaut
+    *   Création d’un compte, validation de ce compte.
+    *   Passer nouveau compte en admin avec le compte contact@snowtricks.com.
+    *   Suppression du compte contact@snowtricks.com -> Les tricks et les commentaires par défaut seront supprimés.
+*   En gardant les tricks et commentaires par défaut
+    *   Dans la base de données, remplacer l’adresse email de l’administrateur par défaut par votre adresse valide.
+    *   Cliquer sur connexion, Mot de passe oublié, et suivre les instructions pour réinitialiser le mot de passe.
 ###### Si problème 404 en ouvrant un trick
 *   composer require symfony/apache-pack
