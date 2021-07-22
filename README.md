@@ -1,4 +1,5 @@
 # Formation Développeur PHP / Symfony
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2e8d20f838c948899fb9f16a6bb7dcfd)](https://www.codacy.com/gh/RLouet/Formation-OC-P6/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RLouet/Formation-OC-P6&amp;utm_campaign=Badge_Grade)
 
 ## Projet 6 : Snowtricks
 
@@ -100,6 +101,7 @@ Par défaut, le compte administrateur est le suivant :
     *   Créaion d’un compte, validation de ce compte.
     
     *   Passer ce nouveau compte en admin avec le compte contact@snowtricks.com.
+    
     *   Suppression du compte contact@snowtricks.com
         
         -> Les tricks et les commentaires par défaut seront supprimés.
