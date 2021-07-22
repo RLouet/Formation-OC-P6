@@ -29,7 +29,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.notfound>div {
+.notfound > div {
   position: absolute;
   left: 0;
   top: 0;
@@ -40,7 +40,7 @@ body {
   background-size: cover;
 }
 
-.notfound>div::before {
+.notfound > div::before {
   content: '';
   position: absolute;
   width: 100%;
@@ -94,7 +94,7 @@ body {
     padding-top: 110px;
   }
 
-  .notfound>div {
+  .notfound > div {
     width: 110px;
     height: 110px;
   }
