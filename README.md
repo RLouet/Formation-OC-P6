@@ -6,7 +6,7 @@
 ### Introduction
 Projet 6 de la formation **OpenClassrooms** [*Développeur d'application PHP / Symfony*](https://openclassrooms.com/fr/paths/59-developpeur-dapplication-php-symfony) :
 
-####Développez de A à Z le site communautaire SnowTricks
+#### Développez de A à Z le site communautaire SnowTricks
 
 Vous pouvez voir la démo du projet [ici](https://snowtricks.romainlouet.fr/)
 
@@ -25,7 +25,7 @@ Vous pouvez voir la démo du projet [ici](https://snowtricks.romainlouet.fr/)
 
 #### Configuration
 
-##### .env
+##### Configuration du .env
 Modifier le fichier .env avec vos informations, et passer le projet en dev.
 *   Application en dev
     
@@ -86,7 +86,7 @@ Par défaut, le compte administrateur est le suivant :
     
     `composer dump-env prod`
 
-*   Mettre à jour les dépendances pour l'envirnnement :
+*   Mettre à jour les dépendances pour l'environnement :
     
     `composer install --no-dev --optimize-autoloader`
 
