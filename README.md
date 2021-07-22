@@ -5,7 +5,7 @@
 ### Introduction
 Projet 6 de la formation **OpenClassrooms** [*Développeur d'application PHP / Symfony*](https://openclassrooms.com/fr/paths/59-developpeur-dapplication-php-symfony) :
 
-**Développez de A à Z le site communautaire SnowTricks**
+####Développez de A à Z le site communautaire SnowTricks
 
 Vous pouvez voir la démo du projet [ici](https://snowtricks.romainlouet.fr/)
 
@@ -37,6 +37,7 @@ Modifier le fichier .env avec vos informations, et passer le projet en dev.
         > Utiliser l'encodage pourcent :
         > 
         > > https://fr.wikipedia.org/wiki/Encodage-pourcent#Caract.C3.A8res_r.C3.A9serv.C3.A9s_dans_l.27encodage-pourcent
+    
     *   Email affiché comme expéditeur (devrait correspondre au mail d'envoi)
       
         `MAILER_FROM="SnowTricks <contact@snowtricks.com>"`
@@ -96,20 +97,17 @@ Par défaut, le compte administrateur est le suivant :
 
 ###### Modifier l’administrateur
 *   **En supprimant les tricks et commentaire par défaut**
-    *   Création d’un compte, validation de ce compte.
+    *   Créaion d’un compte, validation de ce compte.
     
     *   Passer ce nouveau compte en admin avec le compte contact@snowtricks.com.
-    
     *   Suppression du compte contact@snowtricks.com
         
         -> Les tricks et les commentaires par défaut seront supprimés.
+
 *   **En gardant les tricks et commentaires par défaut**
     *   Dans la base de données, remplacer l’adresse email de l’administrateur par défaut par votre adresse valide.
-    
     *   Connectez vous avec votre adresse Email et le mot de passe par défaut (*admin*)
-    
     *   Cliquez sur l'avatar dans le barre menu, puis sur *profil*
-    
     *   Modifiez le mot de passe
 
 ###### Si erreur 404 en ouvrant un trick
