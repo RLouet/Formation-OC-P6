@@ -31,7 +31,9 @@ function generateTrickItem(data, userRoles) {
         "            </a>\n" +
         "        </div>\n" +
         "        <div class=\"card-body\">\n" +
-        "            <h3 class=\"card-title mb-0\">" + data.name + "</h3>\n" +
+        "            <h3 class=\"card-title mb-0\">" +
+        "                <a href=\"" + window.location.origin + "/tricks/details/" + data.slug + "\" title=\"Voir le trick\">" + data.name + "</a>" +
+        "            </h3>\n" +
         "        </div>\n" + managementBtns +
         "    </div>\n" +
         "</article>";

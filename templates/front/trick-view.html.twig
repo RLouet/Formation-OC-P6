@@ -53,12 +53,12 @@
                     </div>
                 </div>
             </section>
-            <section class="row p-2 trick-description">
+            <section class="row p-2 px-sm-3 px-md-4 trick-description">
                 <p>{{ trick.description|nl2br() }}</p>
             </section>
             <section class="row justify-content-center trick-categories">
                 {% for category in trick.categories %}
-                    <a href="#" title="Voir les Tricks de la catégorie" class="badge badge-info">{{ category.name }}</a>
+                    <span class="badge badge-info">{{ category.name }}</span>
                 {% endfor %}
             </section>
             <section class="row justify-content-center trick-infos">
