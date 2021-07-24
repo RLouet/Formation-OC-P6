@@ -1,4 +1,4 @@
-/*global initImagePreview, updateImagesPreviews*/
+/*global initImagePreview, updateImagesPreviews, unblockBtn*/
 
 $(document).ready(function() {
     const $heroChoiceModal = $("#heroChoiceModal");
