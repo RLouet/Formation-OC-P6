@@ -14,6 +14,7 @@ Vous pouvez voir la démo du projet [ici](https://snowtricks.romainlouet.fr/)
 
 #### Prérequis
 *   Version minimum de PHP : 8.0
+*   Extensions PHP : GD, Sodium, 
 *   Git
 *   Composer
 
@@ -80,7 +81,7 @@ Par défaut, le compte administrateur est le suivant :
 ##### Utilisation en production
 *   Modifier l'environnement de l'application dans le .env :
 
-    `APP_ENV=dev`
+    `APP_ENV=prod`
 
 *   Améliorer les performances du .env :
     
