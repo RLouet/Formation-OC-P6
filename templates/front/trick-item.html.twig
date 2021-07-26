@@ -6,7 +6,9 @@
             </a>
         </div>
         <div class="card-body">
-            <h3 class="card-title mb-0">{{ trick.name }}</h3>
+            <h3 class="card-title mb-0">
+                <a href="{{ path('front_tricks-single', {slug : trick.slug}) }}" title="Voir le trick">{{ trick.name }}</a>
+            </h3>
         </div>
 
         {% if is_granted('ROLE_ADMIN') or app.user == trick.author %}

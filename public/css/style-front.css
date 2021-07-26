@@ -109,6 +109,14 @@
   box-shadow: 0 0 0.4rem 0.2rem rgba(94, 181, 224, 0.7);
 }
 
+.trick-item .card-body .card-title a {
+  color: #212529;
+}
+
+.trick-item .card-body .card-title a:hover {
+  text-decoration: none;
+}
+
 .form-page .form-container {
   background: white;
   padding: 1rem;
@@ -173,6 +181,7 @@ article.trick-single header .trick-hero .management-btns {
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 999;
 }
 
 article.trick-single .trick-categories .badge {

@@ -23,7 +23,7 @@
         </label>
         <div class="medias-management-btns text-right mt-1">
             <span class="p-1 border border-dark rounded">
-                <label for="{{ form.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                <label for="{{ form.name.vars.id }}" title="Modifier l'image" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
                 <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-__name__" data-type="l'image"><em class="far fa-trash-alt"></em></a>
             </span>
         </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>
-                    <h2 class="vertical-align-middle w-100 trick-name">{{ trick.name }}</h2>
+                    <h2 class="vertical-align-middle w-100 trick-name text-break">{{ trick.name }}</h2>
                     <div class="row management-btns py-1 rounded">
                         <div class="col-6 text-center edit border-right border-dark">
                             <a href="#" title="Modifier le Hero" class="edit-btn" data-toggle="modal" data-target="#heroChoiceModal"><em class="far fa-edit"></em></a>
@@ -92,7 +92,7 @@
                                 </label>
                                 <div class="medias-management-btns text-right mt-1">
                                     <span class="p-1 border border-dark rounded">
-                                        <label for="{{ oldImage.newFile.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <label for="{{ oldImage.newFile.vars.id }}" title="Modifier l'image" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
                                         <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".old-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
                                     </span>
                                 </div>
@@ -122,7 +122,7 @@
                                 </label>
                                 <div class="medias-management-btns text-right mt-1">
                                     <span class="p-1 border border-dark rounded">
-                                        <label for="{{ newImage.name.vars.id }}" title="Modifier l'image'" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
+                                        <label for="{{ newImage.name.vars.id }}" title="Modifier l'image" class="edit-btn px-2 border-right border-dark mb-0"><em class="far fa-edit"></em></label>
                                         <a href="#" title="Supprimer l'image'" class="delete-btn px-2" data-toggle="modal" data-target="#mediaDeleteModal" data-item=".new-image-{{ key }}" data-type="l'image"><em class="far fa-trash-alt"></em></a>
                                     </span>
                                 </div>

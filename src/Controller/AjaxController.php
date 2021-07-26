@@ -30,7 +30,7 @@ class AjaxController extends AbstractController
         $response = [];
         $response['itemsData'] = $trickRepository->findBy(
             [],
-            ['id' => 'ASC'],
+            ['id' => 'DESC'],
             $this->getParameter('app.tricks_pagination_length'),
             $request->get('offset')
         );

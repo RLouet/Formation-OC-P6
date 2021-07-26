@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-12 trick-hero p-0 d-flex align-content-center flex-wrap" style="background-image: url('{{ asset('/') }}{% if trick.hero %}uploads/tricks/{{ trick.hero.name }}{% elseif trick.images is not empty %}uploads/tricks/{{ trick.images|first.name }}{% else %}imgs/no-image.png{% endif %}');">
                     <div class="overlay"></div>
-                    <h2 class="vertical-align-middle w-100">{{ trick.name }}</h2>
+                    <h2 class="vertical-align-middle w-100 text-break">{{ trick.name }}</h2>
                     {% if is_granted('ROLE_ADMIN') or app.user == trick.author %}
                     <div class="row management-btns py-1 rounded">
                         <div class="col-6 text-center edit border-right border-dark">
@@ -53,12 +53,12 @@
                     </div>
                 </div>
             </section>
-            <section class="row p-2 trick-description">
+            <section class="row p-2 px-sm-3 px-md-4 trick-description">
                 <p>{{ trick.description|nl2br() }}</p>
             </section>
             <section class="row justify-content-center trick-categories">
                 {% for category in trick.categories %}
-                    <a href="#" title="Voir les Tricks de la catégorie" class="badge badge-info">{{ category.name }}</a>
+                    <span class="badge badge-info">{{ category.name }}</span>
                 {% endfor %}
             </section>
             <section class="row justify-content-center trick-infos">

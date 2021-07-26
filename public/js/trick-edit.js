@@ -1,4 +1,4 @@
-/*global initImagePreview, updateImagesPreviews*/
+/*global initImagePreview, updateImagesPreviews, unblockBtn*/
 
 $(document).ready(function() {
     const $heroChoiceModal = $("#heroChoiceModal");
@@ -250,6 +250,7 @@ $(document).ready(function() {
             const $mediaList = $("#mediasList");
             $mediaList.collapse("show");
             $mediaList[0].scrollIntoView({behavior: "smooth", block: "end", inline: "end"});
+            unblockBtn($("button[type='submit']", $(this)));
             return false;
         }
     });

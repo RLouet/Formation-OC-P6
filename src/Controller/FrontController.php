@@ -30,7 +30,7 @@ class FrontController extends AbstractController
 
         $tricks = $trickRepository->findBy(
             [],
-            ['id' => 'ASC'],
+            ['id' => 'DESC'],
             $this->getParameter('app.tricks_pagination_length')
         );
         $paginateTricks = count($tricks) < $trickRepository->count([]);
